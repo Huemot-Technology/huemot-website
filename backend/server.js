@@ -85,6 +85,10 @@ function getTransporter() {
     port: Number(SMTP_PORT),
     secure: Number(SMTP_PORT) === 465, // true for 465, false for 587/STARTTLS
     auth: { user: SMTP_USER, pass: SMTP_PASS },
+    // Fail fast instead of hanging ~2 min on a bad host/credentials
+    connectionTimeout: 12000,
+    greetingTimeout: 12000,
+    socketTimeout: 20000,
   });
   return transporter;
 }
@@ -175,7 +179,12 @@ app.post('/api/contact', async (req, res) => {
     });
     return res.status(200).json({ ok: true });
   } catch (err) {
-    console.error('[contact] send failed:', err.message);
+    // Surface the real SMTP failure in Render logs for diagnosis
+    console.error('[contact] send failed:',
+      'code=', err.code || '-',
+      'command=', err.command || '-',
+      'responseCode=', err.responseCode || '-',
+      'msg=', err.message);
     return res.status(502).json({ error: 'Could not send your message right now. Please email info@huemot.com.' });
   }
 });
