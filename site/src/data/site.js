@@ -41,7 +41,7 @@ export const offices = [
     flag: '🇨🇦',
     city: 'Vancouver, BC',
     address: '600-1285 West Broadway, Vancouver, BC V6H 3X8',
-    phone: '+1 604 555 0162',
+    phone: '+1 618 389 5331',
   },
 ];
 

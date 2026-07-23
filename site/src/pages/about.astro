@@ -25,12 +25,11 @@ const track = [
 ];
 
 const leaders = [
-  { name: 'Raju Sahu', role: 'Chairman' },
-  { name: 'Sangeeta Sahu', role: 'Director' },
-  { name: 'Priyanshu Sahu', role: 'CEO & Co-Founder' },
-  { name: 'Niharika Sahu', role: 'Co-Founder' },
+  { name: 'Raju Sahu', role: 'Chairman', photo: '/team/raju.png' },
+  { name: 'Sangeeta Sahu', role: 'Director', photo: '/team/sangeeta.png' },
+  { name: 'Prateek Maheshwari', role: 'CEO & Co-Founder', photo: '/team/prateek.png' },
+  { name: 'Niharika Sahu', role: 'Co-Founder', photo: '/team/niharika.png' },
 ];
-const initials = (n) => n.split(' ').map((w) => w[0]).join('').slice(0, 2);
 
 const bands = [
   { label: 'Overview', stats: overview },
@@ -72,7 +71,7 @@ const bands = [
       <div class="grid grid-4 stagger">
         {leaders.map((l) => (
           <article class="card card--hover leader reveal">
-            <div class="leader__avatar" aria-hidden="true">{initials(l.name)}</div>
+            <img class="leader__photo" src={l.photo} alt={`${l.name}, ${l.role}`} width="112" height="112" loading="lazy" decoding="async" />
             <h3 class="leader__name">{l.name}</h3>
             <p class="leader__role">{l.role}</p>
           </article>
@@ -127,12 +126,10 @@ const bands = [
   .stat-cell { padding: clamp(22px, 3vw, 32px) 16px; text-align: center; }
 
   .leader { text-align: center; }
-  .leader__avatar {
-    width: 76px; height: 76px; margin: 0 auto 18px; border-radius: 50%;
-    display: grid; place-items: center;
-    font-size: 1.4rem; font-weight: 800; color: #fff; letter-spacing: 0.02em;
-    background: linear-gradient(140deg, var(--teal-deep), var(--teal-bright));
-    box-shadow: var(--shadow-teal);
+  .leader__photo {
+    width: 112px; height: 112px; margin: 0 auto 18px;
+    border-radius: 50%; object-fit: cover;
+    filter: drop-shadow(0 8px 18px rgba(15, 23, 42, 0.14));
   }
   .leader__name { font-size: 1.15rem; margin-bottom: 4px; }
   .leader__role { color: var(--muted); font-size: 0.95rem; }
