@@ -15,13 +15,8 @@ services:
       - key: TO_EMAIL
         value: info@huemot.com
       - key: FROM_EMAIL
-        value: "Huemot Website <info@huemot.com>"
-      # Secrets — set these in the Render dashboard (sync:false keeps them out of git)
-      - key: SMTP_HOST
-        sync: false
-      - key: SMTP_PORT
-        sync: false
-      - key: SMTP_USER
-        sync: false
-      - key: SMTP_PASS
+        value: "Huemot Website <noreply@huemot.com>"
+      # Secret — set in the Render dashboard (sync:false keeps it out of git).
+      # Resend API key; huemot.com is a verified Resend sending domain.
+      - key: RESEND_API_KEY
         sync: false

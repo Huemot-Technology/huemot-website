@@ -1,6 +1,7 @@
 // =============================================================================
 // Huemot.com — Contact form micro-API
-// Single endpoint: POST /api/contact  →  emails info@huemot.com via SMTP.
+// Single endpoint: POST /api/contact  →  emails info@huemot.com via Resend API.
+// (Cloud hosts like Render block outbound SMTP, so we send over HTTPS.)
 // Spam protection: honeypot field + in-memory per-IP rate limiting.
 // Health check: GET /healthz
 // =============================================================================
@@ -8,7 +9,7 @@
 import 'dotenv/config';
 import express from 'express';
 import cors from 'cors';
-import nodemailer from 'nodemailer';
+import { Resend } from 'resend';
 
 const app = express();
 app.set('trust proxy', 1); // Render sits behind a proxy; needed for real client IP
@@ -16,13 +17,13 @@ app.use(express.json({ limit: '20kb' }));
 
 const {
   PORT = 8080,
-  SMTP_HOST,
-  SMTP_PORT = 587,
-  SMTP_USER,
-  SMTP_PASS,
+  RESEND_API_KEY,
   TO_EMAIL = 'info@huemot.com',
-  FROM_EMAIL,
+  // Must be an address on a Resend-verified domain (huemot.com is verified)
+  FROM_EMAIL = 'Huemot Website <noreply@huemot.com>',
 } = process.env;
+
+const resend = RESEND_API_KEY ? new Resend(RESEND_API_KEY) : null;
 
 // ---------------------------------------------------------------------------
 // CORS — locked to production domains + localhost for dev
@@ -71,27 +72,7 @@ setInterval(() => {
   }
 }, WINDOW_MS).unref();
 
-// ---------------------------------------------------------------------------
-// Mail transport (lazily created & reused)
-// ---------------------------------------------------------------------------
-let transporter = null;
-function getTransporter() {
-  if (transporter) return transporter;
-  if (!SMTP_HOST || !SMTP_USER || !SMTP_PASS) {
-    throw new Error('SMTP is not configured (SMTP_HOST / SMTP_USER / SMTP_PASS missing).');
-  }
-  transporter = nodemailer.createTransport({
-    host: SMTP_HOST,
-    port: Number(SMTP_PORT),
-    secure: Number(SMTP_PORT) === 465, // true for 465, false for 587/STARTTLS
-    auth: { user: SMTP_USER, pass: SMTP_PASS },
-    // Fail fast instead of hanging ~2 min on a bad host/credentials
-    connectionTimeout: 12000,
-    greetingTimeout: 12000,
-    socketTimeout: 20000,
-  });
-  return transporter;
-}
+// (Email is sent via the Resend HTTPS API — see the /api/contact handler.)
 
 // ---------------------------------------------------------------------------
 // Helpers
@@ -168,23 +149,28 @@ app.post('/api/contact', async (req, res) => {
     <p style="font-family:Arial,sans-serif;font-size:14px;white-space:pre-wrap;margin-top:16px">${esc(message)}</p>
   `;
 
+  if (!resend) {
+    console.error('[contact] RESEND_API_KEY is not set');
+    return res.status(502).json({ error: 'Could not send your message right now. Please email info@huemot.com.' });
+  }
+
   try {
-    await getTransporter().sendMail({
-      from: FROM_EMAIL || `"Huemot Website" <${SMTP_USER}>`,
+    const { data, error } = await resend.emails.send({
+      from: FROM_EMAIL,
       to: TO_EMAIL,
-      replyTo: `"${fullName}" <${workEmail}>`,
+      replyTo: `${fullName} <${workEmail}>`,
       subject,
       text,
       html,
     });
+    if (error) {
+      console.error('[contact] resend error:', error.name || '-', error.message || error);
+      return res.status(502).json({ error: 'Could not send your message right now. Please email info@huemot.com.' });
+    }
+    console.log('[contact] sent id=', data && data.id, 'service=', serviceInterest);
     return res.status(200).json({ ok: true });
   } catch (err) {
-    // Surface the real SMTP failure in Render logs for diagnosis
-    console.error('[contact] send failed:',
-      'code=', err.code || '-',
-      'command=', err.command || '-',
-      'responseCode=', err.responseCode || '-',
-      'msg=', err.message);
+    console.error('[contact] send failed:', err && err.message);
     return res.status(502).json({ error: 'Could not send your message right now. Please email info@huemot.com.' });
   }
 });
