@@ -1,0 +1,23 @@
+---
+// Interior page hero — eyebrow + headline (with optional teal-highlighted tail) + sub.
+const { eyebrow, title, highlight = '', sub = '' } = Astro.props;
+---
+
+<section class="phero hero-wash">
+  <div class="container">
+    {eyebrow && <span class="eyebrow rise rise-1">{eyebrow}</span>}
+    <h1 class="h1 phero__title rise rise-2">{title}{highlight && <span class="teal"> {highlight}</span>}</h1>
+    {sub && <p class="lead phero__sub rise rise-3">{sub}</p>}
+    <div class="phero__slot rise rise-4"><slot /></div>
+  </div>
+</section>
+
+<style>
+  .phero {
+    padding-block: clamp(56px, 8vw, 104px);
+    border-bottom: 1px solid var(--card-border);
+  }
+  .phero__title { max-width: 18ch; margin-top: 8px; }
+  .phero__sub { margin-top: 22px; max-width: 60ch; }
+  .phero__slot:not(:empty) { margin-top: 30px; }
+</style>

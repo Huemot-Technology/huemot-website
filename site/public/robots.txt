@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /careers/
+
+Sitemap: https://huemot.com/sitemap.xml

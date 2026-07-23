@@ -1,0 +1,173 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import StatCounter from '../components/StatCounter.astro';
+import { seo } from '../data/site.js';
+
+const studies = [
+  {
+    title: 'Logistics Platform Re-Architecture',
+    client: 'ShipFlow — E-Commerce Logistics SaaS',
+    challenge: 'Scale a legacy monolith to microservices handling 25M+ monthly shipments with a 99.9% uptime SLA.',
+    solution: 'Deployed a 25-member agile pod for phased migration on Kubernetes, real-time courier allocation, and ML-powered rate selection.',
+    metrics: [
+      { value: 45, suffix: '%', label: 'Faster Load', tone: 'teal' },
+      { value: 3.2, suffix: 'x', label: 'Throughput', tone: 'blue' },
+      { value: 3.4, prefix: '$', suffix: 'M', label: 'Cost Saved', tone: 'purple' },
+      { value: 99.99, suffix: '%', label: 'Uptime', tone: 'pink' },
+    ],
+  },
+  {
+    title: 'Lending CRM Modernization',
+    client: 'LendBridge — Digital Lending Platform',
+    challenge: 'Unify lending CRM across partners, enable cross-sell, and ensure RBI compliance across 5M+ borrower accounts.',
+    solution: 'Salesforce Financial Services Cloud with Lightning, MuleSoft integration, and Einstein Analytics for next-best-action.',
+    metrics: [
+      { value: 35, suffix: '%', label: 'Cross-sell', tone: 'teal' },
+      { value: 60, suffix: '%', label: 'Faster KYC', tone: 'blue' },
+      { value: 5, suffix: 'M+', label: 'Borrowers', tone: 'purple' },
+      { value: 100, suffix: '%', label: 'Compliance', tone: 'pink' },
+    ],
+  },
+  {
+    title: 'AI-Powered Claims Automation',
+    client: 'AssureIQ — Insurtech Platform',
+    challenge: 'Manual claims averaged 12 days each with 15% error rates across 50,000+ monthly submissions.',
+    solution: 'End-to-end AI pipeline with computer-vision OCR, NLP entity extraction, and ML fraud detection exposed via REST APIs.',
+    metrics: [
+      { value: 50, suffix: '%', label: 'Faster', tone: 'teal' },
+      { value: 99.2, suffix: '%', label: 'Accuracy', tone: 'blue' },
+      { value: 2.4, prefix: '$', suffix: 'M', label: 'Savings', tone: 'purple' },
+      { value: 15, suffix: 'K+', label: 'Auto/Month', tone: 'pink' },
+    ],
+  },
+  {
+    title: 'Unified Patient Engagement App',
+    client: 'MediLoop — Digital Health Platform',
+    challenge: 'A multi-provider network needed unified patient engagement across scheduling, telemedicine, and care coordination.',
+    solution: 'HIPAA-compliant React Native app with video consultation, a custom portal, and AWS microservices on HL7 FHIR.',
+    metrics: [
+      { value: 70, suffix: '%', label: 'Adoption', tone: 'teal' },
+      { value: 40, suffix: '%', label: 'Fewer No-Shows', tone: 'blue' },
+      { value: 4.8, suffix: '/5', label: 'Rating', tone: 'purple' },
+      { value: 60, suffix: '+', label: 'Providers', tone: 'pink' },
+    ],
+  },
+];
+
+const clientele = [
+  { group: 'Fintech & Financial', names: ['PayNova', 'LendBridge', 'FinPay', 'KredFlow', 'OpenLedger', 'AssureIQ'] },
+  { group: 'SaaS & Productivity', names: ['BillStack', 'FlowGuide', 'EngageIQ', 'LeadOrbit', 'TaskNest', 'PeoplePoint'] },
+  { group: 'Healthtech', names: ['CareGrid', 'MediLoop', 'VitaTrack', 'ScanAI', 'HomeCarePlus', 'SwiftClinic'] },
+  { group: 'Supply Chain & Manufacturing', names: ['AgriSense', 'FarmEdge', 'FactoryAI', 'StockSync', 'AuthentiQ', 'RetailPulse'] },
+  { group: 'Retail & E-commerce', names: ['ShipFlow', 'CheckoutX', 'StoreForge', 'QuickCart', 'ReachGrow', 'AdPilot'] },
+];
+---
+
+<BaseLayout title={seo.cases.title} description={seo.cases.description}>
+  <PageHero eyebrow="Case Studies" title="Delivering Measurable Impact." />
+
+  <!-- Case studies -->
+  <section class="section">
+    <div class="container studies stagger">
+      {studies.map((s, i) => (
+        <article class="card cs reveal">
+          <div class="cs__head">
+            <span class="cs__num">Case Study {i + 1}</span>
+            <h2 class="h2">{s.title}</h2>
+            <p class="cs__client">{s.client}</p>
+          </div>
+          <div class="cs__grid">
+            <div class="cs__block">
+              <h3 class="cs__label">Challenge</h3>
+              <p>{s.challenge}</p>
+            </div>
+            <div class="cs__block">
+              <h3 class="cs__label">Solution</h3>
+              <p>{s.solution}</p>
+            </div>
+          </div>
+          <div class="cs__metrics">
+            {s.metrics.map((m) => <StatCounter {...m} />)}
+          </div>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <!-- Selected clientele -->
+  <section class="section section--band">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">Selected Clientele</span>
+        <h2 class="h2">150+ Clients. 90% Retention.</h2>
+        <p class="lead" style="margin-top:16px">Trusted by high-growth product companies across fintech, SaaS, healthtech, supply chain and retail.</p>
+      </div>
+      <div class="clientele stagger">
+        {clientele.map((c) => (
+          <div class="clientele__group reveal">
+            <h3 class="clientele__label">{c.group}</h3>
+            <div class="chip-row">
+              {c.names.map((n) => <span class="chip">{n}</span>)}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonial -->
+  <section class="section">
+    <div class="container">
+      <figure class="quote reveal">
+        <svg class="quote__mark" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M9.5 6C6.5 7.5 5 10 5 13v5h5v-6H7.5c0-1.8.9-3.2 3-4.2L9.5 6Zm9 0c-3 1.5-4.5 4-4.5 7v5h5v-6h-2.5c0-1.8.9-3.2 3-4.2L18.5 6Z"/></svg>
+        <blockquote>
+          Huemot didn't just deliver engineers — they delivered outcomes. Their
+          pod embedded with our team, owned the roadmap, and the platform they
+          rebuilt is now the backbone of our business.
+        </blockquote>
+        <figcaption><strong>Arjun Nair</strong> — VP Engineering, ShipFlow</figcaption>
+      </figure>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .studies { display: grid; gap: clamp(24px, 3vw, 36px); }
+  .cs { padding: clamp(28px, 4vw, 52px); }
+  .cs__head { max-width: 720px; }
+  .cs__num {
+    display: inline-block; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--teal-ink); background: var(--teal-wash);
+    padding: 5px 11px; border-radius: 999px; margin-bottom: 14px;
+  }
+  .cs__client { margin-top: 12px; color: var(--teal-deep); font-weight: 650; }
+  .cs__grid { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(24px, 3vw, 40px); margin-top: 28px; }
+  @media (max-width: 640px) { .cs__grid { grid-template-columns: 1fr; } }
+  .cs__label {
+    font-size: 0.78rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--muted); margin-bottom: 10px;
+  }
+  .cs__block p { color: var(--body); line-height: 1.6; }
+  .cs__metrics {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px;
+    margin-top: 32px; padding-top: 28px; border-top: 1px solid var(--card-border);
+  }
+  @media (max-width: 640px) { .cs__metrics { grid-template-columns: 1fr 1fr; gap: 26px 16px; } }
+
+  .clientele { display: grid; gap: 28px; }
+  .clientele__label {
+    font-size: 0.85rem; font-weight: 700; letter-spacing: 0.06em;
+    color: var(--ink); margin-bottom: 14px;
+  }
+  .chip-row { display: flex; flex-wrap: wrap; gap: 10px; }
+
+  .quote { max-width: 860px; margin-inline: auto; text-align: center; }
+  .quote__mark { width: 44px; height: 44px; color: var(--teal); margin-inline: auto; }
+  .quote blockquote {
+    margin: 18px 0 22px; font-size: clamp(1.3rem, 2.6vw, 1.9rem);
+    font-weight: 600; line-height: 1.4; color: var(--ink); letter-spacing: -0.01em;
+  }
+  .quote figcaption { color: var(--body); font-size: 1.02rem; }
+  .quote figcaption strong { color: var(--ink); }
+</style>

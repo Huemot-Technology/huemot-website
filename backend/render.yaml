@@ -1,0 +1,27 @@
+# Render Blueprint — one-click deploy for the Huemot contact API.
+# Docs: https://render.com/docs/blueprint-spec
+services:
+  - type: web
+    name: huemot-contact-api
+    runtime: node
+    plan: free
+    region: singapore
+    rootDir: backend
+    buildCommand: npm ci
+    startCommand: node server.js
+    healthCheckPath: /healthz
+    autoDeploy: true
+    envVars:
+      - key: TO_EMAIL
+        value: info@huemot.com
+      - key: FROM_EMAIL
+        value: "Huemot Website <info@huemot.com>"
+      # Secrets — set these in the Render dashboard (sync:false keeps them out of git)
+      - key: SMTP_HOST
+        sync: false
+      - key: SMTP_PORT
+        sync: false
+      - key: SMTP_USER
+        sync: false
+      - key: SMTP_PASS
+        sync: false

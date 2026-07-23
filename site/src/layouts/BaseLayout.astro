@@ -1,0 +1,164 @@
+---
+import '../styles/global.css';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+
+const {
+  title = 'Huemot Technology | AI-Led Software Development & Digital Transformation',
+  description = 'Enterprise solutions, staff augmentation, and end-to-end product engineering by 500+ engineers across 50+ technology stacks.',
+  image = '/og-image.svg',
+} = Astro.props;
+
+const canonical = new URL(Astro.url.pathname, Astro.site).href.replace(/\/$/, '') || Astro.site.href;
+const ogImage = new URL(image, Astro.site).href;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+    <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <meta name="theme-color" content="#14b8a6" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Huemot Technology" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+
+    <!-- Fonts: Sora (display) + Manrope (body) — preconnect + swap for performance -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Sora:wght@600;700;800&display=swap"
+    />
+
+    <!-- Organization structured data -->
+    <script type="application/ld+json" set:html={JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'Organization',
+      name: 'Huemot Technology Private Limited',
+      url: 'https://huemot.com',
+      logo: 'https://huemot.com/favicon-192.png',
+      email: 'info@huemot.com',
+      telephone: '+91-755-313-8975',
+      address: {
+        '@type': 'PostalAddress',
+        streetAddress: 'G-02, Anmol Towers, Mandakini, Kolar Road',
+        addressLocality: 'Bhopal',
+        addressRegion: 'MP',
+        postalCode: '462042',
+        addressCountry: 'IN',
+      },
+    })} />
+  </head>
+  <body>
+    <a href="#main" class="sr-only">Skip to content</a>
+    <Header />
+    <main id="main">
+      <slot />
+    </main>
+    <Footer />
+
+    <script>
+      // ---- Animated stat counters (scroll-into-view) ----
+      const counters = document.querySelectorAll('[data-counter]');
+      const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      const run = (el) => {
+        const raw = el.dataset.value || '0';
+        const target = parseFloat(raw);
+        const decimals = (raw.split('.')[1] || '').length; // preserve each value's own precision
+        const prefix = el.dataset.prefix || '';
+        const suffix = el.dataset.suffix || '';
+        const fmt = (n) => {
+          const fixed = n.toFixed(decimals);
+          const [ip, dp] = fixed.split('.');
+          const sep = Number(ip).toLocaleString('en-US');
+          return dp ? sep + '.' + dp : sep;
+        };
+        if (reduce || isNaN(target)) {
+          el.textContent = prefix + fmt(isNaN(target) ? 0 : target) + suffix;
+          return;
+        }
+        const dur = 1400;
+        const start = performance.now();
+        const tick = (now) => {
+          const p = Math.min((now - start) / dur, 1);
+          const eased = 1 - Math.pow(1 - p, 3); // easeOutCubic
+          el.textContent = prefix + fmt(target * eased) + suffix;
+          if (p < 1) requestAnimationFrame(tick);
+        };
+        requestAnimationFrame(tick);
+      };
+
+      if ('IntersectionObserver' in window) {
+        const io = new IntersectionObserver((entries) => {
+          entries.forEach((e) => {
+            if (e.isIntersecting) { run(e.target); io.unobserve(e.target); }
+          });
+        }, { threshold: 0.4 });
+        counters.forEach((c) => io.observe(c));
+      } else {
+        counters.forEach(run);
+      }
+
+      // ---- Scroll reveal (fade + rise, staggered) ----
+      const reveals = document.querySelectorAll('.reveal');
+      if (reduce) {
+        reveals.forEach((el) => el.classList.add('is-in'));
+      } else if ('IntersectionObserver' in window) {
+        // assign stagger index within each parent
+        document.querySelectorAll('.stagger').forEach((group) => {
+          group.querySelectorAll(':scope > .reveal').forEach((el, i) =>
+            el.style.setProperty('--i', String(i))
+          );
+        });
+        const ro = new IntersectionObserver((entries) => {
+          entries.forEach((e) => {
+            if (e.isIntersecting) { e.target.classList.add('is-in'); ro.unobserve(e.target); }
+          });
+        }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+        reveals.forEach((el) => ro.observe(el));
+        // Safety net: never leave content hidden if IO stalls (e.g. background tab)
+        setTimeout(() => reveals.forEach((el) => el.classList.add('is-in')), 2600);
+      } else {
+        reveals.forEach((el) => el.classList.add('is-in'));
+      }
+
+      // ---- Mobile nav toggle ----
+      const navToggle = document.querySelector('[data-nav-toggle]');
+      const navMenu = document.querySelector('[data-nav-menu]');
+      if (navToggle && navMenu) {
+        navToggle.addEventListener('click', () => {
+          const open = navMenu.classList.toggle('is-open');
+          navToggle.setAttribute('aria-expanded', String(open));
+          document.body.style.overflow = open ? 'hidden' : '';
+        });
+        navMenu.querySelectorAll('a').forEach((a) =>
+          a.addEventListener('click', () => {
+            navMenu.classList.remove('is-open');
+            navToggle.setAttribute('aria-expanded', 'false');
+            document.body.style.overflow = '';
+          })
+        );
+      }
+    </script>
+  </body>
+</html>

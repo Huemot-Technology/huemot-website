@@ -1,0 +1,149 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import StatCounter from '../components/StatCounter.astro';
+import PillButton from '../components/PillButton.astro';
+import { seo } from '../data/site.js';
+
+const stats = [
+  { value: 75, suffix: '+', label: 'Certified Consultants', tone: 'teal' },
+  { value: 5, suffix: '', label: 'Salesforce MVPs', tone: 'blue' },
+  { value: 100, suffix: '%', label: 'Certified Team', tone: 'purple' },
+  { value: 350, suffix: '%', label: 'YoY Growth', tone: 'pink' },
+];
+const clouds = ['Sales Cloud', 'Service Cloud', 'Experience Cloud', 'Marketing Cloud', 'Commerce Cloud', 'CPQ', 'MuleSoft', 'Tableau'];
+const tenets = [
+  'Customer success as the primary objective',
+  'Drive innovation with platform capabilities',
+  'Build industry-specific IP and accelerators',
+];
+const verticals = ['Financial Services', 'Healthcare', 'Telecom', 'Retail & E-commerce', 'Manufacturing', 'Professional Services'];
+const metrics = [
+  { value: 35, suffix: '%', label: 'Cross-sell', tone: 'teal' },
+  { value: 60, suffix: '%', label: 'Faster KYC', tone: 'blue' },
+  { value: 5, suffix: 'M+', label: 'Borrowers', tone: 'purple' },
+  { value: 100, suffix: '%', label: 'Compliance', tone: 'pink' },
+];
+---
+
+<BaseLayout title={seo.salesforce.title} description={seo.salesforce.description}>
+  <PageHero
+    eyebrow="Salesforce Practice"
+    title="CRM Excellence Center."
+    sub="A certified Salesforce partner practice built around customer success."
+  />
+
+  <!-- Stats -->
+  <section class="section">
+    <div class="container">
+      <div class="grid grid-4 stagger">
+        {stats.map((s) => <div class="card stat-cell reveal"><StatCounter {...s} /></div>)}
+      </div>
+    </div>
+  </section>
+
+  <!-- Clouds + tenets -->
+  <section class="section section--band">
+    <div class="container two-col stagger">
+      <div class="reveal">
+        <span class="eyebrow">Salesforce Clouds</span>
+        <h2 class="h2">Every cloud, one partner.</h2>
+        <div class="chip-row">
+          {clouds.map((c) => <span class="chip">{c}</span>)}
+        </div>
+      </div>
+      <div class="card tenets reveal">
+        <span class="eyebrow">Key Tenets</span>
+        <ul>
+          {tenets.map((t) => (
+            <li>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 13 4 4L19 7"/></svg>
+              <span>{t}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Verticals -->
+  <section class="section">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">Industry Verticals</span>
+        <h2 class="h2">Deep expertise, by industry.</h2>
+      </div>
+      <div class="chip-row">
+        {verticals.map((v) => <span class="chip chip--lg">{v}</span>)}
+      </div>
+    </div>
+  </section>
+
+  <!-- Featured case study -->
+  <section class="section section--band">
+    <div class="container">
+      <article class="card cs reveal">
+        <div class="cs__head">
+          <span class="eyebrow">Featured Case Study</span>
+          <h2 class="h2">Lending CRM Modernization.</h2>
+          <p class="cs__client">LendBridge — Digital Lending Platform</p>
+        </div>
+        <div class="cs__grid">
+          <div class="cs__block">
+            <h3 class="cs__label">Challenge</h3>
+            <p>Unify lending CRM across partners, enable cross-sell, and ensure RBI compliance across 5M+ borrower accounts.</p>
+          </div>
+          <div class="cs__block">
+            <h3 class="cs__label">Solution</h3>
+            <p>Salesforce Financial Services Cloud with Lightning, MuleSoft integration, and Einstein Analytics for next-best-action.</p>
+          </div>
+        </div>
+        <div class="cs__metrics">
+          {metrics.map((m) => <StatCounter {...m} />)}
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="section text-center">
+    <div class="container">
+      <h2 class="h2">Ready to get more from Salesforce?</h2>
+      <div style="margin-top:28px;display:flex;justify-content:center">
+        <PillButton href="/contact" variant="primary" size="lg">Talk to Our Salesforce Team</PillButton>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .stat-cell { padding: clamp(22px, 3vw, 32px) 16px; text-align: center; }
+
+  .two-col { display: grid; grid-template-columns: 1.2fr 1fr; gap: clamp(28px, 4vw, 48px); align-items: start; }
+  @media (max-width: 820px) { .two-col { grid-template-columns: 1fr; } }
+  .two-col h2 { margin-top: 8px; margin-bottom: 24px; }
+
+  .chip-row { display: flex; flex-wrap: wrap; gap: 12px; }
+  .chip--lg { padding: 0.7em 1.15em; font-size: 0.98rem; }
+
+  .tenets ul { list-style: none; margin: 18px 0 0; padding: 0; }
+  .tenets li { display: flex; gap: 12px; align-items: flex-start; margin-bottom: 16px; color: var(--ink-soft); font-weight: 500; }
+  .tenets svg { flex: none; width: 22px; height: 22px; color: var(--teal-deep); margin-top: 1px; }
+
+  .cs { padding: clamp(28px, 4vw, 52px); }
+  .cs__head { max-width: 640px; }
+  .cs__head h2 { margin-top: 8px; }
+  .cs__client { margin-top: 12px; color: var(--teal-deep); font-weight: 650; }
+  .cs__grid { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(24px, 3vw, 40px); margin-top: 32px; }
+  @media (max-width: 640px) { .cs__grid { grid-template-columns: 1fr; } }
+  .cs__label {
+    font-size: 0.78rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--muted); margin-bottom: 10px;
+  }
+  .cs__block p { color: var(--body); line-height: 1.6; }
+  .cs__metrics {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px;
+    margin-top: 36px; padding-top: 32px; border-top: 1px solid var(--card-border);
+  }
+  @media (max-width: 640px) { .cs__metrics { grid-template-columns: 1fr 1fr; gap: 28px 16px; } }
+</style>

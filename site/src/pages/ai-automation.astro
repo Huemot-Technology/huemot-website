@@ -1,0 +1,161 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import StatCounter from '../components/StatCounter.astro';
+import PillButton from '../components/PillButton.astro';
+import { seo } from '../data/site.js';
+
+const lifecycle = [
+  'Requirement Analysis',
+  'Data Collection & Preprocessing',
+  'Model Development & Training',
+  'Integration & Deployment',
+  'Optimization & Support',
+];
+const highlights = [
+  { t: 'AI Chatbot', sector: 'Law Firm', d: '30% call reduction · $8K monthly savings' },
+  { t: 'Leads Enrichment', sector: 'Real Estate', d: '40% data-quality improvement' },
+  { t: 'Inventory Management', sector: 'Auto Parts', d: 'Optimized warehouse & better forecasting' },
+  { t: 'Document Processing', sector: 'Insurance', d: '50% faster claims processing' },
+];
+const metrics = [
+  { value: 50, suffix: '%', label: 'Faster', tone: 'teal' },
+  { value: 99.2, suffix: '%', label: 'Accuracy', tone: 'blue' },
+  { value: 2.4, prefix: '$', suffix: 'M', label: 'Savings', tone: 'purple' },
+  { value: 15, suffix: 'K+', label: 'Automated/Month', tone: 'pink' },
+];
+---
+
+<BaseLayout title={seo.ai.title} description={seo.ai.description}>
+  <PageHero
+    eyebrow="Gen AI & Automation"
+    title="AI, ML & Automation Center of Excellence."
+  />
+
+  <!-- Lifecycle -->
+  <section class="section">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">AI Project Lifecycle</span>
+        <h2 class="h2">From requirement to reliable production.</h2>
+      </div>
+      <ol class="lifecycle stagger">
+        {lifecycle.map((step, i) => (
+          <li class="lifecycle__step reveal">
+            <span class="lifecycle__n">{i + 1}</span>
+            <span class="lifecycle__t">{step}</span>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <!-- Implementation highlights -->
+  <section class="section section--band">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">Implementation Highlights</span>
+        <h2 class="h2">AI in production, delivering ROI.</h2>
+      </div>
+      <div class="grid grid-4 stagger">
+        {highlights.map((h) => (
+          <article class="card card--hover hl reveal">
+            <span class="hl__sector">{h.sector}</span>
+            <h3 class="hl__t">{h.t}</h3>
+            <p class="hl__d">{h.d}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Featured case study -->
+  <section class="section">
+    <div class="container">
+      <article class="card cs reveal">
+        <div class="cs__head">
+          <span class="eyebrow">Featured Case Study</span>
+          <h2 class="h2">AI-Powered Claims Automation.</h2>
+          <p class="cs__client">AssureIQ — Insurtech Platform</p>
+        </div>
+        <div class="cs__grid">
+          <div class="cs__block">
+            <h3 class="cs__label">Challenge</h3>
+            <p>Manual claims averaged 12 days each with 15% error rates across 50,000+ monthly submissions.</p>
+          </div>
+          <div class="cs__block">
+            <h3 class="cs__label">Solution</h3>
+            <p>End-to-end AI pipeline with computer-vision OCR, NLP entity extraction, and ML fraud detection exposed via REST APIs.</p>
+          </div>
+        </div>
+        <div class="cs__metrics">
+          {metrics.map((m) => <StatCounter {...m} />)}
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="section section--band text-center">
+    <div class="container">
+      <h2 class="h2">Have an AI use case in mind?</h2>
+      <div style="margin-top:28px;display:flex;justify-content:center">
+        <PillButton href="/contact" variant="primary" size="lg">Start Your AI Project</PillButton>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .lifecycle {
+    list-style: none; margin: 0; padding: 0;
+    display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; counter-reset: none;
+  }
+  .lifecycle__step {
+    position: relative;
+    background: var(--card); border: 1px solid var(--card-border);
+    border-radius: var(--radius); box-shadow: var(--shadow);
+    padding: 26px 20px; text-align: center;
+  }
+  .lifecycle__n {
+    display: grid; place-items: center; width: 44px; height: 44px; margin: 0 auto 16px;
+    border-radius: 12px; font-weight: 800; font-size: 1.1rem; color: #fff;
+    background: linear-gradient(140deg, var(--teal-deep), var(--teal-bright));
+    box-shadow: var(--shadow-teal);
+  }
+  .lifecycle__t { font-weight: 650; color: var(--ink); font-size: 0.98rem; line-height: 1.35; }
+  /* connector arrows on wide screens */
+  @media (min-width: 861px) {
+    .lifecycle__step:not(:last-child)::after {
+      content: '→'; position: absolute; right: -13px; top: 50%; transform: translateY(-50%);
+      color: var(--teal); font-weight: 700; z-index: 1;
+    }
+  }
+  @media (max-width: 860px) { .lifecycle { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 460px) { .lifecycle { grid-template-columns: 1fr; } }
+
+  .hl__sector {
+    display: inline-block; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--teal-ink); background: var(--teal-wash);
+    padding: 5px 10px; border-radius: 999px; margin-bottom: 14px;
+  }
+  .hl__t { font-size: 1.1rem; margin-bottom: 10px; }
+  .hl__d { color: var(--body); font-size: 0.95rem; line-height: 1.5; }
+
+  .cs { padding: clamp(28px, 4vw, 52px); }
+  .cs__head { max-width: 640px; }
+  .cs__head h2 { margin-top: 8px; }
+  .cs__client { margin-top: 12px; color: var(--teal-deep); font-weight: 650; }
+  .cs__grid { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(24px, 3vw, 40px); margin-top: 32px; }
+  @media (max-width: 640px) { .cs__grid { grid-template-columns: 1fr; } }
+  .cs__label {
+    font-size: 0.78rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--muted); margin-bottom: 10px;
+  }
+  .cs__block p { color: var(--body); line-height: 1.6; }
+  .cs__metrics {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px;
+    margin-top: 36px; padding-top: 32px; border-top: 1px solid var(--card-border);
+  }
+  @media (max-width: 640px) { .cs__metrics { grid-template-columns: 1fr 1fr; gap: 28px 16px; } }
+</style>

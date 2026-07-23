@@ -1,0 +1,150 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import StatCounter from '../components/StatCounter.astro';
+import PillButton from '../components/PillButton.astro';
+import { seo, offices, contact } from '../data/site.js';
+
+const overview = [
+  { value: 500, suffix: '+', label: 'Engineers', tone: 'teal' },
+  { value: 3, suffix: '', label: 'Global Offices', tone: 'blue' },
+  { value: 2, suffix: '', label: 'Dev Centers', tone: 'purple' },
+  { value: 25, suffix: 'K', label: 'Sq.Ft Space', tone: 'pink' },
+];
+const clientele = [
+  { value: 150, suffix: '+', label: 'Clients', tone: 'teal' },
+  { value: 15, suffix: '+', label: 'Countries', tone: 'blue' },
+  { value: 18, suffix: '+', label: 'Industry Verticals', tone: 'purple' },
+  { value: 90, suffix: '%', label: 'Client Retention', tone: 'pink' },
+];
+const track = [
+  { value: 500, suffix: '+', label: 'Projects Delivered', tone: 'teal' },
+  { value: 100, suffix: '+', label: 'Apps Published', tone: 'blue' },
+  { value: 2, suffix: 'M+', label: 'Dev Hours', tone: 'purple' },
+  { value: 50, suffix: '+', label: 'Tech Stacks', tone: 'pink' },
+];
+
+const leaders = [
+  { name: 'Raju Sahu', role: 'Chairman' },
+  { name: 'Sangeeta Sahu', role: 'Director' },
+  { name: 'Priyanshu Sahu', role: 'CEO & Co-Founder' },
+  { name: 'Niharika Sahu', role: 'Co-Founder' },
+];
+const initials = (n) => n.split(' ').map((w) => w[0]).join('').slice(0, 2);
+
+const bands = [
+  { label: 'Overview', stats: overview },
+  { label: 'Clientele', stats: clientele },
+  { label: 'Track Record', stats: track },
+];
+---
+
+<BaseLayout title={seo.about.title} description={seo.about.description}>
+  <PageHero
+    eyebrow="About Us"
+    title="Leading by Passion. Driven by Innovation."
+    sub="Huemot Technology is a global IT consulting and software development company headquartered in Bhopal, India, with offices in the USA and Canada. We specialize in AI-led digital transformation, staff augmentation, and end-to-end product engineering across 50+ technology stacks — serving 150+ enterprises in 15+ countries."
+  />
+
+  <!-- Stat bands -->
+  <section class="section">
+    <div class="container stat-bands stagger">
+      {bands.map((b) => (
+        <div class="stat-band reveal">
+          <span class="eyebrow">{b.label}</span>
+          <div class="grid grid-4 stat-band__grid">
+            {b.stats.map((s) => (
+              <div class="card stat-cell"><StatCounter {...s} /></div>
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- Leadership -->
+  <section class="section section--band">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">Leadership</span>
+        <h2 class="h2">The Team Behind Huemot.</h2>
+      </div>
+      <div class="grid grid-4 stagger">
+        {leaders.map((l) => (
+          <article class="card card--hover leader reveal">
+            <div class="leader__avatar" aria-hidden="true">{initials(l.name)}</div>
+            <h3 class="leader__name">{l.name}</h3>
+            <p class="leader__role">{l.role}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Global presence -->
+  <section class="section">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">Global Presence</span>
+        <h2 class="h2">Offices Across 3 Countries.</h2>
+      </div>
+      <div class="grid grid-3 stagger">
+        {offices.map((o) => (
+          <article class="card office reveal">
+            <div class="office__top">
+              <span class="office__flag">{o.flag}</span>
+              <div>
+                <h3 class="office__country">{o.country}</h3>
+                <p class="office__city">{o.city}</p>
+              </div>
+            </div>
+            <p class="office__addr">{o.address}</p>
+            <a class="office__phone" href={`tel:${o.phone.replace(/[^+\d]/g, '')}`}>{o.phone}</a>
+          </article>
+        ))}
+      </div>
+      <p class="about-emails">
+        <a href={`mailto:${contact.email}`}>{contact.email}</a>
+        <span aria-hidden="true">|</span>
+        <a href={`mailto:${contact.careersEmail}`}>{contact.careersEmail}</a>
+      </p>
+    </div>
+  </section>
+
+  <section class="section section--band text-center">
+    <div class="container">
+      <h2 class="h2">Let's build something enduring.</h2>
+      <div style="margin-top:28px;display:flex;justify-content:center">
+        <PillButton href="/contact" variant="primary" size="lg">Book a Discovery Call</PillButton>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .stat-bands { display: grid; gap: clamp(28px, 4vw, 44px); }
+  .stat-band__grid { margin-top: 18px; }
+  .stat-cell { padding: clamp(22px, 3vw, 32px) 16px; text-align: center; }
+
+  .leader { text-align: center; }
+  .leader__avatar {
+    width: 76px; height: 76px; margin: 0 auto 18px; border-radius: 50%;
+    display: grid; place-items: center;
+    font-size: 1.4rem; font-weight: 800; color: #fff; letter-spacing: 0.02em;
+    background: linear-gradient(140deg, var(--teal-deep), var(--teal-bright));
+    box-shadow: var(--shadow-teal);
+  }
+  .leader__name { font-size: 1.15rem; margin-bottom: 4px; }
+  .leader__role { color: var(--muted); font-size: 0.95rem; }
+
+  .office__top { display: flex; gap: 14px; align-items: center; margin-bottom: 16px; }
+  .office__flag { font-size: 1.9rem; line-height: 1; }
+  .office__country { font-size: 1.15rem; }
+  .office__city { color: var(--muted); font-size: 0.9rem; margin-top: 2px; }
+  .office__addr { color: var(--body); line-height: 1.55; }
+  .office__phone { display: inline-block; margin-top: 14px; font-weight: 650; color: var(--teal-deep); }
+
+  .about-emails { text-align: center; margin-top: 40px; color: var(--muted); }
+  .about-emails a { color: var(--teal-deep); font-weight: 600; }
+  .about-emails span { margin-inline: 12px; }
+</style>

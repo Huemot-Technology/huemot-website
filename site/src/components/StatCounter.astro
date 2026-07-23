@@ -1,0 +1,46 @@
+---
+// Animated stat counter — counts up when scrolled into view.
+// value: numeric target, prefix/suffix wrap it (e.g. "$", "+", "%", "x", "K", "M+").
+// tone: teal | blue | purple | pink | amber (deck accents for multi-stat grids)
+const { value, prefix = '', suffix = '', label = '', tone = 'teal' } = Astro.props;
+const toneVar = {
+  teal: 'var(--stat-teal)',
+  blue: 'var(--stat-blue)',
+  purple: 'var(--stat-purple)',
+  pink: 'var(--stat-pink)',
+  amber: 'var(--stat-amber)',
+}[tone] || 'var(--stat-teal)';
+---
+
+<div class="stat">
+  <span
+    class="stat__num"
+    data-counter
+    data-value={value}
+    data-prefix={prefix}
+    data-suffix={suffix}
+    style={`color:${toneVar}`}
+  >{prefix}0{suffix}</span>
+  <span class="stat__label">{label}</span>
+</div>
+
+<style>
+  .stat { text-align: center; }
+  .stat__num {
+    display: block;
+    font-size: clamp(2.1rem, 4.5vw, 3.1rem);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+  }
+  .stat__label {
+    display: block;
+    margin-top: 10px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+</style>

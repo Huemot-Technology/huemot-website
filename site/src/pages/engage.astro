@@ -1,0 +1,128 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import PillButton from '../components/PillButton.astro';
+import { seo } from '../data/site.js';
+
+const models = [
+  { t: 'Dedicated Pod', d: 'A ring-fenced team that works as an extension of yours. Best for long-running products and roadmaps.' },
+  { t: 'Managed Project', d: 'Fixed-scope, fixed-outcome delivery with milestone billing. Best for well-defined builds.' },
+  { t: 'Staff Augmentation', d: 'Plug specific skills into your existing team on demand. Best for capacity and niche expertise.' },
+];
+const timeline = [
+  { when: 'Day 0–2', what: 'Discovery & scoping' },
+  { when: 'Day 3–5', what: 'Team match & SOW' },
+  { when: 'Day 6–10', what: 'Onboarding & access' },
+  { when: 'Day 14', what: 'Sprint zero — building' },
+];
+const benefits = [
+  { t: 'Talent', d: 'A global pool of 500+ pre-vetted professionals driving innovation at every step of your product lifecycle.' },
+  { t: 'Infrastructure', d: 'Dedicated, branded, state-of-the-art facilities — 25,000 sq.ft across two development centers.' },
+  { t: 'Security', d: 'ISO 27001:2013 and ISO 9001:2015 certified. Enterprise-grade data protection and secure access.' },
+  { t: 'Legal & Accounts', d: 'Strong NDAs, MSAs, and SLAs for secure IP creation. Transparent billing and governance framework.' },
+  { t: 'Support', d: 'Mature project management with Agile/Scrum. Dedicated account managers and SLA monitoring.' },
+  { t: 'Scalability', d: 'Flexible, future-proof teams for evolving needs. Scale up or down within two weeks.' },
+];
+---
+
+<BaseLayout title={seo.engage.title} description={seo.engage.description}>
+  <PageHero
+    eyebrow="How We Engage"
+    title="From Conversation to Code in 2 Weeks."
+    sub="Flexible commercial models and a fast, low-risk onboarding path."
+  />
+
+  <!-- Engagement models -->
+  <section class="section">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">Engagement Models</span>
+        <h2 class="h2">Three ways to work with us.</h2>
+      </div>
+      <div class="grid grid-3 stagger">
+        {models.map((m) => (
+          <article class="card card--hover model reveal">
+            <h3 class="h3">{m.t}</h3>
+            <p>{m.d}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Onboarding timeline -->
+  <section class="section section--band">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">Onboarding Timeline</span>
+        <h2 class="h2">Two weeks, four steps.</h2>
+      </div>
+      <ol class="timeline stagger">
+        {timeline.map((t) => (
+          <li class="timeline__item reveal">
+            <span class="timeline__when">{t.when}</span>
+            <span class="timeline__what">{t.what}</span>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <!-- ODC -->
+  <section class="section">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">ODC On Demand</span>
+        <h2 class="h2">Direct Benefits of a Dedicated, Branded Delivery Center.</h2>
+      </div>
+      <div class="grid grid-3 stagger">
+        {benefits.map((b) => (
+          <article class="card card--hover benefit reveal">
+            <div class="benefit__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="m5 13 4 4L19 7"/></svg>
+            </div>
+            <h3 class="h3">{b.t}</h3>
+            <p>{b.d}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="section section--band text-center">
+    <div class="container">
+      <h2 class="h2">Let's map your first pod.</h2>
+      <div style="margin-top:28px;display:flex;justify-content:center">
+        <PillButton href="/contact" variant="primary" size="lg">Book a Discovery Call</PillButton>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .model h3 { margin-bottom: 12px; }
+
+  .timeline {
+    list-style: none; margin: 0; padding: 0;
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px;
+  }
+  .timeline__item {
+    position: relative;
+    background: var(--card); border: 1px solid var(--card-border);
+    border-radius: var(--radius); box-shadow: var(--shadow); padding: 28px 24px;
+    border-top: 3px solid var(--teal);
+  }
+  .timeline__when { display: block; font-weight: 800; color: var(--teal-deep); font-size: 1.1rem; margin-bottom: 8px; }
+  .timeline__what { color: var(--ink-soft); font-weight: 550; }
+  @media (max-width: 780px) { .timeline { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 420px) { .timeline { grid-template-columns: 1fr; } }
+
+  .benefit__icon {
+    width: 44px; height: 44px; border-radius: 12px; margin-bottom: 16px;
+    display: grid; place-items: center; color: var(--teal-deep);
+    background: var(--teal-wash); border: 1px solid var(--teal-wash-2);
+  }
+  .benefit__icon svg { width: 22px; height: 22px; }
+  .benefit h3 { margin-bottom: 10px; }
+</style>

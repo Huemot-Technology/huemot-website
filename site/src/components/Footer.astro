@@ -1,0 +1,121 @@
+---
+import { nav, offices, contact, CAREERS_URL } from '../data/site.js';
+const year = 2026;
+const badges = ['ISO 27001:2013', 'ISO 9001:2015', 'Salesforce Certified Partner'];
+---
+
+<footer class="ft">
+  <div class="container">
+    <div class="ft__top">
+      <div class="ft__brand">
+        <a href="/" class="brand" aria-label="Huemot Technology home">
+          <img src="/brand/huemot-logo-trim.png" alt="Huemot Technology" width="96" height="96" class="brand__logo" />
+        </a>
+        <p class="ft__tag">AI-Led Software Development &amp; Digital Transformation.</p>
+        <div class="ft__badges">
+          {badges.map((b) => <span class="fbadge">{b}</span>)}
+        </div>
+      </div>
+
+      <nav class="ft__links" aria-label="Footer">
+        <h3 class="ft__h">Company</h3>
+        <ul>
+          {nav.map((item) => (
+            <li>
+              <a
+                href={item.href}
+                target={item.external ? '_blank' : undefined}
+                rel={item.external ? 'noopener noreferrer' : undefined}
+              >{item.label}{item.external ? ' ↗' : ''}</a>
+            </li>
+          ))}
+          <li><a href="/contact">Contact</a></li>
+        </ul>
+      </nav>
+
+      <div class="ft__offices">
+        <h3 class="ft__h">Offices</h3>
+        <ul>
+          {offices.map((o) => (
+            <li>
+              <span class="ft__flag">{o.flag}</span>
+              <span><strong>{o.country}</strong><br />{o.address}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <div class="ft__contact">
+        <h3 class="ft__h">Get in touch</h3>
+        <ul>
+          <li><a href={`mailto:${contact.email}`}>{contact.email}</a></li>
+          <li><a href={`mailto:${contact.careersEmail}`}>{contact.careersEmail}</a></li>
+          <li><a href={`tel:${contact.phone.replace(/\s/g, '')}`}>{contact.phone}</a></li>
+        </ul>
+        <a href={CAREERS_URL} class="btn btn--ghost" target="_blank" rel="noopener noreferrer">
+          We're hiring
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7"/><path d="M9 7h8v8"/></svg>
+        </a>
+      </div>
+    </div>
+
+    <hr class="divider" />
+    <div class="ft__bottom">
+      <p>© {year} Huemot Technology Pvt. Ltd. All rights reserved.</p>
+      <p class="ft__legal">Headquartered in Bhopal, India · Offices in USA &amp; Canada</p>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .ft {
+    background: #ffffff;
+    border-top: 1px solid var(--card-border);
+    padding-block: clamp(48px, 6vw, 72px) 32px;
+  }
+  .ft__top {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr 1.4fr 1fr;
+    gap: clamp(28px, 4vw, 56px);
+  }
+  .brand { display: inline-flex; align-items: center; }
+  .brand__logo { width: auto; height: 92px; }
+  .ft__tag { margin-top: 14px; color: var(--body); max-width: 30ch; font-size: 0.95rem; }
+  .ft__badges { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
+  .fbadge {
+    font-size: 0.72rem; font-weight: 650; letter-spacing: 0.04em;
+    color: var(--teal-ink); background: var(--teal-wash);
+    padding: 6px 11px; border-radius: 999px;
+  }
+
+  .ft__h {
+    font-size: 0.78rem; font-weight: 700; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--muted); margin-bottom: 16px;
+  }
+  .ft ul { list-style: none; margin: 0; padding: 0; }
+  .ft__links li { margin-bottom: 10px; }
+  .ft__links a { color: var(--body); font-size: 0.95rem; }
+  .ft__links a:hover { color: var(--teal-deep); }
+
+  .ft__offices li { display: flex; gap: 10px; margin-bottom: 16px; font-size: 0.88rem; color: var(--body); line-height: 1.45; }
+  .ft__flag { font-size: 1.1rem; line-height: 1.2; }
+  .ft__offices strong { color: var(--ink-soft); }
+
+  .ft__contact li { margin-bottom: 9px; }
+  .ft__contact a { color: var(--body); font-size: 0.95rem; }
+  .ft__contact a:hover { color: var(--teal-deep); }
+  .ft__contact .btn { margin-top: 16px; padding: 0.65em 1.25em; font-size: 0.9rem; box-shadow: none; }
+
+  .ft__bottom {
+    display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px;
+    padding-top: 24px; color: var(--muted); font-size: 0.85rem;
+  }
+  .ft__bottom p { margin: 0; }
+
+  @media (max-width: 860px) {
+    .ft__top { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 520px) {
+    .ft__top { grid-template-columns: 1fr; }
+  }
+</style>

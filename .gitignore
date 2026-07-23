@@ -1,0 +1,20 @@
+# Dependencies
+node_modules/
+
+# Build output
+site/dist/
+.astro/
+
+# Secrets — never commit
+.env
+.env.local
+*.local
+
+# Logs
+npm-debug.log*
+*.log
+
+# OS / editor
+.DS_Store
+.vscode/
+.idea/

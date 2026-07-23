@@ -1,0 +1,147 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import PillButton from '../components/PillButton.astro';
+import { seo } from '../data/site.js';
+
+const core = [
+  { id: 'team-augmentation', t: 'Team Augmentation', d: 'Dedicated, battle-tested teams across 50+ stacks to supercharge your development. Agile and on demand — zero operational overhead.' },
+  { id: 'product-engineering', t: 'Product Engineering', d: 'End-to-end, full-cycle product development from ideation to launch. Unique Agile Pods that ship robust, scalable, intuitive products.' },
+  { id: 'digital-transformation', t: 'Digital Transformation', d: 'Unlock value with consulting, optimization, and automation powered by AI and Gen-AI. Helping enterprises thrive in modern ecosystems.' },
+  { id: 'managed-services', t: 'Managed Services', d: 'SLA-driven IMS to run business-as-usual. 24x7 support, governance, and deep technology expertise that optimizes processes and cuts cost.' },
+];
+
+const practices = [
+  { t: 'Web & Mobility', items: ['Native & cross-platform apps', 'Enterprise web & CMS', 'E-commerce solutions', 'Mobile-first UX'] },
+  { t: 'UI/UX Design', items: ['UX research & design', 'UI & brand design', 'Front-end development', 'Design systems'] },
+  { t: 'Gen AI & Data Science', items: ['LLMs & predictive analytics', 'Automated data processing', 'Anomaly detection', 'Risk & compliance'] },
+  { t: 'DevOps & IMS', items: ['DevOps-as-a-Service', 'Service integration', 'Enterprise system management', '24x7 managed services'] },
+  { t: 'RPA & Automation', items: ['Bot development & deployment', 'RPA CoE strategy', 'Robotic test automation', 'Custom RPA solutions'] },
+  { t: 'QA & Testing', items: ['Functional & non-functional', 'Test automation', 'Specialized testing', 'Middleware testing'] },
+  { t: 'Cybersecurity', items: ['Security operations', 'Incident response', 'Vulnerability management', 'Threat intelligence'] },
+  { t: 'Enterprise Apps', items: ['SAP & Oracle', 'Salesforce & Mendix', 'Odoo & Microsoft', 'Blockchain & smart contracts'] },
+];
+
+const tech = [
+  { cat: 'Microsoft', items: 'Azure, .NET Core, MVC, SharePoint, WPF, Power Platform' },
+  { cat: 'Open Source', items: 'PHP, Java, Node.js, Ruby on Rails, Go, Python' },
+  { cat: 'Java', items: 'Spring Boot, Struts, Hibernate, JSF, Servlets, Microservices' },
+  { cat: 'Mobile', items: 'iOS, Android, Flutter, React Native, Xamarin, Ionic' },
+  { cat: 'Frontend', items: 'React.js, Angular, Vue.js, Next.js, TypeScript, HTML5' },
+  { cat: 'Database', items: 'Oracle, SQL Server, MySQL, PostgreSQL, MongoDB, Redis' },
+  { cat: 'Cloud & Infra', items: 'AWS, Azure, GCP, VMware, Docker, Kubernetes, Heroku' },
+  { cat: 'AI & ML', items: 'Python, TensorFlow, PyTorch, Keras, OpenCV, LLMs' },
+  { cat: 'CRM', items: 'Salesforce, HubSpot, Zoho, Microsoft Dynamics, SugarCRM' },
+  { cat: 'ERP', items: 'Odoo, SAP, Oracle EBS, NetSuite, Microsoft D365' },
+  { cat: 'E-commerce', items: 'Magento, Shopify, WooCommerce, BigCommerce, Custom' },
+  { cat: 'DevOps', items: 'Jenkins, GitLab CI, Ansible, Terraform, Puppet, Chef' },
+];
+---
+
+<BaseLayout title={seo.services.title} description={seo.services.description}>
+  <PageHero
+    eyebrow="Our Services"
+    title="Full-Spectrum Engineering."
+    sub="Four ways to engage. Eight practices. Fifty-plus technologies."
+  />
+
+  <!-- Core offerings -->
+  <section class="section">
+    <div class="container">
+      <div class="grid grid-2 stagger">
+        {core.map((c) => (
+          <article class="card card--hover do-card reveal" id={c.id}>
+            <div class="do-card__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="m5 13 4 4L19 7"/></svg>
+            </div>
+            <div>
+              <h3 class="h3">{c.t}</h3>
+              <p>{c.d}</p>
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Engineering practices -->
+  <section class="section section--band">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">Engineering Practices</span>
+        <h2 class="h2">Ten Practices Accelerating Digital Outcomes.</h2>
+      </div>
+      <div class="grid grid-4 practices stagger">
+        {practices.map((p) => (
+          <article class="card card--hover practice reveal">
+            <h3 class="practice__t">{p.t}</h3>
+            <ul>
+              {p.items.map((i) => <li>{i}</li>)}
+            </ul>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Technology expertise -->
+  <section class="section">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">Our Expertise</span>
+        <h2 class="h2">Experts Across 50+ Technologies.</h2>
+      </div>
+      <div class="grid grid-2 tech stagger">
+        {tech.map((t) => (
+          <div class="tech__row card reveal">
+            <span class="tech__cat">{t.cat}</span>
+            <span class="tech__items">{t.items}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="section section--band text-center">
+    <div class="container">
+      <h2 class="h2">Not sure where to start?</h2>
+      <div style="margin-top:28px;display:flex;justify-content:center">
+        <PillButton href="/contact" variant="primary" size="lg">Book a discovery call</PillButton>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .do-card { display: flex; gap: 18px; align-items: flex-start; scroll-margin-top: 96px; }
+  .do-card__icon {
+    flex: none; width: 46px; height: 46px; border-radius: 12px;
+    display: grid; place-items: center; color: var(--teal-deep);
+    background: var(--teal-wash); border: 1px solid var(--teal-wash-2);
+  }
+  .do-card__icon svg { width: 24px; height: 24px; }
+  .do-card h3 { margin-bottom: 8px; }
+
+  .practice__t { font-size: 1.08rem; margin-bottom: 14px; }
+  .practice ul { list-style: none; margin: 0; padding: 0; }
+  .practice li {
+    position: relative; padding-left: 18px; margin-bottom: 9px;
+    font-size: 0.92rem; color: var(--body); line-height: 1.45;
+  }
+  .practice li::before {
+    content: ''; position: absolute; left: 0; top: 0.55em;
+    width: 6px; height: 6px; border-radius: 50%; background: var(--teal);
+  }
+
+  .tech__row { display: flex; gap: 16px; align-items: baseline; padding: 20px 24px; }
+  .tech__cat {
+    flex: none; width: 140px; font-weight: 700; color: var(--ink);
+    font-size: 0.98rem;
+  }
+  .tech__items { color: var(--body); font-size: 0.95rem; }
+  @media (max-width: 540px) {
+    .tech__row { flex-direction: column; gap: 6px; }
+    .tech__cat { width: auto; color: var(--teal-deep); }
+  }
+</style>
