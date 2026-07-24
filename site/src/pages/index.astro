@@ -2,6 +2,8 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import PillButton from '../components/PillButton.astro';
 import StatCounter from '../components/StatCounter.astro';
+import Marquee from '../components/Marquee.astro';
+import FAQ from '../components/FAQ.astro';
 import { seo, credentials } from '../data/site.js';
 
 const heroStats = [
@@ -203,11 +205,12 @@ const caseMetrics = [
   <section class="section creds">
     <div class="container">
       <p class="creds__label reveal">Certified &amp; partnered with</p>
-      <div class="creds__row reveal">
-        {credentials.map((c) => <span class="chip">{c}</span>)}
-      </div>
+      <div class="reveal"><Marquee items={credentials} speed={34} /></div>
     </div>
   </section>
+
+  <!-- ===================== FAQ ===================== -->
+  <div class="section--band"><FAQ /></div>
 
   <!-- ===================== FINAL CTA ===================== -->
   <section class="cta-band">

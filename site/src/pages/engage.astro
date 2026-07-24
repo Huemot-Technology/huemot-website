@@ -57,11 +57,14 @@ const benefits = [
         <span class="eyebrow">Onboarding Timeline</span>
         <h2 class="h2">Two weeks, four steps.</h2>
       </div>
-      <ol class="timeline stagger">
-        {timeline.map((t) => (
-          <li class="timeline__item reveal">
-            <span class="timeline__when">{t.when}</span>
-            <span class="timeline__what">{t.what}</span>
+      <ol class="stepper stagger">
+        {timeline.map((t, i) => (
+          <li class="stepper__step reveal">
+            <div class="stepper__node"><span>{i + 1}</span></div>
+            <div class="stepper__body">
+              <span class="stepper__when">{t.when}</span>
+              <span class="stepper__what">{t.what}</span>
+            </div>
           </li>
         ))}
       </ol>
@@ -103,20 +106,41 @@ const benefits = [
 <style>
   .model h3 { margin-bottom: 12px; }
 
-  .timeline {
+  /* Connected stepper */
+  .stepper {
     list-style: none; margin: 0; padding: 0;
-    display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px;
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px;
   }
-  .timeline__item {
-    position: relative;
-    background: var(--card); border: 1px solid var(--card-border);
-    border-radius: var(--radius); box-shadow: var(--shadow); padding: 28px 24px;
-    border-top: 3px solid var(--teal);
+  .stepper__step { position: relative; text-align: center; padding-top: 8px; }
+  /* connecting line between nodes (desktop) */
+  .stepper__step::before {
+    content: ''; position: absolute; top: 34px; left: 50%; width: 100%; height: 3px;
+    background: linear-gradient(90deg, var(--teal), var(--teal-wash-2));
+    z-index: 0;
   }
-  .timeline__when { display: block; font-weight: 800; color: var(--teal-deep); font-size: 1.1rem; margin-bottom: 8px; }
-  .timeline__what { color: var(--ink-soft); font-weight: 550; }
-  @media (max-width: 780px) { .timeline { grid-template-columns: 1fr 1fr; } }
-  @media (max-width: 420px) { .timeline { grid-template-columns: 1fr; } }
+  .stepper__step:last-child::before { display: none; }
+  .stepper__node {
+    position: relative; z-index: 1;
+    width: 56px; height: 56px; margin: 0 auto 18px; border-radius: 50%;
+    display: grid; place-items: center;
+    font-family: var(--font-display); font-weight: 800; font-size: 1.3rem; color: #fff;
+    background: linear-gradient(140deg, var(--teal-deep), var(--teal-bright));
+    box-shadow: var(--shadow-teal);
+    border: 4px solid var(--bg-alt);
+  }
+  .stepper__when { display: block; font-weight: 800; color: var(--teal-deep); font-size: 1.05rem; margin-bottom: 6px; }
+  .stepper__what { color: var(--ink-soft); font-weight: 550; }
+  @media (max-width: 720px) {
+    .stepper { grid-template-columns: 1fr; gap: 0; text-align: left; }
+    .stepper__step { display: grid; grid-template-columns: 56px 1fr; gap: 18px; align-items: start; padding: 0 0 28px; }
+    .stepper__node { margin: 0; }
+    .stepper__body { padding-top: 6px; }
+    /* vertical connecting line */
+    .stepper__step::before {
+      top: 56px; left: 27px; width: 3px; height: 100%;
+      background: linear-gradient(180deg, var(--teal), var(--teal-wash-2));
+    }
+  }
 
   .benefit__icon {
     width: 44px; height: 44px; border-radius: 12px; margin-bottom: 16px;

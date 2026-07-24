@@ -84,20 +84,50 @@ const tech = [
     </div>
   </section>
 
-  <!-- Technology expertise -->
+  <!-- Technology expertise — interactive tabs -->
   <section class="section">
     <div class="container">
       <div class="section-head reveal">
         <span class="eyebrow">Our Expertise</span>
         <h2 class="h2">Experts Across 50+ Technologies.</h2>
+        <p class="lead" style="margin-top:16px">Pick a domain to see the stacks our pods ship with every day.</p>
       </div>
-      <div class="grid grid-2 tech stagger">
-        {tech.map((t) => (
-          <div class="tech__row card reveal">
-            <span class="tech__cat">{t.cat}</span>
-            <span class="tech__items">{t.items}</span>
-          </div>
-        ))}
+
+      <div class="techx reveal" data-techx>
+        <div class="techx__tabs" role="tablist" aria-label="Technology domains">
+          {tech.map((t, i) => (
+            <button
+              class:list={['techx__tab', { 'is-active': i === 0 }]}
+              role="tab"
+              type="button"
+              id={`techtab-${i}`}
+              aria-selected={i === 0 ? 'true' : 'false'}
+              aria-controls={`techpanel-${i}`}
+              data-techx-tab={i}
+            >{t.cat}</button>
+          ))}
+        </div>
+
+        <div class="techx__panels card">
+          {tech.map((t, i) => (
+            <div
+              class:list={['techx__panel', { 'is-active': i === 0 }]}
+              role="tabpanel"
+              id={`techpanel-${i}`}
+              aria-labelledby={`techtab-${i}`}
+              data-techx-panel={i}
+              hidden={i !== 0}
+            >
+              <div class="techx__panel-head">
+                <h3 class="techx__cat">{t.cat}</h3>
+                <span class="techx__count">{t.items.split(', ').length} technologies</span>
+              </div>
+              <div class="techx__chips">
+                {t.items.split(', ').map((k) => <span class="chip">{k}</span>)}
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   </section>
@@ -134,14 +164,66 @@ const tech = [
     width: 6px; height: 6px; border-radius: 50%; background: var(--teal);
   }
 
-  .tech__row { display: flex; gap: 16px; align-items: baseline; padding: 20px 24px; }
-  .tech__cat {
-    flex: none; width: 140px; font-weight: 700; color: var(--ink);
-    font-size: 0.98rem;
+  /* Interactive tech tabs */
+  .techx__tabs {
+    display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 22px;
   }
-  .tech__items { color: var(--body); font-size: 0.95rem; }
-  @media (max-width: 540px) {
-    .tech__row { flex-direction: column; gap: 6px; }
-    .tech__cat { width: auto; color: var(--teal-deep); }
+  .techx__tab {
+    font: inherit; font-size: 0.92rem; font-weight: 600; cursor: pointer;
+    padding: 0.55em 1.1em; border-radius: var(--radius-pill);
+    background: #fff; color: var(--ink-soft);
+    border: 1px solid var(--card-border);
+    transition: background 0.18s ease, color 0.18s ease, border-color 0.18s ease, transform 0.18s ease;
   }
+  .techx__tab:hover { border-color: var(--teal); color: var(--teal-deep); transform: translateY(-1px); }
+  .techx__tab.is-active {
+    background: var(--teal); color: #fff; border-color: var(--teal);
+    box-shadow: var(--shadow-teal);
+  }
+  .techx__panels { padding: clamp(24px, 3vw, 36px); min-height: 180px; }
+  .techx__panel { animation: techfade 0.35s cubic-bezier(0.22,1,0.36,1); }
+  .techx__panel[hidden] { display: none; }
+  .techx__panel-head {
+    display: flex; align-items: baseline; justify-content: space-between; gap: 12px;
+    margin-bottom: 20px; padding-bottom: 16px; border-bottom: 1px solid var(--card-border);
+  }
+  .techx__cat { font-size: 1.3rem; }
+  .techx__count {
+    font-size: 0.78rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
+    color: var(--teal-ink); background: var(--teal-wash); padding: 5px 11px; border-radius: 999px;
+  }
+  .techx__chips { display: flex; flex-wrap: wrap; gap: 10px; }
+  .techx__chips .chip { font-size: 0.95rem; }
+  @keyframes techfade { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+  @media (prefers-reduced-motion: reduce) { .techx__panel { animation: none; } }
 </style>
+
+<script>
+  document.querySelectorAll('[data-techx]').forEach((root) => {
+    const tabs = root.querySelectorAll('[data-techx-tab]');
+    const panels = root.querySelectorAll('[data-techx-panel]');
+    const select = (idx) => {
+      tabs.forEach((t) => {
+        const on = t.dataset.techxTab === String(idx);
+        t.classList.toggle('is-active', on);
+        t.setAttribute('aria-selected', on ? 'true' : 'false');
+      });
+      panels.forEach((p) => {
+        const on = p.dataset.techxPanel === String(idx);
+        p.classList.toggle('is-active', on);
+        p.hidden = !on;
+      });
+    };
+    tabs.forEach((t) => {
+      t.addEventListener('click', () => select(t.dataset.techxTab));
+      t.addEventListener('keydown', (e) => {
+        const i = Number(t.dataset.techxTab);
+        if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
+          e.preventDefault();
+          const next = (i + (e.key === 'ArrowRight' ? 1 : -1) + tabs.length) % tabs.length;
+          select(next); tabs[next].focus();
+        }
+      });
+    });
+  });
+</script>

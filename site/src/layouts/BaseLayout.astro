@@ -75,11 +75,42 @@ const ogImage = new URL(image, Astro.site).href;
   </head>
   <body>
     <a href="#main" class="sr-only">Skip to content</a>
+    <div class="scroll-progress" id="scroll-progress" aria-hidden="true"></div>
     <Header />
     <main id="main">
       <slot />
     </main>
     <Footer />
+
+    <button class="to-top" id="to-top" aria-label="Back to top" type="button">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <line x1="12" y1="19" x2="12" y2="5" /><polyline points="5 12 12 5 19 12" />
+      </svg>
+    </button>
+
+    <style>
+      .scroll-progress {
+        position: fixed; top: 0; left: 0; height: 3px; width: 0;
+        background: linear-gradient(90deg, var(--teal-deep), var(--teal-bright));
+        z-index: 100; transition: width 0.1s linear; will-change: width;
+      }
+      .to-top {
+        position: fixed; right: clamp(16px, 3vw, 32px); bottom: clamp(16px, 3vw, 32px);
+        width: 46px; height: 46px; border-radius: 50%;
+        display: grid; place-items: center; cursor: pointer;
+        background: var(--teal); color: #fff; border: none;
+        box-shadow: var(--shadow-teal); z-index: 90;
+        opacity: 0; transform: translateY(12px) scale(0.9); pointer-events: none;
+        transition: opacity 0.25s ease, transform 0.25s ease, background 0.2s ease;
+      }
+      .to-top svg { width: 20px; height: 20px; }
+      .to-top.is-visible { opacity: 1; transform: none; pointer-events: auto; }
+      .to-top:hover { background: var(--teal-deep); transform: translateY(-2px); }
+      @media (prefers-reduced-motion: reduce) {
+        .scroll-progress { transition: none; }
+        .to-top { transition: opacity 0.2s ease; }
+      }
+    </style>
 
     <script>
       // ---- Animated stat counters (scroll-into-view) ----
@@ -162,6 +193,28 @@ const ogImage = new URL(image, Astro.site).href;
             navToggle.setAttribute('aria-expanded', 'false');
             document.body.style.overflow = '';
           })
+        );
+      }
+
+      // ---- Scroll progress bar + back-to-top ----
+      const progress = document.getElementById('scroll-progress');
+      const toTop = document.getElementById('to-top');
+      let ticking = false;
+      const onScroll = () => {
+        const st = document.documentElement.scrollTop || document.body.scrollTop;
+        const h = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        const pct = h > 0 ? (st / h) * 100 : 0;
+        if (progress) progress.style.width = pct + '%';
+        if (toTop) toTop.classList.toggle('is-visible', st > 600);
+        ticking = false;
+      };
+      window.addEventListener('scroll', () => {
+        if (!ticking) { requestAnimationFrame(onScroll); ticking = true; }
+      }, { passive: true });
+      onScroll();
+      if (toTop) {
+        toTop.addEventListener('click', () =>
+          window.scrollTo({ top: 0, behavior: reduce ? 'auto' : 'smooth' })
         );
       }
     </script>
