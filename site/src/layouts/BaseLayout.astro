@@ -7,6 +7,7 @@ const {
   title = 'Huemot Technology | AI-Led Software Development & Digital Transformation',
   description = 'Enterprise solutions, staff augmentation, and end-to-end product engineering by 500+ engineers across 50+ technology stacks.',
   image = '/og-image.png',
+  noindex = false,
 } = Astro.props;
 
 const canonical = new URL(Astro.url.pathname, Astro.site).href.replace(/\/$/, '') || Astro.site.href;
@@ -20,6 +21,7 @@ const ogImage = new URL(image, Astro.site).href;
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
     <meta name="description" content={description} />
+    {noindex && <meta name="robots" content="noindex, follow" />}
     <link rel="canonical" href={canonical} />
 
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />

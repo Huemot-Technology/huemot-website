@@ -1,0 +1,50 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PillButton from '../components/PillButton.astro';
+import { nav } from '../data/site.js';
+---
+
+<BaseLayout
+  title="Page Not Found | Huemot Technology"
+  description="The page you're looking for doesn't exist. Explore Huemot Technology's services, case studies, and more."
+  noindex={true}
+>
+  <section class="nf hero-wash">
+    <div class="container nf__inner">
+      <span class="eyebrow">Error 404</span>
+      <h1 class="h1 nf__title">This page took a <span class="teal">different path.</span></h1>
+      <p class="lead nf__sub">
+        The page you're looking for doesn't exist or has moved. Let's get you back on track.
+      </p>
+      <div class="nf__cta">
+        <PillButton href="/" variant="primary" size="lg">Back to Home</PillButton>
+        <PillButton href="/contact" variant="ghost" size="lg" arrow={false}>Contact Us</PillButton>
+      </div>
+
+      <nav class="nf__links" aria-label="Popular pages">
+        <span class="nf__links-label">Or jump to:</span>
+        {nav.filter((i) => !i.external).map((i) => (
+          <a href={i.href}>{i.label}</a>
+        ))}
+      </nav>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .nf { padding-block: clamp(80px, 14vw, 160px); text-align: center; }
+  .nf__inner { max-width: 760px; margin-inline: auto; }
+  .nf__title { margin-top: 14px; }
+  .nf__sub { margin-top: 22px; margin-inline: auto; max-width: 48ch; }
+  .nf__cta { margin-top: 34px; display: flex; flex-wrap: wrap; gap: 14px; justify-content: center; }
+  .nf__links {
+    margin-top: 40px; display: flex; flex-wrap: wrap; gap: 8px 20px;
+    align-items: center; justify-content: center;
+  }
+  .nf__links-label {
+    font-size: 0.78rem; font-weight: 700; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--muted);
+  }
+  .nf__links a { color: var(--teal-deep); font-weight: 600; }
+  .nf__links a:hover { text-decoration: underline; }
+</style>
