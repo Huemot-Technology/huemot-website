@@ -1,0 +1,20 @@
+---
+// Pod that assembles itself, one chip every 120ms. CSS-only.
+const members = Astro.props.members || [
+  { role: 'Product Manager', tag: 'PM', tz: 'IST' },
+  { role: 'UX Designer', tag: 'UX', tz: 'IST' },
+  { role: 'React Engineer', tag: 'FE', tz: 'IST' },
+  { role: 'Platform Engineer', tag: 'BE', tz: 'IST' },
+  { role: 'ML Engineer', tag: 'AI', tz: 'IST' },
+  { role: 'QA Automation', tag: 'QA', tz: 'IST' },
+];
+---
+<div class="hpv" style="display:flex;flex-wrap:wrap;gap:10px">
+  {members.map((m, i) => (
+    <span class="hpv__chip" style={`animation-delay:${0.35 + i * 0.12}s`}>
+      <span class:list={['hpv__av', { 'hpv__pulse': i === 0 }]}>{m.tag}</span>
+      {m.role}
+      <span style="color:var(--muted);font-weight:600;font-size:.74rem">{m.tz}</span>
+    </span>
+  ))}
+</div>

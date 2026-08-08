@@ -1,0 +1,45 @@
+---
+// Sticky contact bar. Add before </body> in BaseLayout.astro.
+// It publishes its height as --cta-offset; the back-to-top button must use
+//   bottom: calc(var(--cta-offset, 0px) + clamp(16px, 3vw, 32px));
+// so it clears the bar instead of sitting behind it.
+---
+<div class="stickycta" data-stickycta data-open="false" role="complementary" aria-label="Book a discovery call">
+  <div class="container stickycta__inner">
+    <div class="stickycta__copy">
+      <span class="badge"><span class="dot"></span>2 weeks to sprint zero</span>
+      <p class="stickycta__t">Still comparing? Book a 30-minute discovery call — no obligation.</p>
+    </div>
+    <div class="stickycta__actions">
+      <a href="/contact" class="btn btn--primary">Book a Discovery Call</a>
+      <button type="button" class="stickycta__x" data-stickycta-x aria-label="Dismiss">×</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  const bar = document.querySelector('[data-stickycta]');
+  if (bar) {
+    const onContact = location.pathname.replace(/\/$/, '') === '/contact';
+    let dismissed = onContact;
+    try { dismissed = dismissed || sessionStorage.getItem('huemot-cta-dismissed') === '1'; } catch (e) {}
+    if (dismissed) {
+      bar.remove();
+    } else {
+      const setOffset = (open) => document.documentElement.style.setProperty('--cta-offset', open ? bar.offsetHeight + 'px' : '0px');
+      const onScroll = () => {
+        const h = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        const open = h > 0 && document.documentElement.scrollTop / h > 0.55;
+        bar.dataset.open = open ? 'true' : 'false';
+        setOffset(open);
+      };
+      window.addEventListener('scroll', onScroll, { passive: true });
+      onScroll();
+      bar.querySelector('[data-stickycta-x]').addEventListener('click', () => {
+        try { sessionStorage.setItem('huemot-cta-dismissed', '1'); } catch (e) {}
+        setOffset(false);
+        bar.remove();
+      });
+    }
+  }
+</script>

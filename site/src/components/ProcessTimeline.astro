@@ -1,0 +1,37 @@
+---
+// Vertical timeline whose teal rail fills as you scroll and lights each node.
+const { steps = [] } = Astro.props;
+---
+<div class="ptl" data-ptl>
+  <span class="ptl__fill" data-ptl-fill></span>
+  {steps.map((s, i) => (
+    <div class="ptl__step">
+      <span class="ptl__dot">{String(i + 1).padStart(2, '0')}</span>
+      {s.when && <span class="ptl__when">{s.when}</span>}
+      <h3 class="ptl__t">{s.title}</h3>
+      <p class="ptl__d">{s.description}</p>
+    </div>
+  ))}
+</div>
+
+<script>
+  document.querySelectorAll('[data-ptl]').forEach((root) => {
+    const steps = [...root.querySelectorAll('.ptl__step')];
+    const fill = root.querySelector('[data-ptl-fill]');
+    if (!steps.length || !('IntersectionObserver' in window)) {
+      steps.forEach((s) => s.classList.add('is-lit'));
+      if (fill) fill.style.height = 'calc(100% - 16px)';
+      return;
+    }
+    let lit = 0;
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((e) => {
+        if (!e.isIntersecting) return;
+        lit = Math.max(lit, steps.indexOf(e.target) + 1);
+        steps.forEach((s, i) => s.classList.toggle('is-lit', i < lit));
+        if (fill) fill.style.height = `calc(${(lit / steps.length) * 100}% - 16px)`;
+      });
+    }, { threshold: 0.6 });
+    steps.forEach((s) => io.observe(s));
+  });
+</script>

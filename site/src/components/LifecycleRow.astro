@@ -1,0 +1,11 @@
+---
+const { steps = [] } = Astro.props;
+---
+<ol class="lifecycle">
+  {steps.map((s, i) => (
+    <li class="lifecycle__step">
+      <span class="lifecycle__n">{i + 1}</span>
+      <span class="lifecycle__t">{s}</span>
+    </li>
+  ))}
+</ol>

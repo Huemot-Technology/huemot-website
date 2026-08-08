@@ -1,0 +1,15 @@
+---
+// SAMPLE DATA WARNING: never publish an award Huemot has not actually received.
+const { items = [] } = Astro.props;
+---
+<div class="awards">
+  {items.map((a) => (
+    <div class="award">
+      <span class="award__mark">{a.mark || a.source.slice(0, 2).toUpperCase()}</span>
+      <span>
+        <span class="award__t">{a.title}</span>
+        <span class="award__s">{a.source}{a.year ? ` · ${a.year}` : ''}</span>
+      </span>
+    </div>
+  ))}
+</div>

@@ -1,0 +1,5 @@
+---
+// Full-bleed near-black proof band. Children re-theme via the .on-dark token scope.
+const { class: className = '', style = '' } = Astro.props;
+---
+<section class={`section band-dark on-dark ${className}`} style={style}><slot /></section>

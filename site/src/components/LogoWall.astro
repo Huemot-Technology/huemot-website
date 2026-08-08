@@ -1,0 +1,9 @@
+---
+// UNUSED as of the reduced launch scope — no page imports this.
+// Displaying a client's mark requires written permission; the wordmark fallback below is a
+// placeholder, not a substitute. Wire this up only once permission exists, or delete the file.
+const { names = [] } = Astro.props;
+---
+<div class="logowall">
+  {names.map((n) => <div class="logowall__cell">{n}</div>)}
+</div>

@@ -1,0 +1,13 @@
+---
+const { name, description, stats = [], href = '#' } = Astro.props;
+---
+<a class="ind reveal" href={href}>
+  <span class="ind__glow"></span>
+  <span class="ind__t">{name}</span>
+  <span class="ind__d" style="display:block">{description}</span>
+  {stats.length > 0 && (
+    <span class="ind__stats">
+      {stats.map((s) => <span class="ind__stat"><b>{s.value}</b><span>{s.label}</span></span>)}
+    </span>
+  )}
+</a>

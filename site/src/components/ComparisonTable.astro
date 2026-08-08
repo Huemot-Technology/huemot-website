@@ -1,0 +1,21 @@
+---
+const { columns = [], rows = [], highlight = 2 } = Astro.props;
+---
+<div class="cmp-wrap">
+  <table class="cmp">
+    <thead>
+      <tr>
+        <th></th>
+        {columns.map((c, i) => <th class:list={[{ 'col-us': i === highlight - 1 }]}>{c}</th>)}
+      </tr>
+    </thead>
+    <tbody>
+      {rows.map((r) => (
+        <tr>
+          <td>{r.label}</td>
+          {r.values.map((v, i) => <td class:list={[{ 'col-us': i === highlight - 1 }]}>{v}</td>)}
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>
