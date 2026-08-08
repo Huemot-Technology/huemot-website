@@ -470,14 +470,16 @@ p { margin: 0; }
 .cmp thead th:not(:first-child), .cmp tbody td:not(:first-child) { width: 24.6%; }
 .cmp thead th { font-size: .74rem; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); font-weight: 700; padding-bottom: 12px; }
 .cmp tbody tr { background: var(--card); }
-.cmp tbody td { border-top: 1px solid var(--card-border); color: var(--body); }
-.cmp tbody td:first-child { font-weight: 650; color: var(--ink); width: 26%; }
+/* Row labels are <th scope="row"> for a11y (td-has-header); these selectors carry
+   the original `tbody td:first-child` presentation over unchanged. */
+.cmp tbody td, .cmp tbody th { border-top: 1px solid var(--card-border); color: var(--body); }
+.cmp tbody th { font-weight: 650; color: var(--ink); width: 26%; }
 .cmp .col-us { background: var(--teal-wash); color: var(--ink-soft); font-weight: 600; position: relative; }
 .band-dark .cmp .col-us { background: rgba(45,212,191,.10); color: #e6fffb; }
 .cmp thead .col-us { background: transparent; color: var(--teal-deep); }
-.cmp tbody tr:first-child td { border-top: 0; }
-.cmp tbody tr:first-child td:first-child { border-top-left-radius: var(--radius-sm); }
-.cmp tbody tr:last-child td:first-child { border-bottom-left-radius: var(--radius-sm); }
+.cmp tbody tr:first-child td, .cmp tbody tr:first-child th { border-top: 0; }
+.cmp tbody tr:first-child th:first-child { border-top-left-radius: var(--radius-sm); }
+.cmp tbody tr:last-child th:first-child { border-bottom-left-radius: var(--radius-sm); }
 .cmp .col-us::before { content: ''; position: absolute; inset: 0; border-inline: 1px solid var(--teal-wash-2); pointer-events: none; }
 .cmp-wrap { overflow-x: auto; border: 1px solid var(--card-border); border-radius: var(--radius); background: var(--card); }
 .band-dark .cmp-wrap { background: rgba(255,255,255,.04); border-color: var(--dark-border); }

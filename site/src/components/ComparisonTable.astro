@@ -5,14 +5,14 @@ const { columns = [], rows = [], highlight = 2 } = Astro.props;
   <table class="cmp">
     <thead>
       <tr>
-        <th></th>
-        {columns.map((c, i) => <th class:list={[{ 'col-us': i === highlight - 1 }]}>{c}</th>)}
+        <th scope="col"><span class="sr-only">Dimension</span></th>
+        {columns.map((c, i) => <th scope="col" class:list={[{ 'col-us': i === highlight - 1 }]}>{c}</th>)}
       </tr>
     </thead>
     <tbody>
       {rows.map((r) => (
         <tr>
-          <td>{r.label}</td>
+          <th scope="row">{r.label}</th>
           {r.values.map((v, i) => <td class:list={[{ 'col-us': i === highlight - 1 }]}>{v}</td>)}
         </tr>
       ))}
