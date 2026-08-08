@@ -1,12 +1,23 @@
 ---
+// WITHHELD under the reduced launch scope — no real posts exist yet.
+//
+// The leading underscore is what keeps this out of the build: Astro treats
+// `_`-prefixed files in src/pages/ as non-routes, so /insights 404s and the
+// page never renders. Renaming this back to `insights.astro` is the switch
+// that turns the route on — do that only alongside LAUNCH_SCOPE = 'full',
+// real posts in content.js, and adding /insights to nav, footer and sitemap.
+//
+// (Previously this shipped as a route guarded by the redirect below. Astro's
+// static build turns that into a real /insights/index.html carrying a 2s
+// meta-refresh interstitial pointed at the absolute production URL, which is
+// both visible and wrong on any non-production build. Hence the rename.)
 import BaseLayout from '../layouts/BaseLayout.astro';
 import InsightCard from '../components/InsightCard.astro';
 import PageHero from '../components/PageHero.astro';
 import PillButton from '../components/PillButton.astro';
 import { insights, FULL } from '../data/content.js';
 
-// Withheld under the reduced launch scope: no real posts exist yet.
-// Astro renders this route only when LAUNCH_SCOPE is 'full'.
+// Belt and braces for the day this becomes a route again while scope is still reduced.
 if (!FULL) return Astro.redirect('/', 302);
 
 const kinds = ['All', 'Playbook', 'Article', 'Guide', 'Case Note'];
