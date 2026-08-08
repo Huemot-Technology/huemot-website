@@ -1,0 +1,82 @@
+---
+// Pick a team shape and a focus; seats assemble. Plain JS, no hydration.
+const shapes = [
+  { name: 'Discovery squad', size: 4, weeks: 2, roles: ['PM', 'UX', 'FE', 'BE'] },
+  { name: 'Product pod', size: 8, weeks: 2, roles: ['PM', 'UX', 'FE', 'FE', 'BE', 'BE', 'QA', 'DevOps'] },
+  { name: 'Scale pod', size: 14, weeks: 3, roles: ['PM', 'EM', 'UX', 'FE', 'FE', 'FE', 'BE', 'BE', 'BE', 'QA', 'QA', 'DevOps', 'Data', 'SRE'] },
+  { name: 'Delivery centre', size: 25, weeks: 4, roles: [] },
+];
+const focuses = ['Product engineering', 'AI & automation', 'Salesforce', 'Modernization'];
+---
+<div class="pod" data-pod data-shapes={JSON.stringify(shapes)}>
+  <div class="pod__opts">
+    <div>
+      <p class="pod__label">Team shape</p>
+      <div class="pod__row">
+        {shapes.map((s, i) => (
+          <button type="button" class:list={['pod__opt', { 'is-on': i === 1 }]} data-pod-shape={i}>{s.name}</button>
+        ))}
+      </div>
+    </div>
+    <div>
+      <p class="pod__label">Focus</p>
+      <div class="pod__row">
+        {focuses.map((x, i) => (
+          <button type="button" class:list={['pod__opt', { 'is-on': i === 0 }]} data-pod-focus={x}>{x}</button>
+        ))}
+      </div>
+    </div>
+    <p style="font-size:.92rem;color:var(--body);max-width:46ch">
+      Every shape is drawn from the same pre-vetted pool of 500+ engineers and ships with a dedicated
+      account owner and SLA governance.
+    </p>
+  </div>
+  <div class="pod__out">
+    <p class="pod__label" data-pod-title></p>
+    <div class="pod__seats" data-pod-seats></div>
+    <div class="pod__meta">
+      <div><b data-pod-size></b><span>People</span></div>
+      <div><b data-pod-weeks></b><span>To sprint zero</span></div>
+    </div>
+    <div style="margin-top:20px">
+      <a href="/contact" class="btn btn--primary">Book a call about this pod
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+      </a>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.querySelectorAll('[data-pod]').forEach((root) => {
+    const shapes = JSON.parse(root.dataset.shapes);
+    let shape = 1;
+    let focus = root.querySelector('[data-pod-focus]').dataset.podFocus;
+    const seatsEl = root.querySelector('[data-pod-seats]');
+    const render = () => {
+      const s = shapes[shape];
+      root.querySelector('[data-pod-title]').textContent = s.name + ' · ' + focus;
+      root.querySelector('[data-pod-size]').textContent = s.size;
+      root.querySelector('[data-pod-weeks]').textContent = s.weeks + ' wks';
+      const seats = s.roles.length ? s.roles : Array.from({ length: Math.min(s.size, 25) }, () => 'ENG');
+      seatsEl.innerHTML = '';
+      seats.forEach((r, i) => {
+        const el = document.createElement('span');
+        el.className = 'pod__seat';
+        el.style.animationDelay = (i * 40) + 'ms';
+        el.textContent = r;
+        seatsEl.appendChild(el);
+      });
+    };
+    root.querySelectorAll('[data-pod-shape]').forEach((b) => b.addEventListener('click', () => {
+      shape = Number(b.dataset.podShape);
+      root.querySelectorAll('[data-pod-shape]').forEach((x) => x.classList.toggle('is-on', x === b));
+      render();
+    }));
+    root.querySelectorAll('[data-pod-focus]').forEach((b) => b.addEventListener('click', () => {
+      focus = b.dataset.podFocus;
+      root.querySelectorAll('[data-pod-focus]').forEach((x) => x.classList.toggle('is-on', x === b));
+      render();
+    }));
+    render();
+  });
+</script>

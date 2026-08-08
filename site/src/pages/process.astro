@@ -1,0 +1,133 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import SectionHead from '../components/SectionHead.astro';
+import DarkBand from '../components/DarkBand.astro';
+import ProcessTimeline from '../components/ProcessTimeline.astro';
+import ComparisonTable from '../components/ComparisonTable.astro';
+import FAQ from '../components/FAQ.astro';
+import PillButton from '../components/PillButton.astro';
+import { process as steps, comparison } from '../data/content.js';
+
+const models = [
+  { t: 'Dedicated Pod', d: 'A ring-fenced team that works as an extension of yours. Best for long-running products and roadmaps.' },
+  { t: 'Managed Project', d: 'Fixed-scope, fixed-outcome delivery with milestone billing. Best for well-defined builds.' },
+  { t: 'Staff Augmentation', d: 'Plug specific skills into your existing team on demand. Best for capacity and niche expertise.' },
+];
+const guarantees = [
+  { t: 'Talent', d: 'A global pool of 500+ pre-vetted professionals driving innovation at every step of your product lifecycle.' },
+  { t: 'Infrastructure', d: 'Dedicated, branded, state-of-the-art facilities — 25,000 sq.ft across two development centers.' },
+  { t: 'Security', d: 'ISO 27001:2013 and ISO 9001:2015 certified. Enterprise-grade data protection and secure access.' },
+  { t: 'Legal & Accounts', d: 'Strong NDAs, MSAs, and SLAs for secure IP creation. Transparent billing and governance framework.' },
+  { t: 'Support', d: 'Mature project management with Agile/Scrum. Dedicated account managers and SLA monitoring.' },
+  { t: 'Scalability', d: 'Flexible, future-proof teams for evolving needs. Scale up or down within two weeks.' },
+];
+---
+
+<BaseLayout
+  title="Our Process | From Conversation to Code in 2 Weeks | Huemot"
+  description="Six steps from first call to first merged pull request. Engagement models, onboarding timeline, and what every engagement includes."
+>
+  <PageHero
+    eyebrow="Our Process"
+    title="From conversation to code in"
+    highlight="2 weeks."
+    sub="No discovery theatre, no bench-warming. Here is exactly what happens between the first call and your first merged pull request."
+  />
+
+  <section class="section">
+    <div class="container process-split">
+      <div class="reveal">
+        <span class="eyebrow">The Fourteen Days</span>
+        <h2 class="h2">Six moves.</h2>
+        <p class="lead" style="margin-top:16px">Each step has a named owner on our side and one decision to make on yours. Nothing waits on a committee.</p>
+      </div>
+      <ProcessTimeline steps={steps} />
+    </div>
+  </section>
+
+  <DarkBand>
+    <div class="container">
+      <SectionHead eyebrow="Onboarding Timeline" title="Two weeks, four checkpoints." />
+      <ol class="stepper stagger">
+        {[
+          { when: 'Day 0–2', what: 'Discovery & scoping' },
+          { when: 'Day 3–5', what: 'Team match & SOW' },
+          { when: 'Day 6–10', what: 'Onboarding & access' },
+          { when: 'Day 14', what: 'Sprint zero — building' },
+        ].map((t, i) => (
+          <li class="stepper__step reveal">
+            <div class="stepper__node"><span>{i + 1}</span></div>
+            <div class="stepper__body">
+              <span class="stepper__when">{t.when}</span>
+              <span class="stepper__what">{t.what}</span>
+            </div>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </DarkBand>
+
+  <section class="section">
+    <div class="container">
+      <SectionHead eyebrow="Engagement Models" title="Three ways to work with us." />
+      <div class="grid grid-3 stagger">
+        {models.map((m) => (
+          <article class="card card--hover reveal">
+            <h3 class="h3" style="margin-bottom:12px">{m.t}</h3>
+            <p>{m.d}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--band">
+    <div class="container">
+      <SectionHead eyebrow="ODC On Demand" title="What comes with every engagement." />
+      <div class="grid grid-3 stagger">
+        {guarantees.map((b) => (
+          <article class="card card--hover do-card do-card--stacked reveal">
+            <div class="do-card__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="m5 13 4 4L19 7"/></svg>
+            </div>
+            <div>
+              <h3 class="h3">{b.t}</h3>
+              <p>{b.d}</p>
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container text-center" style="margin-bottom:clamp(40px,6vw,72px)">
+      <p class="lead reveal" style="max-width:58ch;margin-inline:auto">
+        Security review usually decides how fast this actually moves.
+        <a href="/trust" style="font-weight:650">See our certifications, contracts and evidence pack →</a>
+      </p>
+    </div>
+    <div class="container">
+      <SectionHead eyebrow="The Honest Comparison" title="Versus hiring it yourself." center />
+      <div class="reveal"><ComparisonTable columns={comparison.columns} rows={comparison.rows} highlight={2} /></div>
+    </div>
+  </section>
+
+  <div class="section--band"><FAQ /></div>
+
+  <section class="section text-center">
+    <div class="container">
+      <h2 class="h2">Let's map your first pod.</h2>
+      <p class="lead" style="margin-top:16px">Thirty minutes is enough to know whether this fits.</p>
+      <div style="margin-top:28px;display:flex;justify-content:center">
+        <PillButton href="/contact" variant="primary" size="lg">Book a Discovery Call</PillButton>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .process-split { display: grid; grid-template-columns: 0.8fr 1.2fr; gap: clamp(28px, 5vw, 72px); align-items: start; }
+  @media (max-width: 900px) { .process-split { grid-template-columns: 1fr; } }
+</style>

@@ -1,0 +1,89 @@
+---
+// WITHHELD under the reduced launch scope — no real posts exist yet.
+//
+// The leading underscore is what keeps this out of the build: Astro treats
+// `_`-prefixed files in src/pages/ as non-routes, so /insights 404s and the
+// page never renders. Renaming this back to `insights.astro` is the switch
+// that turns the route on — do that only alongside LAUNCH_SCOPE = 'full',
+// real posts in content.js, and adding /insights to nav, footer and sitemap.
+//
+// (Previously this shipped as a route guarded by the redirect below. Astro's
+// static build turns that into a real /insights/index.html carrying a 2s
+// meta-refresh interstitial pointed at the absolute production URL, which is
+// both visible and wrong on any non-production build. Hence the rename.)
+import BaseLayout from '../layouts/BaseLayout.astro';
+import InsightCard from '../components/InsightCard.astro';
+import PageHero from '../components/PageHero.astro';
+import PillButton from '../components/PillButton.astro';
+import { insights, FULL } from '../data/content.js';
+
+// Belt and braces for the day this becomes a route again while scope is still reduced.
+if (!FULL) return Astro.redirect('/', 302);
+
+const kinds = ['All', 'Playbook', 'Article', 'Guide', 'Case Note'];
+const [lead, ...rest] = insights;
+---
+
+<BaseLayout
+  title="Insights | Delivery Playbooks & Engagement Economics | Huemot"
+  description="Delivery playbooks, engagement economics and honest notes from recent engagements. No gated PDFs."
+>
+  <PageHero
+    eyebrow="Insights"
+    title="What we have learned,"
+    highlight="written down."
+    sub="Delivery playbooks, engagement economics and honest notes from the last dozen engagements. No gated PDFs."
+  />
+
+  <section class="section">
+    <div class="container">
+      <div class="techx__tabs" data-kindtabs>
+        {kinds.map((k, i) => (
+          <button type="button" class:list={['techx__tab', { 'is-active': i === 0 }]} data-kind={k}>{k}</button>
+        ))}
+      </div>
+
+      <article class="card reveal insights-lead" data-kind={lead.kind}>
+        <div>
+          <span class="insight__kind">{lead.kind} · Featured</span>
+          <h2 class="h2" style="margin-top:14px">{lead.title}</h2>
+          <p class="lead" style="margin-top:16px">{lead.excerpt}</p>
+          <p style="margin-top:20px;font-size:.85rem;color:var(--muted)">{lead.date} · {lead.readTime}</p>
+        </div>
+        <div class="hero-wash insights-lead__art"></div>
+      </article>
+
+      <div class="grid grid-3 stagger" data-insightgrid>
+        {rest.map((x) => <InsightCard {...x} />)}
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--band text-center">
+    <div class="container">
+      <h2 class="h2">Rather talk it through?</h2>
+      <p class="lead" style="margin-top:16px">Thirty minutes with an engineer who has done it, not a salesperson.</p>
+      <div style="margin-top:28px;display:flex;justify-content:center">
+        <PillButton href="/contact" variant="primary" size="lg">Book a Discovery Call</PillButton>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .insights-lead { display: grid; grid-template-columns: 1.4fr 1fr; gap: clamp(24px, 4vw, 52px); align-items: center; padding: clamp(28px, 4vw, 48px); margin-bottom: 24px; }
+  .insights-lead__art { border-radius: var(--radius); border: 1px solid var(--card-border); min-height: 220px; }
+  @media (max-width: 820px) { .insights-lead { grid-template-columns: 1fr; } }
+</style>
+
+<script>
+  const tabs = document.querySelectorAll('[data-kind]');
+  const cards = document.querySelectorAll('[data-insightgrid] > [data-kind]');
+  const feature = document.querySelector('.insights-lead');
+  tabs.forEach((t) => t.addEventListener('click', () => {
+    const k = t.dataset.kind;
+    tabs.forEach((x) => x.classList.toggle('is-active', x === t));
+    cards.forEach((c) => { c.style.display = (k === 'All' || c.dataset.kind === k) ? '' : 'none'; });
+    if (feature) feature.style.display = (k === 'All' || feature.dataset.kind === k) ? '' : 'none';
+  }));
+</script>

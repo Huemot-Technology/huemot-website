@@ -2,6 +2,7 @@
 import '../styles/global.css';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import StickyCTA from '../components/StickyCTA.astro';
 
 const {
   title = 'Huemot Technology | AI-Led Software Development & Digital Transformation',
@@ -88,6 +89,8 @@ const ogImage = new URL(image, Astro.site).href;
       </svg>
     </button>
 
+    <StickyCTA />
+
     <style>
       .scroll-progress {
         position: fixed; top: 0; left: 0; height: 3px; width: 0;
@@ -95,13 +98,16 @@ const ogImage = new URL(image, Astro.site).href;
         z-index: 100; transition: width 0.1s linear; will-change: width;
       }
       .to-top {
-        position: fixed; right: clamp(16px, 3vw, 32px); bottom: clamp(16px, 3vw, 32px);
+        /* --cta-offset is published by StickyCTA so this clears the sticky bar. */
+        position: fixed; right: clamp(16px, 3vw, 32px);
+        bottom: calc(var(--cta-offset, 0px) + clamp(16px, 3vw, 32px));
         width: 46px; height: 46px; border-radius: 50%;
         display: grid; place-items: center; cursor: pointer;
         background: var(--teal); color: #fff; border: none;
         box-shadow: var(--shadow-teal); z-index: 90;
         opacity: 0; transform: translateY(12px) scale(0.9); pointer-events: none;
-        transition: opacity 0.25s ease, transform 0.25s ease, background 0.2s ease;
+        transition: opacity 0.25s ease, transform 0.25s ease, background 0.2s ease,
+                    bottom 0.4s cubic-bezier(0.22, 1, 0.36, 1);
       }
       .to-top svg { width: 20px; height: 20px; }
       .to-top.is-visible { opacity: 1; transform: none; pointer-events: auto; }

@@ -1,0 +1,9 @@
+---
+const { kind = 'Article', title, excerpt, readTime, date, href = '#' } = Astro.props;
+---
+<a class="insight reveal" href={href} data-kind={kind}>
+  <span class="insight__kind">{kind}</span>
+  <span class="insight__t">{title}</span>
+  <span class="insight__d">{excerpt}</span>
+  <span class="insight__foot"><span>{date}</span><span>{readTime}</span></span>
+</a>

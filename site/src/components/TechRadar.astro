@@ -1,0 +1,41 @@
+---
+const { domains = [] } = Astro.props;
+---
+<div class="radar" data-radar>
+  <div class="radar__nav" role="tablist">
+    {domains.map((d, i) => (
+      <button type="button" role="tab" class:list={['radar__navbtn', { 'is-active': i === 0 }]}
+        aria-selected={i === 0 ? 'true' : 'false'} data-radar-tab={i}>{d.name}</button>
+    ))}
+  </div>
+  {domains.map((d, i) => (
+    <div class="radar__grid" data-radar-panel={i} hidden={i !== 0}>
+      {d.items.map((it) => (
+        <div class="radar__item">
+          {typeof it === 'string' ? it : it.name}
+          {typeof it !== 'string' && it.level && <span class="radar__lvl">{it.level}</span>}
+        </div>
+      ))}
+    </div>
+  ))}
+</div>
+
+<script>
+  document.querySelectorAll('[data-radar]').forEach((root) => {
+    const tabs = root.querySelectorAll('[data-radar-tab]');
+    const panels = root.querySelectorAll('[data-radar-panel]');
+    tabs.forEach((t) => t.addEventListener('click', () => {
+      const idx = t.dataset.radarTab;
+      tabs.forEach((x) => {
+        const on = x.dataset.radarTab === idx;
+        x.classList.toggle('is-active', on);
+        x.setAttribute('aria-selected', on ? 'true' : 'false');
+      });
+      panels.forEach((p) => {
+        const on = p.dataset.radarPanel === idx;
+        p.hidden = !on;
+        if (on) { p.querySelectorAll('.radar__item').forEach((i) => { i.style.animation = 'none'; void i.offsetWidth; i.style.animation = ''; }); }
+      });
+    }));
+  });
+</script>
