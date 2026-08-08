@@ -1,0 +1,45 @@
+name: PR build check
+
+# GitHub Pages has no native per-PR preview, and this repo's Pages deploy is
+# wired to the apex domain from main. Until a preview host is chosen, this
+# builds every PR and uploads the built site as an artifact reviewers can
+# download and open locally.
+
+on:
+  pull_request:
+    paths:
+      - 'site/**'
+      - '.github/workflows/pr-preview.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: site
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: site/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      - name: Upload built site
+        uses: actions/upload-artifact@v4
+        with:
+          name: site-preview-pr-${{ github.event.pull_request.number }}
+          path: site/dist
+          retention-days: 14
