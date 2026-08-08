@@ -5,14 +5,26 @@ export const CAREERS_URL = 'https://www.rivvra.com/careers/huemot-technology';
 // Backend API base (Render). Frontend contact form posts here.
 export const API_BASE = 'https://api.huemot.com';
 
+// Primary header nav — deliberately held to seven items.
 export const nav = [
   { label: 'About', href: '/about' },
   { label: 'Services', href: '/services' },
+  { label: 'Industries', href: '/industries' },
+  { label: 'Hire Developers', href: '/hire-developers' },
+  { label: 'Our Process', href: '/process' },
+  { label: 'Case Studies', href: '/case-studies' },
+  { label: 'Careers', href: CAREERS_URL, external: true },
+];
+
+// Footer carries everything in the header plus the routes held out of it.
+// /insights is deliberately absent — withheld under the reduced launch scope.
+export const footerLinks = [
+  ...nav,
   { label: 'Salesforce', href: '/salesforce' },
   { label: 'AI & Automation', href: '/ai-automation' },
   { label: 'How We Engage', href: '/engage' },
-  { label: 'Case Studies', href: '/case-studies' },
-  { label: 'Careers', href: CAREERS_URL, external: true },
+  { label: 'Trust & Security', href: '/trust' },
+  { label: 'Contact', href: '/contact' },
 ];
 
 export const contact = {

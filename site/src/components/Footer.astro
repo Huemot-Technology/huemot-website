@@ -1,5 +1,5 @@
 ---
-import { nav, offices, contact, CAREERS_URL } from '../data/site.js';
+import { footerLinks, offices, contact, CAREERS_URL } from '../data/site.js';
 const year = 2026;
 const badges = ['ISO 27001:2013', 'ISO 9001:2015', 'Salesforce Certified Partner'];
 ---
@@ -20,7 +20,7 @@ const badges = ['ISO 27001:2013', 'ISO 9001:2015', 'Salesforce Certified Partner
       <nav class="ft__links" aria-label="Footer">
         <h3 class="ft__h">Company</h3>
         <ul>
-          {nav.map((item) => (
+          {footerLinks.map((item) => (
             <li>
               <a
                 href={item.href}
@@ -29,7 +29,6 @@ const badges = ['ISO 27001:2013', 'ISO 9001:2015', 'Salesforce Certified Partner
               >{item.label}{item.external ? ' ↗' : ''}</a>
             </li>
           ))}
-          <li><a href="/contact">Contact</a></li>
         </ul>
       </nav>
 
