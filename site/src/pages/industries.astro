@@ -1,0 +1,67 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import SectionHead from '../components/SectionHead.astro';
+import DarkBand from '../components/DarkBand.astro';
+import IndustryCard from '../components/IndustryCard.astro';
+import StatCounter from '../components/StatCounter.astro';
+import PillButton from '../components/PillButton.astro';
+import { industries } from '../data/content.js';
+---
+
+<BaseLayout
+  title="Industries | Fintech, Healthtech, Retail, Insurance | Huemot"
+  description="Eighteen verticals, 150+ clients. Domain-fluent pods for fintech, healthtech, retail, insurance, SaaS and supply chain."
+>
+  <PageHero
+    eyebrow="Industries"
+    title="We have shipped in your market"
+    highlight="before."
+    sub="Eighteen verticals, 150+ clients. The regulations, integrations and failure modes are not new to us — which is why our pods stop asking beginner questions in week one."
+  />
+
+  <section class="section">
+    <div class="container">
+      <div class="grid grid-3 stagger">
+        {industries.map((i) => <IndustryCard {...i} />)}
+      </div>
+    </div>
+  </section>
+
+  <DarkBand>
+    <div class="container">
+      <SectionHead
+        eyebrow="Across All Of Them"
+        title="The same operating model."
+        lead="Regardless of vertical, you get a ring-fenced pod, a named account owner, SLA-governed delivery and the ability to scale in two weeks."
+      />
+      <div class="grid grid-4 reveal">
+        <StatCounter value={18} suffix="+" label="Industry Verticals" tone="teal" />
+        <StatCounter value={150} suffix="+" label="Clients" tone="blue" />
+        <StatCounter value={500} suffix="+" label="Projects Delivered" tone="purple" />
+        <StatCounter value={90} suffix="%" label="Client Retention" tone="pink" />
+      </div>
+    </div>
+  </DarkBand>
+
+  <section class="section">
+    <div class="container">
+      <SectionHead eyebrow="Selected Clientele" title="150+ clients across 18+ verticals." lead="Fintech, healthtech, retail, insurance, SaaS and supply chain — named engagements and their numbers are on the case studies page." />
+      <div style="margin-top:4px">
+        <a href="/case-studies" class="link-arrow">See the outcomes
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--band text-center">
+    <div class="container">
+      <h2 class="h2">Which market are you in?</h2>
+      <p class="lead" style="margin-top:16px">Tell us the domain and we'll bring engineers who have shipped in it.</p>
+      <div style="margin-top:28px;display:flex;justify-content:center">
+        <PillButton href="/contact" variant="primary" size="lg">Book a Discovery Call</PillButton>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

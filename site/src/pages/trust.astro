@@ -1,0 +1,150 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import SectionHead from '../components/SectionHead.astro';
+import DarkBand from '../components/DarkBand.astro';
+import ProcessTimeline from '../components/ProcessTimeline.astro';
+import Marquee from '../components/Marquee.astro';
+import PillButton from '../components/PillButton.astro';
+import { credentials } from '../data/site.js';
+
+// VERIFIED: ISO 27001:2013, ISO 9001:2015, NDAs/MSAs/SLAs, enterprise-grade data protection
+// and secure access, dedicated branded facilities, 24x7 managed services.
+const certs = [
+  { t: 'ISO 27001:2013', d: 'Information security management. Independently audited controls covering access, encryption, incident response and supplier risk.' },
+  { t: 'ISO 9001:2015', d: 'Quality management. Documented delivery process, defect tracking and continuous improvement across every engagement.' },
+  { t: 'Salesforce Certified Partner', d: 'Platform-level partnership with a 100% certified consulting team.' },
+];
+// Every line below is drawn from the huemot.com source. Anything requiring a legal or
+// infosec position we have not published (IP assignment terms, data residency, access
+// revocation timing, background-check scope) is deliberately NOT stated here — those
+// belong in the MSA and the security questionnaire, not on a marketing page.
+const pillars = [
+  { t: 'Contracts', d: 'Strong NDAs, MSAs and SLAs for secure IP creation. Terms are agreed in writing before onboarding begins.' },
+  { t: 'Data Protection', d: 'Enterprise-grade data protection and secure access across every engagement.' },
+  { t: 'Certified Processes', d: 'ISO 27001:2013 for information security and ISO 9001:2015 for quality management — independently audited, not self-declared.' },
+  { t: 'Dedicated Facilities', d: 'Two development centres across 25,000 sq.ft of dedicated, branded space — not a shared coworking floor.' },
+  { t: 'Pre-Vetted People', d: 'Every engineer comes from the same screened pool of 500+ professionals that staffs all our pods.' },
+  { t: 'Governance', d: 'A named account manager, SLA monitoring, and mature project management with Agile/Scrum.' },
+];
+// SAMPLE — confirm every line with legal and infosec before publishing.
+const dd = [
+  { when: 'Step 1', title: 'Security questionnaire', description: 'Send yours and we will complete it. Tell us your deadline on the first call and we will confirm whether we can meet it.' },
+  { when: 'Step 2', title: 'Certification evidence', description: 'ISO 27001:2013 and ISO 9001:2015 certificates and scope statements, provided under NDA.' },
+  { when: 'Step 3', title: 'Legal pack', description: 'MSA, NDA, DPA and SLA templates for your counsel to review, or we work from yours.' },
+  { when: 'Step 4', title: 'Technical review', description: 'A call between your security team and our delivery lead to walk through the access model, environments and data flows for your engagement.' },
+];
+const faqs = [
+  { q: 'Are you ISO certified?', a: 'Yes — ISO 27001:2013 for information security and ISO 9001:2015 for quality management. Certificates and scope statements are available under NDA.' },
+  { q: 'How is our IP protected?', a: 'Through strong NDAs, MSAs and SLAs written for secure IP creation. The specific assignment and confidentiality terms are set out in the MSA, which we share before any work begins.' },
+  { q: 'What security review can we expect to run?', a: 'Send us your questionnaire and we will complete it, provide certification evidence under NDA, share our contract templates for your counsel, and put your security team on a call with our delivery lead.' },
+  { q: 'Who is accountable during the engagement?', a: 'A named account manager, with SLA monitoring and mature Agile/Scrum project management. Escalation paths are agreed in the SLA before onboarding.' },
+];
+---
+
+<BaseLayout
+  title="Trust, Security & Compliance | ISO 27001 & ISO 9001 Certified | Huemot"
+  description="ISO 27001:2013 and ISO 9001:2015 certified. NDAs, MSAs and SLAs for secure IP creation, enterprise-grade data protection, and a ready evidence pack for your security review."
+>
+  <PageHero
+    eyebrow="Trust, Security & Compliance"
+    title="The answers procurement"
+    highlight="asks for."
+    sub="ISO-certified and used to enterprise security review. Everything below is what we bring to the first call rather than the fifth."
+  >
+    <div style="display:flex;gap:10px;flex-wrap:wrap">
+      <span class="chip">ISO 27001:2013</span>
+      <span class="chip">ISO 9001:2015</span>
+      <span class="chip">NDA · MSA · SLA</span>
+      <span class="chip">24x7 Managed Services</span>
+    </div>
+  </PageHero>
+
+  <section class="section">
+    <div class="container">
+      <SectionHead eyebrow="Certifications" title="Independently audited, not self-declared." />
+      <div class="grid grid-3 stagger">
+        {certs.map((c) => (
+          <article class="card card--hover reveal">
+            <div class="do-card__icon" style="margin-bottom:16px" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="m5 13 4 4L19 7"/></svg>
+            </div>
+            <h3 class="h3" style="margin-bottom:10px">{c.t}</h3>
+            <p>{c.d}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <DarkBand>
+    <div class="container">
+      <SectionHead eyebrow="How We Protect You" title="Six pillars, every engagement." lead="None of this is an upgrade tier — it is what an engagement includes." />
+      <div class="grid grid-3 stagger">
+        {pillars.map((p) => (
+          <article class="card card--hover do-card do-card--stacked reveal">
+            <div class="do-card__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="m5 13 4 4L19 7"/></svg>
+            </div>
+            <div><h3 class="h3">{p.t}</h3><p>{p.d}</p></div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </DarkBand>
+
+  <section class="section">
+    <div class="container dd-split">
+      <div class="reveal">
+        <span class="eyebrow">Due Diligence</span>
+        <h2 class="h2">Your security review, unblocked.</h2>
+        <p class="lead" style="margin-top:16px">Most enterprise buyers stall here. We keep our certification evidence and contract templates ready so review can run in parallel with scoping instead of after it.</p>
+        <div style="margin-top:26px"><PillButton href="/contact" variant="primary">Request the evidence pack</PillButton></div>
+      </div>
+      <ProcessTimeline steps={dd} />
+    </div>
+  </section>
+
+  <section class="section section--band">
+    <div class="container">
+      <p class="creds__label">Certified &amp; partnered with</p>
+      <Marquee items={credentials} speed={34} />
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="section-head section-head--center reveal">
+        <span class="eyebrow">FAQ</span>
+        <h2 class="h2">Common security questions.</h2>
+      </div>
+      <div class="faq__list reveal">
+        {faqs.map((f, i) => (
+          <details class="faq__item" name="huemot-trust-faq" open={i === 0}>
+            <summary class="faq__q">
+              <span>{f.q}</span>
+              <svg class="faq__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+            </summary>
+            <div class="faq__a"><p>{f.a}</p></div>
+          </details>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--band text-center">
+    <div class="container">
+      <h2 class="h2">Send us your questionnaire.</h2>
+      <p class="lead" style="margin-top:16px">We will complete it before you have committed to anything.</p>
+      <div style="margin-top:28px;display:flex;justify-content:center">
+        <PillButton href="/contact" variant="primary" size="lg">Request the evidence pack</PillButton>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .dd-split { display: grid; grid-template-columns: 0.85fr 1.15fr; gap: clamp(28px, 5vw, 72px); align-items: start; }
+  @media (max-width: 900px) { .dd-split { grid-template-columns: 1fr; } }
+  .creds__label { text-align: center; font-size: .78rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); margin-bottom: 24px; }
+</style>
