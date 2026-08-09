@@ -40,6 +40,10 @@ jobs:
 
       - name: Build
         run: npm run build
+        env:
+          # Set under Settings -> Secrets and variables -> Actions -> Variables.
+          # Unset, "Book a Discovery Call" CTAs fall back to the Contact form.
+          PUBLIC_HUEMOT_CALENDAR_URL: ${{ vars.PUBLIC_HUEMOT_CALENDAR_URL }}
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3

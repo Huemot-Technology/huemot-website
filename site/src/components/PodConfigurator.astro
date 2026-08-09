@@ -11,6 +11,7 @@ const shapes = [
   { name: 'Delivery centre', size: 25, weeks: 4, roles: [] },
 ];
 const focuses = ['Product engineering', 'AI & automation', 'Salesforce', 'Modernization'];
+import { BOOKING_URL, BOOKING_EXTERNAL } from '../data/site.js';
 ---
 <div class="pod" data-pod data-shapes={JSON.stringify(shapes)}>
   <div class="pod__opts">
@@ -43,7 +44,12 @@ const focuses = ['Product engineering', 'AI & automation', 'Salesforce', 'Modern
       <div><b data-pod-weeks></b><span>To sprint zero</span></div>
     </div>
     <div style="margin-top:20px">
-      <a href="/contact" class="btn btn--primary">Book a call about this pod
+      <a
+        href={BOOKING_URL}
+        target={BOOKING_EXTERNAL ? '_blank' : undefined}
+        rel={BOOKING_EXTERNAL ? 'noopener noreferrer' : undefined}
+        class="btn btn--primary"
+      >Book a call about this pod
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
       </a>
     </div>

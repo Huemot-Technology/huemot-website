@@ -3,7 +3,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import PageHero from '../components/PageHero.astro';
 import StatCounter from '../components/StatCounter.astro';
 import PillButton from '../components/PillButton.astro';
-import { seo, offices, contact } from '../data/site.js';
+import { seo, offices, contact, BOOKING_URL, BOOKING_EXTERNAL } from '../data/site.js';
 
 const overview = [
   { value: 500, suffix: '+', label: 'Engineers', tone: 'teal' },
@@ -114,7 +114,7 @@ const bands = [
     <div class="container">
       <h2 class="h2">Let's build something enduring.</h2>
       <div style="margin-top:28px;display:flex;justify-content:center">
-        <PillButton href="/contact" variant="primary" size="lg">Book a Discovery Call</PillButton>
+        <PillButton href={BOOKING_URL} external={BOOKING_EXTERNAL} variant="primary" size="lg">Book a Discovery Call</PillButton>
       </div>
     </div>
   </section>

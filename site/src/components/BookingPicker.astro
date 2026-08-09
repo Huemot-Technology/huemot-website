@@ -1,106 +1,21 @@
 ---
-// Two-step booking: pick a slot, then the existing ContactForm.
+// Embeds a real scheduling calendar. Renders nothing without a URL.
 //
-// PRODUCTION: set CALENDAR_URL (Cal.com / Calendly / your own endpoint) and this
-// component embeds the real calendar instead of the static slots. Shipping the
-// static version publicly would advertise availability that does not exist.
+// This component originally shipped a static day/time picker as a stand-in,
+// plus a two-step flow that swapped it for the ContactForm. Both are gone: the
+// static slots were illustrative and booked nothing, so rendering them publicly
+// would have advertised availability that does not exist (see LAUNCH-SCOPE.md).
+//
+// The site now links out to the scheduling page instead of embedding it — see
+// BOOKING_URL in src/data/site.js. This component is kept, unused, for the day
+// someone wants the calendar inline: set PUBLIC_HUEMOT_CALENDAR_URL and drop
+// <BookingPicker /> onto the Contact page. A real calendar collects name and
+// email itself, so the old two-step flow is not needed with it.
 const CALENDAR_URL = import.meta.env.PUBLIC_HUEMOT_CALENDAR_URL || '';
-const days = [
-  { label: 'Mon', date: '10 Aug' }, { label: 'Tue', date: '11 Aug' }, { label: 'Wed', date: '12 Aug' },
-  { label: 'Thu', date: '13 Aug' }, { label: 'Fri', date: '14 Aug' },
-];
-const slots = {
-  IST: ['10:00', '11:30', '14:00', '16:30', '18:00'],
-  GMT: ['08:00', '09:30', '12:00', '14:30', '16:00'],
-  EST: ['08:30', '10:00', '11:30', '13:00', '15:30'],
-};
 ---
-{CALENDAR_URL ? (
+
+{CALENDAR_URL && (
   <div class="card" style="padding:0;overflow:hidden">
     <iframe src={CALENDAR_URL} title="Book a discovery call" style="width:100%;height:640px;border:0;display:block"></iframe>
   </div>
-) : (
-<div class="card booking" data-booking data-slots={JSON.stringify(slots)} style="padding:clamp(22px,3vw,32px)">
-  <div class="booking__head">
-    <div>
-      <span class="eyebrow" style="margin:0">Pick a time</span>
-      <p class="booking__sub">30 minutes with an engineer, not a salesperson.</p>
-    </div>
-    <div class="booking__tz">
-      {Object.keys(slots).map((z, i) => (
-        <button type="button" class:list={['booking__tzbtn', { 'is-on': i === 0 }]} data-tz={z}>{z}</button>
-      ))}
-    </div>
-  </div>
-
-  <div class="booking__days">
-    {days.map((d, i) => (
-      <button type="button" class:list={['booking__day', { 'is-on': i === 1 }]} data-day={`${d.label} ${d.date}`}>
-        <span class="booking__dayname">{d.label}</span>
-        <span class="booking__daydate">{d.date}</span>
-      </button>
-    ))}
-  </div>
-
-  <div class="booking__slots" data-booking-slots></div>
-
-  <div class="booking__foot">
-    <p class="booking__summary" data-booking-summary>Select a slot to continue.</p>
-    <button type="button" class="btn btn--primary" data-booking-continue disabled>Continue
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-    </button>
-  </div>
-</div>
 )}
-
-<script>
-  document.querySelectorAll('[data-booking]').forEach((root) => {
-    const SLOTS = JSON.parse(root.dataset.slots);
-    let tz = 'IST';
-    let day = root.querySelector('.booking__day.is-on').dataset.day;
-    let slot = null;
-    const slotsEl = root.querySelector('[data-booking-slots]');
-    const summary = root.querySelector('[data-booking-summary]');
-    const cont = root.querySelector('[data-booking-continue]');
-
-    const paint = () => {
-      slotsEl.innerHTML = '';
-      SLOTS[tz].forEach((s) => {
-        const b = document.createElement('button');
-        b.type = 'button';
-        b.className = 'booking__slot' + (s === slot ? ' is-on' : '');
-        b.textContent = s;
-        b.addEventListener('click', () => { slot = s; paint(); });
-        slotsEl.appendChild(b);
-      });
-      summary.innerHTML = slot
-        ? `<strong>${day}</strong> at <strong>${slot} ${tz}</strong>`
-        : 'Select a slot to continue.';
-      cont.disabled = !slot;
-    };
-
-    root.querySelectorAll('[data-tz]').forEach((b) => b.addEventListener('click', () => {
-      tz = b.dataset.tz; slot = null;
-      root.querySelectorAll('[data-tz]').forEach((x) => x.classList.toggle('is-on', x === b));
-      paint();
-    }));
-    root.querySelectorAll('[data-day]').forEach((b) => b.addEventListener('click', () => {
-      day = b.dataset.day; slot = null;
-      root.querySelectorAll('[data-day]').forEach((x) => x.classList.toggle('is-on', x === b));
-      paint();
-    }));
-    cont.addEventListener('click', () => {
-      const held = document.querySelector('[data-booking-held]');
-      const step1 = document.querySelector('[data-step="1"]');
-      const step2 = document.querySelector('[data-step="2"]');
-      if (held) held.textContent = `${day}, ${slot} ${tz}`;
-      if (step1) step1.hidden = true;
-      if (step2) step2.hidden = false;
-      document.querySelectorAll('.flowstep').forEach((s, i) => {
-        s.classList.toggle('is-on', i === 1);
-        s.classList.toggle('is-done', i === 0);
-      });
-    });
-    paint();
-  });
-</script>
