@@ -1,9 +1,13 @@
 ---
 // Pick a team shape and a focus; seats assemble. Plain JS, no hydration.
+//
+// Seat tags must fit a 30px circle (26px under 900px) — keep them to 4
+// characters or fewer. 'DevOps' rendered 40px of text in the 30px seat and
+// spilled outside it, so it is 'Ops' here; every other tag measures clear.
 const shapes = [
   { name: 'Discovery squad', size: 4, weeks: 2, roles: ['PM', 'UX', 'FE', 'BE'] },
-  { name: 'Product pod', size: 8, weeks: 2, roles: ['PM', 'UX', 'FE', 'FE', 'BE', 'BE', 'QA', 'DevOps'] },
-  { name: 'Scale pod', size: 14, weeks: 3, roles: ['PM', 'EM', 'UX', 'FE', 'FE', 'FE', 'BE', 'BE', 'BE', 'QA', 'QA', 'DevOps', 'Data', 'SRE'] },
+  { name: 'Product pod', size: 8, weeks: 2, roles: ['PM', 'UX', 'FE', 'FE', 'BE', 'BE', 'QA', 'Ops'] },
+  { name: 'Scale pod', size: 14, weeks: 3, roles: ['PM', 'EM', 'UX', 'FE', 'FE', 'FE', 'BE', 'BE', 'BE', 'QA', 'QA', 'Ops', 'Data', 'SRE'] },
   { name: 'Delivery centre', size: 25, weeks: 4, roles: [] },
 ];
 const focuses = ['Product engineering', 'AI & automation', 'Salesforce', 'Modernization'];
