@@ -14,7 +14,7 @@ import IndustryCard from '../components/IndustryCard.astro';
 import PodConfigurator from '../components/PodConfigurator.astro';
 import ProcessTimeline from '../components/ProcessTimeline.astro';
 import InsightCard from '../components/InsightCard.astro';
-import { seo, credentials } from '../data/site.js';
+import { seo, credentials, BOOKING_URL, BOOKING_EXTERNAL } from '../data/site.js';
 import { industries, comparison, process as processSteps, insights, awards, FULL } from '../data/content.js';
 
 const heroStats = [
@@ -56,7 +56,7 @@ const caseMetrics = [
           500+ engineers across 50+ technology stacks. From conversation to code in two weeks.
         </p>
         <div class="hero__cta rise rise-4">
-          <PillButton href="/contact" variant="primary" size="lg">Book a Discovery Call</PillButton>
+          <PillButton href={BOOKING_URL} external={BOOKING_EXTERNAL} variant="primary" size="lg">Book a Discovery Call</PillButton>
           <PillButton href="/hire-developers" variant="ghost" size="lg" arrow={false}>Hire Developers</PillButton>
         </div>
         <p class="hero__trust rise rise-5">
@@ -257,7 +257,7 @@ const caseMetrics = [
           building within two weeks.
         </p>
         <div class="cta-band__actions">
-          <PillButton href="/contact" variant="primary" size="lg">Book a Discovery Call</PillButton>
+          <PillButton href={BOOKING_URL} external={BOOKING_EXTERNAL} variant="primary" size="lg">Book a Discovery Call</PillButton>
         </div>
         <p class="cta-band__links">
           <a href="mailto:info@huemot.com">info@huemot.com</a>

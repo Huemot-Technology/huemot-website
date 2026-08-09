@@ -3,6 +3,7 @@
 // It publishes its height as --cta-offset; the back-to-top button must use
 //   bottom: calc(var(--cta-offset, 0px) + clamp(16px, 3vw, 32px));
 // so it clears the bar instead of sitting behind it.
+import { BOOKING_URL, BOOKING_EXTERNAL } from '../data/site.js';
 ---
 <div class="stickycta" data-stickycta data-open="false" role="complementary" aria-label="Book a discovery call">
   <div class="container stickycta__inner">
@@ -11,7 +12,12 @@
       <p class="stickycta__t">Still comparing? Book a 30-minute discovery call — no obligation.</p>
     </div>
     <div class="stickycta__actions">
-      <a href="/contact" class="btn btn--primary">Book a Discovery Call</a>
+      <a
+        href={BOOKING_URL}
+        target={BOOKING_EXTERNAL ? '_blank' : undefined}
+        rel={BOOKING_EXTERNAL ? 'noopener noreferrer' : undefined}
+        class="btn btn--primary"
+      >Book a Discovery Call</a>
       <button type="button" class="stickycta__x" data-stickycta-x aria-label="Dismiss">×</button>
     </div>
   </div>

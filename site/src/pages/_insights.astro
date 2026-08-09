@@ -12,6 +12,7 @@
 // meta-refresh interstitial pointed at the absolute production URL, which is
 // both visible and wrong on any non-production build. Hence the rename.)
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { BOOKING_URL, BOOKING_EXTERNAL } from '../data/site.js';
 import InsightCard from '../components/InsightCard.astro';
 import PageHero from '../components/PageHero.astro';
 import PillButton from '../components/PillButton.astro';
@@ -64,7 +65,7 @@ const [lead, ...rest] = insights;
       <h2 class="h2">Rather talk it through?</h2>
       <p class="lead" style="margin-top:16px">Thirty minutes with an engineer who has done it, not a salesperson.</p>
       <div style="margin-top:28px;display:flex;justify-content:center">
-        <PillButton href="/contact" variant="primary" size="lg">Book a Discovery Call</PillButton>
+        <PillButton href={BOOKING_URL} external={BOOKING_EXTERNAL} variant="primary" size="lg">Book a Discovery Call</PillButton>
       </div>
     </div>
   </section>

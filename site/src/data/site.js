@@ -5,6 +5,23 @@ export const CAREERS_URL = 'https://www.rivvra.com/careers/huemot-technology';
 // Backend API base (Render). Frontend contact form posts here.
 export const API_BASE = 'https://api.huemot.com';
 
+// Where "Book a Discovery Call" CTAs point.
+//
+// Set PUBLIC_HUEMOT_CALENDAR_URL and they open the real scheduling page in a
+// new tab; leave it unset and they fall back to the Contact form, which is the
+// behaviour today. So this is inert until the URL exists — no half-configured
+// state that advertises slots nobody can book.
+//
+// For GitHub Pages the variable must reach the build: add it under
+// Settings -> Secrets and variables -> Actions -> Variables, and it is already
+// wired into the env: block of .github/workflows/deploy-pages.yml.
+//
+// Only call-booking CTAs use this. "Request profiles" and "Request the evidence
+// pack" deliberately stay on /contact — they need a written brief, not a slot.
+const CALENDAR_URL = import.meta.env.PUBLIC_HUEMOT_CALENDAR_URL || '';
+export const BOOKING_URL = CALENDAR_URL || '/contact';
+export const BOOKING_EXTERNAL = Boolean(CALENDAR_URL);
+
 // Primary header nav — deliberately held to seven items.
 export const nav = [
   { label: 'About', href: '/about' },
