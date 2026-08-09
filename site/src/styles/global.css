@@ -286,7 +286,6 @@ p { margin: 0; }
 /* Refined focus ring for keyboard users */
 :focus-visible { outline: 2px solid var(--teal); outline-offset: 3px; border-radius: 4px; }
 
-
 /* =========================================================================
    v2 REDESIGN ADDITIONS
    Appended from handoff `astro/src/styles/global.additions.css`.
@@ -587,7 +586,6 @@ p { margin: 0; }
   .hpv__chip, .radar__item, .pod__seat { animation: none; }
 }
 
-
 /* ============================================================
    Small screens. The site is designed at 1280; these are the
    deliberate reflows, not just grid collapses.
@@ -699,38 +697,6 @@ image-slot { min-width: 0; max-width: 100%; }
   .stickycta__t { font-size: .86rem; }
   .stickycta__inner { padding-block: 10px; }
 }
-
-/* ---- Booking picker ---- */
-.booking__head { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; margin-bottom: 22px; }
-.booking__sub { color: var(--muted); font-size: .9rem; margin-top: 6px; }
-.booking__tz { display: flex; gap: 4px; background: var(--bg-alt); padding: 4px; border-radius: 999px; }
-.booking__tzbtn { font: inherit; font-size: .78rem; font-weight: 700; letter-spacing: .04em; cursor: pointer; border: 0; background: none; color: var(--muted); padding: 6px 12px; border-radius: 999px; transition: all var(--dur-base) ease; }
-.booking__tzbtn.is-on { background: #fff; color: var(--teal-deep); box-shadow: var(--shadow-sm); }
-.booking__days { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin-bottom: 18px; }
-.booking__day { font: inherit; cursor: pointer; display: grid; gap: 2px; padding: 12px 6px; border-radius: var(--radius-sm); border: 1px solid var(--card-border); background: #fff; transition: all var(--dur-base) ease; }
-.booking__day:hover { border-color: var(--teal); }
-.booking__dayname { font-weight: 700; font-size: .88rem; color: var(--ink); }
-.booking__daydate { font-size: .74rem; color: var(--muted); }
-.booking__day.is-on { background: var(--teal); border-color: var(--teal); box-shadow: var(--shadow-teal); }
-.booking__day.is-on .booking__dayname, .booking__day.is-on .booking__daydate { color: #fff; }
-.booking__slots { display: flex; flex-wrap: wrap; gap: 8px; padding-bottom: 20px; border-bottom: 1px solid var(--card-border); }
-.booking__slot { font: inherit; font-size: .9rem; font-weight: 600; cursor: pointer; padding: .55em 1.1em; border-radius: var(--radius-pill); border: 1px solid var(--card-border); background: #fff; color: var(--ink-soft); transition: all var(--dur-base) ease; }
-.booking__slot:hover { border-color: var(--teal); color: var(--teal-deep); }
-.booking__slot.is-on { background: var(--teal-wash); border-color: var(--teal); color: var(--teal-ink); }
-.booking__foot { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-top: 18px; flex-wrap: wrap; }
-.booking__summary { font-size: .92rem; color: var(--body); margin: 0; }
-.booking__summary strong { color: var(--ink); }
-.booking .btn[disabled] { opacity: .5; pointer-events: none; }
-@media (max-width: 560px) { .booking__days { grid-template-columns: repeat(3, 1fr); } }
-
-/* ---- Two-step flow indicator ---- */
-.flowsteps { display: flex; align-items: center; gap: 12px; margin-bottom: 24px; }
-.flowstep { display: flex; align-items: center; gap: 8px; font-size: .84rem; font-weight: 650; color: var(--muted); }
-.flowstep__n { width: 24px; height: 24px; border-radius: 50%; display: grid; place-items: center; font-size: .72rem; font-weight: 800; background: var(--bg-alt); color: var(--muted); border: 1px solid var(--card-border); }
-.flowstep.is-on { color: var(--ink); }
-.flowstep.is-on .flowstep__n { background: var(--teal); color: #fff; border-color: var(--teal); }
-.flowstep.is-done .flowstep__n { background: var(--teal-wash); color: var(--teal-deep); border-color: var(--teal-wash-2); }
-.flowsteps__bar { flex: 1; height: 1px; background: var(--card-border); max-width: 60px; }
 
 /* =========================================================================
    Shared component classes promoted to global scope.
