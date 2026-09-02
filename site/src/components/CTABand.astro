@@ -1,0 +1,42 @@
+---
+// Closing call-to-action card. Extracted from the pattern the homepage already
+// used so Services, About and Case Studies share one implementation.
+//
+// The call CTA goes through BOOKING_URL/BOOKING_EXTERNAL, so it opens the
+// scheduling page when one is configured and falls back to /contact otherwise.
+import PillButton from './PillButton.astro';
+import { BOOKING_URL, BOOKING_EXTERNAL, contact } from '../data/site.js';
+
+const {
+  eyebrow = "Let's Build Together",
+  title,
+  lead,
+  cta = 'Book a Discovery Call',
+  id,
+} = Astro.props;
+
+const telHref = `tel:${contact.phone.replace(/[^+\d]/g, '')}`;
+---
+
+<section class="cta-band" id={id}>
+  <div class="container">
+    <div class="cta-band__card hero-wash reveal">
+      {eyebrow && <span class="eyebrow">{eyebrow}</span>}
+      <h2 class="h2">{title}</h2>
+      {lead && <p class="lead cta-band__lead">{lead}</p>}
+      <div class="cta-band__actions">
+        <PillButton href={BOOKING_URL} external={BOOKING_EXTERNAL} variant="primary" size="lg">{cta}</PillButton>
+      </div>
+      <p class="cta-band__links">
+        <a href={`mailto:${contact.email}`}>{contact.email}</a>
+        <span aria-hidden="true">·</span>
+        <a href={telHref}>{contact.phone}</a>
+      </p>
+    </div>
+  </div>
+</section>
+
+<style>
+  .cta-band { padding-block: 0 clamp(64px, 8vw, 100px); }
+  .cta-band__lead { margin-top: 16px; max-width: 60ch; margin-inline: auto; }
+</style>
