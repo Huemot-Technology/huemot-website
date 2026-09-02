@@ -9,9 +9,6 @@ const {
   description = 'Enterprise solutions, staff augmentation, and end-to-end product engineering by 500+ engineers across 50+ technology stacks.',
   image = '/og-image.png',
   noindex = false,
-  // Opt-in header mega-nav. Off by default, so every existing page keeps the
-  // header it already had.
-  megaNav = false,
 } = Astro.props;
 
 const canonical = new URL(Astro.url.pathname, Astro.site).href.replace(/\/$/, '') || Astro.site.href;
@@ -84,7 +81,7 @@ const ogImage = new URL(image, Astro.site).href;
   <body>
     <a href="#main" class="sr-only">Skip to content</a>
     <div class="scroll-progress" id="scroll-progress" aria-hidden="true"></div>
-    <Header megaNav={megaNav} />
+    <Header />
     <main id="main">
       <slot />
     </main>

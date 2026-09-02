@@ -21,3 +21,6 @@ npm-debug.log*
 
 # Design handoff bundle — reference only, not part of the build
 design_handoff_homepage_redesign/
+
+# Design handoff bundle — reference only, not part of the build
+design_handoff_huemot_site/

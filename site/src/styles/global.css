@@ -790,13 +790,12 @@ image-slot { min-width: 0; max-width: 100%; }
 .cta-band__links span { margin-inline: 10px; }
 
 /* =========================================================================
-   ADDITIVE — header mega-nav (HomeMegaNav.astro).
+   Header mega-nav (SiteMegaNav.astro).
 
-   Purely additive: every selector below needs markup that only renders under
-   <Header megaNav />. Routes that do not opt in match none of it and render
-   exactly as before. This lives in global.css rather than in the component
-   because HomeMegaNav is reached through the shared Header — a scoped <style>
-   there would be pulled into every page's CSS bundle anyway.
+   The header is shared, so these panels now render on every route and are
+   hidden below 1040px where the mobile panel takes over. They live here rather
+   than in a scoped <style> because SiteMegaNav is reached through the shared
+   Header and its styles would land in every page bundle either way.
    ========================================================================= */
 
 .nav__chev { width: 14px; height: 14px; opacity: .75; }

@@ -1,40 +1,35 @@
 ---
-// Desktop mega-nav panels for Services and Industries.
+// Dropdown panels for the header. One panel per `mega` value in site.js nav.
 //
-// Rendered only when <Header megaNav /> is set — the homepage is the only caller
-// today, so every other route emits the header exactly as before. Styles live in
-// the additive `.mega*` block at the foot of global.css (a shared component
-// cannot use scoped styles here without leaking them into every page bundle);
-// the script is `is:inline` for the same reason — hoisted scripts would ship on
-// routes that never render this markup.
+// Renders on every route (the header is shared), and is hidden below 1040px
+// where the mobile panel takes over — see the .mega block in global.css.
 //
-// Route note: the design file deep-links to /services#pod, /industries#logistics
-// and friends. Those anchor ids do not exist on either page, so the hashes are
-// dropped and the links point at the routes themselves — no dead fragments.
-import { CAREERS_URL } from '../data/site.js';
-
+// Link targets: the prototype deep-links into Services for "AI & Automation",
+// "Salesforce" and the engagement models. Where a dedicated route already
+// exists (/ai-automation, /salesforce, /engage, /hire-developers) it is used
+// instead of an anchor, so these lead to the fuller page.
 const engagement = [
   { label: 'Dedicated Pod', desc: 'A ring-fenced team, yours end-to-end', href: '/engage' },
   { label: 'Managed Project', desc: 'Fixed scope, fixed outcome, milestone billing', href: '/engage' },
   { label: 'Staff Augmentation', desc: 'Specific skills into your team, on demand', href: '/hire-developers' },
 ];
 const build = [
-  { label: 'Product Engineering', href: '/services' },
+  { label: 'Product Engineering', href: '/services#product-engineering' },
   { label: 'AI & Automation', href: '/ai-automation' },
   { label: 'Salesforce', href: '/salesforce' },
-  { label: 'Cloud & DevOps', href: '/services' },
+  { label: 'Cloud & DevOps', href: '/services#practices' },
 ];
 const run = [
-  { label: 'Digital Transformation', href: '/services' },
-  { label: 'Managed Services', href: '/services' },
-  { label: 'QA & Automation', href: '/services' },
-  { label: 'Trust & Security', href: '/trust' },
+  { label: 'Digital Transformation', href: '/services#digital-transformation' },
+  { label: 'Managed Services', href: '/services#managed-services' },
+  { label: 'QA & Automation', href: '/services#practices' },
+  { label: 'Cybersecurity', href: '/services#practices' },
 ];
 const sectors = [
-  { label: 'Logistics & Supply Chain', note: '25M+ shipments a month, 99.99% uptime', img: 'logistics', alt: 'Warehouse shelves stacked with parcels' },
-  { label: 'Healthcare', note: 'HIPAA-ready platforms and patient portals', img: 'healthcare', alt: 'Clinician reviewing records on a tablet' },
-  { label: 'Fintech & Banking', note: 'Payments, lending and compliance at scale', img: 'fintech', alt: 'Financial market charts on a screen' },
-  { label: 'Retail & E-Commerce', note: 'Storefronts, OMS and personalization', img: 'retail', alt: 'Contactless payment at a retail checkout' },
+  { label: 'Logistics & Supply Chain', note: '25M+ shipments a month, 99.99% uptime', img: 'logistics', alt: 'Warehouse shelves stacked with parcels', href: '/industries#logistics' },
+  { label: 'Healthcare', note: 'HIPAA-ready platforms and patient portals', img: 'healthcare', alt: 'Clinician reviewing records on a tablet', href: '/industries#healthcare' },
+  { label: 'Fintech & Banking', note: 'Payments, lending and compliance at scale', img: 'fintech', alt: 'Financial market charts on a screen', href: '/industries#fintech' },
+  { label: 'Retail & E-Commerce', note: 'Storefronts, OMS and personalization', img: 'retail', alt: 'Contactless payment at a retail checkout', href: '/industries#retail' },
 ];
 ---
 
@@ -62,7 +57,7 @@ const sectors = [
         {run.map((i) => <a href={i.href} class="mega__item">{i.label}</a>)}
       </div>
     </div>
-    <a href="/process" class="mega__promo">
+    <a href="/engage" class="mega__promo">
       <img
         src="/images/home/pod-laptop-800.webp"
         alt="Engineering pod working together around a laptop"
@@ -70,7 +65,7 @@ const sectors = [
       />
       <span class="mega__promo-veil"></span>
       <span class="mega__promo-copy">
-        <span class="mega__promo-eyebrow">Our Process</span>
+        <span class="mega__promo-eyebrow">How We Engage</span>
         <b>From Conversation to Code in Two Weeks.</b>
       </span>
     </a>
@@ -80,7 +75,7 @@ const sectors = [
 <div class="mega" data-mega-panel="industries" hidden>
   <div class="container mega__grid mega__grid--industries">
     {sectors.map((s) => (
-      <a href="/industries" class="mega__sector">
+      <a href={s.href} class="mega__sector">
         <span class="mega__sector-shot">
           <img
             src={`/images/home/${s.img}-800.webp`}
@@ -95,16 +90,16 @@ const sectors = [
   </div>
 </div>
 
-<script is:inline>
-  // Hover/focus-driven mega-nav. Pointer intent opens it, leaving the header or
-  // pressing Escape closes it. Keyboard users get the same panels via focusin,
-  // so the menu is reachable without a pointer.
+<script>
+  // Hover/focus-driven mega-nav. Pointer intent opens it; leaving the header or
+  // pressing Escape closes it. Keyboard users reach the same panels via focus,
+  // so the menu never depends on a pointer.
   (() => {
     const header = document.querySelector('[data-mega-root]');
     if (!header) return;
     const triggers = header.querySelectorAll('[data-mega-trigger]');
     const panels = header.querySelectorAll('[data-mega-panel]');
-    // Matches the 1040px cutoff in the additive CSS — no panels on touch widths.
+    // Matches the 1040px cutoff in the CSS — no panels at hamburger widths.
     const wide = window.matchMedia('(min-width: 1041px)');
 
     const open = (name) => {
@@ -124,7 +119,7 @@ const sectors = [
       t.addEventListener('mouseenter', () => open(name));
       t.addEventListener('focus', () => open(name));
     });
-    // Any other header link that gains focus or hover dismisses an open panel.
+    // Any other header control dismisses an open panel on hover or focus.
     header.querySelectorAll('a, button').forEach((el) => {
       if (el.dataset.megaTrigger) return;
       if (el.closest('[data-mega-panel]')) return;
