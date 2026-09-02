@@ -21,7 +21,9 @@ import { seo, offices, contact } from '../data/site.js';
 
       <!-- Offices + emails -->
       <aside class="contact-aside reveal">
-        <span class="eyebrow">Our Offices</span>
+        <!-- Already the visible label for this group, so it becomes the real
+             h2 rather than adding a second, hidden one. -->
+        <h2 class="eyebrow">Our Offices</h2>
         <div class="offices">
           {offices.map((o) => (
             <div class="office">
@@ -51,6 +53,10 @@ import { seo, offices, contact } from '../data/site.js';
   @media (max-width: 900px) { .contact-grid { grid-template-columns: 1fr; } }
 
   .contact-aside .eyebrow { margin-bottom: 20px; }
+  /* .eyebrow does not set font-family or line-height, so on an h2 the global
+     heading rule would swap in the display face. Pin them back to the label's
+     inherited values so the tag change is purely semantic. */
+  .contact-aside h2.eyebrow { font-family: var(--font-sans); line-height: 1.65; }
   .offices { display: grid; gap: 16px; }
   .office {
     background: var(--card); border: 1px solid var(--card-border);

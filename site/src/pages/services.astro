@@ -48,6 +48,11 @@ const tech = [
   <!-- Core offerings -->
   <section class="section">
     <div class="container">
+      {/* Every other section on this page is introduced by an h2; this one is
+          deliberately untitled in the design, which left the card h3s following
+          the hero h1 directly and skipping a level. A visually hidden h2 gives
+          the group a name for screen readers without changing the layout. */}
+      <h2 class="sr-only">Ways to engage</h2>
       <div class="grid grid-2 stagger">
         {core.map((c) => (
           <article class="card card--hover do-card reveal" id={c.id}>
