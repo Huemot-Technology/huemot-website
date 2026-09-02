@@ -1,45 +1,53 @@
 ---
+// Contact — per design_handoff_huemot_site/Contact.dc.html.
+// The form itself is the existing ContactForm component, untouched: it still
+// POSTs to API_BASE + '/api/contact' and keeps its honeypot field.
 import BaseLayout from '../layouts/BaseLayout.astro';
-import PageHero from '../components/PageHero.astro';
 import ContactForm from '../components/ContactForm.astro';
+import OfficeCard from '../components/OfficeCard.astro';
 import { seo, offices, contact } from '../data/site.js';
 ---
 
 <BaseLayout title={seo.contact.title} description={seo.contact.description}>
-  <PageHero
-    eyebrow="Let's Build Together"
-    title="Ready to Scale Your Engineering — On Demand?"
-    sub="Book a 30-minute discovery call. We'll map your goals to a pod and a plan — and have a team building within two weeks."
-  />
-
-  <section class="section">
-    <div class="container contact-grid stagger">
-      <!-- Form -->
-      <div class="contact-form-col reveal">
-        <ContactForm />
+  <section class="ct">
+    <div class="container ct__grid">
+      <div>
+        <span class="eyebrow">Let's Build Together</span>
+        <h1 class="h1 ct__title">Ready to Scale Your Engineering — <span class="teal">On Demand?</span></h1>
+        <p class="lead ct__lead">
+          Book a 30-minute discovery call. We'll map your goals to a pod and a plan — and have a team
+          building within two weeks.
+        </p>
+        <div class="ct__form">
+          <ContactForm />
+        </div>
+        <p class="ct__reassure">
+          Expect a reply within one business day. ISO 27001:2013 certified — your brief stays
+          confidential under NDA.
+        </p>
       </div>
 
-      <!-- Offices + emails -->
-      <aside class="contact-aside reveal">
-        <!-- Already the visible label for this group, so it becomes the real
-             h2 rather than adding a second, hidden one. -->
-        <h2 class="eyebrow">Our Offices</h2>
-        <div class="offices">
-          {offices.map((o) => (
-            <div class="office">
-              <div class="office__top">
-                <span class="office__flag">{o.flag}</span>
-                <div>
-                  <h3 class="office__country">{o.country}</h3>
-                  <p class="office__city">{o.city}</p>
-                </div>
-              </div>
-              <p class="office__addr">{o.address}</p>
-              <a class="office__phone" href={`tel:${o.phone.replace(/[^+\d]/g, '')}`}>{o.phone}</a>
-            </div>
-          ))}
+      <aside class="ct__aside">
+        <div class="ct__shot">
+          <img
+            src="/images/site/whiteboard-800.webp"
+            srcset="/images/site/whiteboard-800.webp 800w, /images/site/whiteboard-1600.webp 1600w"
+            sizes="(max-width: 900px) 92vw, 420px"
+            alt="Planning session at a whiteboard"
+            width="800" height="600"
+            loading="lazy" decoding="async"
+          />
+          <span class="ct__shot-veil"></span>
+          <span class="ct__shot-copy">
+            <span class="ct__shot-eyebrow">What happens next</span>
+            <b>Discovery call → team match → sprint zero by Day 14.</b>
+          </span>
         </div>
-        <div class="contact-emails">
+
+        <h2 class="eyebrow ct__offices-label">Our Offices</h2>
+        {offices.map((o) => <OfficeCard {...o} headingLevel="h3" />)}
+
+        <div class="ct__mails">
           <a href={`mailto:${contact.email}`}>{contact.email}</a>
           <a href={`mailto:${contact.careersEmail}`}>{contact.careersEmail}</a>
         </div>
@@ -49,26 +57,56 @@ import { seo, offices, contact } from '../data/site.js';
 </BaseLayout>
 
 <style>
-  .contact-grid { display: grid; grid-template-columns: 1.4fr 1fr; gap: clamp(28px, 4vw, 52px); align-items: start; }
-  @media (max-width: 900px) { .contact-grid { grid-template-columns: 1fr; } }
-
-  .contact-aside .eyebrow { margin-bottom: 20px; }
-  /* .eyebrow does not set font-family or line-height, so on an h2 the global
-     heading rule would swap in the display face. Pin them back to the label's
-     inherited values so the tag change is purely semantic. */
-  .contact-aside h2.eyebrow { font-family: var(--font-sans); line-height: 1.65; }
-  .offices { display: grid; gap: 16px; }
-  .office {
-    background: var(--card); border: 1px solid var(--card-border);
-    border-radius: var(--radius); box-shadow: var(--shadow-sm); padding: 22px 24px;
+  .ct { background: var(--bg); border-bottom: 1px solid var(--card-border); }
+  .ct__grid {
+    display: grid; grid-template-columns: 1.25fr 1fr;
+    gap: clamp(32px, 5vw, 72px); align-items: start;
+    padding-block: clamp(48px, 6vw, 88px);
   }
-  .office__top { display: flex; gap: 14px; align-items: center; margin-bottom: 12px; }
-  .office__flag { font-size: 1.7rem; line-height: 1; }
-  .office__country { font-size: 1.08rem; }
-  .office__city { color: var(--muted); font-size: 0.88rem; margin-top: 2px; }
-  .office__addr { color: var(--body); line-height: 1.5; font-size: 0.95rem; }
-  .office__phone { display: inline-block; margin-top: 12px; font-weight: 650; color: var(--teal-deep); }
+  .ct__title { margin-top: 14px; font-size: clamp(2.2rem, 3.8vw, 3.4rem); letter-spacing: -.03em; line-height: 1.05; }
+  .ct__lead { margin-top: 18px; max-width: 52ch; }
+  .ct__form { margin-top: 30px; }
+  .ct__reassure { margin-top: 14px; font-size: .85rem; color: var(--muted); }
 
-  .contact-emails { display: flex; flex-direction: column; gap: 8px; margin-top: 24px; }
-  .contact-emails a { color: var(--teal-deep); font-weight: 650; }
+  .ct__aside { display: grid; gap: 16px; position: sticky; top: 98px; }
+
+  .ct__shot {
+    position: relative; overflow: hidden;
+    border-radius: 24px 24px 96px 24px;
+    aspect-ratio: 4 / 3; box-shadow: var(--shadow-lg);
+  }
+  .ct__shot img { width: 100%; height: 100%; object-fit: cover; }
+  /* The handoff's two-stop veil (transparent -> .85) left the teal eyebrow at a
+     measured 2.95:1 over this photo. A third stop darkens the copy area without
+     covering more of the image, so the accent colour survives. */
+  .ct__shot-veil {
+    position: absolute; inset: 0;
+    background: linear-gradient(180deg,
+      rgba(15,23,42,0) 30%,
+      rgba(15,23,42,.78) 66%,
+      rgba(15,23,42,.97) 100%);
+  }
+  .ct__shot-copy { position: absolute; left: 22px; right: 22px; bottom: 20px; color: #fff; }
+  .ct__shot-eyebrow {
+    display: block; font-size: .7rem; font-weight: var(--fw-bold);
+    letter-spacing: .14em; text-transform: uppercase; color: var(--teal-bright);
+  }
+  .ct__shot-copy b {
+    display: block; margin-top: 6px;
+    font-family: var(--font-display); font-size: 1.1rem; letter-spacing: -.02em;
+  }
+
+  /* Real heading for the outline; .eyebrow supplies the look, and the two
+     properties it does not set are pinned so the h2 keeps the label face. */
+  .ct__offices-label { margin: 8px 0 0; font-family: var(--font-sans); line-height: 1.65; }
+
+  .ct__mails { display: flex; flex-direction: column; gap: 6px; margin-top: 4px; }
+  .ct__mails a { font-weight: var(--fw-semibold); }
+
+  @media (max-width: 900px) {
+    .ct__grid { grid-template-columns: 1fr; }
+    /* Sticky and the decorative photo both stop earning their place here. */
+    .ct__aside { position: static; }
+    .ct__shot { display: none; }
+  }
 </style>

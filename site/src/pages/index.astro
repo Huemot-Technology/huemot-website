@@ -571,8 +571,22 @@ const allocation = [
   .indtile--lead { grid-row: 1 / 3; }
   .indtile img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform .7s var(--ease-out-expo); }
   .indtile:hover img { transform: scale(1.04); }
-  .indtile__veil { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(15, 23, 42, 0) 35%, rgba(15, 23, 42, .88)); }
-  .indtile--lead .indtile__veil { background: linear-gradient(180deg, rgba(15, 23, 42, 0) 40%, rgba(15, 23, 42, .88)); }
+  /* Three stops rather than the handoff's two. Measured over the real photos,
+     the teal eyebrow sat at 2.72:1 on the brightest tiles (retail, logistics);
+     the extra mid stop darkens the copy area without hiding more of the image. */
+  .indtile__veil {
+    position: absolute; inset: 0;
+    background: linear-gradient(180deg,
+      rgba(15, 23, 42, 0) 28%,
+      rgba(15, 23, 42, .72) 62%,
+      rgba(15, 23, 42, .96) 100%);
+  }
+  .indtile--lead .indtile__veil {
+    background: linear-gradient(180deg,
+      rgba(15, 23, 42, 0) 34%,
+      rgba(15, 23, 42, .70) 66%,
+      rgba(15, 23, 42, .96) 100%);
+  }
   .indtile__copy { position: absolute; left: 22px; right: 22px; bottom: 20px; }
   .indtile--lead .indtile__copy { left: 28px; right: 28px; bottom: 26px; }
   .indtile__eyebrow { display: block; font-size: .68rem; font-weight: var(--fw-bold); letter-spacing: .14em; text-transform: uppercase; color: var(--teal-bright); }
