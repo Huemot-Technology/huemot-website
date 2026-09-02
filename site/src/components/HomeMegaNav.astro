@@ -1,0 +1,146 @@
+---
+// Desktop mega-nav panels for Services and Industries.
+//
+// Rendered only when <Header megaNav /> is set — the homepage is the only caller
+// today, so every other route emits the header exactly as before. Styles live in
+// the additive `.mega*` block at the foot of global.css (a shared component
+// cannot use scoped styles here without leaking them into every page bundle);
+// the script is `is:inline` for the same reason — hoisted scripts would ship on
+// routes that never render this markup.
+//
+// Route note: the design file deep-links to /services#pod, /industries#logistics
+// and friends. Those anchor ids do not exist on either page, so the hashes are
+// dropped and the links point at the routes themselves — no dead fragments.
+import { CAREERS_URL } from '../data/site.js';
+
+const engagement = [
+  { label: 'Dedicated Pod', desc: 'A ring-fenced team, yours end-to-end', href: '/engage' },
+  { label: 'Managed Project', desc: 'Fixed scope, fixed outcome, milestone billing', href: '/engage' },
+  { label: 'Staff Augmentation', desc: 'Specific skills into your team, on demand', href: '/hire-developers' },
+];
+const build = [
+  { label: 'Product Engineering', href: '/services' },
+  { label: 'AI & Automation', href: '/ai-automation' },
+  { label: 'Salesforce', href: '/salesforce' },
+  { label: 'Cloud & DevOps', href: '/services' },
+];
+const run = [
+  { label: 'Digital Transformation', href: '/services' },
+  { label: 'Managed Services', href: '/services' },
+  { label: 'QA & Automation', href: '/services' },
+  { label: 'Trust & Security', href: '/trust' },
+];
+const sectors = [
+  { label: 'Logistics & Supply Chain', note: '25M+ shipments a month, 99.99% uptime', img: 'logistics', alt: 'Warehouse shelves stacked with parcels' },
+  { label: 'Healthcare', note: 'HIPAA-ready platforms and patient portals', img: 'healthcare', alt: 'Clinician reviewing records on a tablet' },
+  { label: 'Fintech & Banking', note: 'Payments, lending and compliance at scale', img: 'fintech', alt: 'Financial market charts on a screen' },
+  { label: 'Retail & E-Commerce', note: 'Storefronts, OMS and personalization', img: 'retail', alt: 'Contactless payment at a retail checkout' },
+];
+---
+
+<div class="mega" data-mega-panel="services" hidden>
+  <div class="container mega__grid mega__grid--services">
+    <div>
+      <span class="eyebrow">Engagement Models</span>
+      <div class="mega__stack">
+        {engagement.map((i) => (
+          <a href={i.href} class="mega__item mega__item--rich">
+            <b>{i.label}</b><span>{i.desc}</span>
+          </a>
+        ))}
+      </div>
+    </div>
+    <div>
+      <span class="eyebrow">Build</span>
+      <div class="mega__stack mega__stack--tight">
+        {build.map((i) => <a href={i.href} class="mega__item">{i.label}</a>)}
+      </div>
+    </div>
+    <div>
+      <span class="eyebrow">Run</span>
+      <div class="mega__stack mega__stack--tight">
+        {run.map((i) => <a href={i.href} class="mega__item">{i.label}</a>)}
+      </div>
+    </div>
+    <a href="/process" class="mega__promo">
+      <img
+        src="/images/home/pod-laptop-800.webp"
+        alt="Engineering pod working together around a laptop"
+        width="800" height="534" loading="lazy" decoding="async"
+      />
+      <span class="mega__promo-veil"></span>
+      <span class="mega__promo-copy">
+        <span class="mega__promo-eyebrow">Our Process</span>
+        <b>From Conversation to Code in Two Weeks.</b>
+      </span>
+    </a>
+  </div>
+</div>
+
+<div class="mega" data-mega-panel="industries" hidden>
+  <div class="container mega__grid mega__grid--industries">
+    {sectors.map((s) => (
+      <a href="/industries" class="mega__sector">
+        <span class="mega__sector-shot">
+          <img
+            src={`/images/home/${s.img}-800.webp`}
+            alt={s.alt}
+            width="800" height="533" loading="lazy" decoding="async"
+          />
+        </span>
+        <b>{s.label}</b>
+        <span class="mega__sector-note">{s.note}</span>
+      </a>
+    ))}
+  </div>
+</div>
+
+<script is:inline>
+  // Hover/focus-driven mega-nav. Pointer intent opens it, leaving the header or
+  // pressing Escape closes it. Keyboard users get the same panels via focusin,
+  // so the menu is reachable without a pointer.
+  (() => {
+    const header = document.querySelector('[data-mega-root]');
+    if (!header) return;
+    const triggers = header.querySelectorAll('[data-mega-trigger]');
+    const panels = header.querySelectorAll('[data-mega-panel]');
+    // Matches the 1040px cutoff in the additive CSS — no panels on touch widths.
+    const wide = window.matchMedia('(min-width: 1041px)');
+
+    const open = (name) => {
+      if (!wide.matches) return;
+      panels.forEach((p) => { p.hidden = p.dataset.megaPanel !== name; });
+      triggers.forEach((t) =>
+        t.setAttribute('aria-expanded', String(t.dataset.megaTrigger === name))
+      );
+    };
+    const close = () => {
+      panels.forEach((p) => { p.hidden = true; });
+      triggers.forEach((t) => t.setAttribute('aria-expanded', 'false'));
+    };
+
+    triggers.forEach((t) => {
+      const name = t.dataset.megaTrigger;
+      t.addEventListener('mouseenter', () => open(name));
+      t.addEventListener('focus', () => open(name));
+    });
+    // Any other header link that gains focus or hover dismisses an open panel.
+    header.querySelectorAll('a, button').forEach((el) => {
+      if (el.dataset.megaTrigger) return;
+      if (el.closest('[data-mega-panel]')) return;
+      el.addEventListener('mouseenter', close);
+      el.addEventListener('focus', close);
+    });
+
+    header.addEventListener('mouseleave', close);
+    header.addEventListener('focusout', (e) => {
+      if (!header.contains(e.relatedTarget)) close();
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key !== 'Escape') return;
+      close();
+      document.activeElement?.blur?.();
+    });
+    wide.addEventListener('change', close);
+  })();
+</script>

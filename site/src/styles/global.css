@@ -761,3 +761,90 @@ image-slot { min-width: 0; max-width: 100%; }
 .cta-band__links { margin-top: 22px; color: var(--muted); font-size: 0.95rem; }
 .cta-band__links a { color: var(--teal-deep); font-weight: 600; }
 .cta-band__links span { margin-inline: 10px; }
+
+/* =========================================================================
+   ADDITIVE — header mega-nav (HomeMegaNav.astro).
+
+   Purely additive: every selector below needs markup that only renders under
+   <Header megaNav />. Routes that do not opt in match none of it and render
+   exactly as before. This lives in global.css rather than in the component
+   because HomeMegaNav is reached through the shared Header — a scoped <style>
+   there would be pulled into every page's CSS bundle anyway.
+   ========================================================================= */
+
+.nav__chev { width: 14px; height: 14px; opacity: .75; }
+
+.mega {
+  position: absolute;
+  left: 0; right: 0; top: 100%;
+  background: #fff;
+  border-bottom: 1px solid var(--card-border);
+  box-shadow: 0 30px 60px -30px rgba(15, 23, 42, .25);
+}
+.mega[hidden] { display: none; }
+.mega__grid { display: grid; gap: 32px; padding-block: 32px; }
+.mega__grid--services { grid-template-columns: 1.1fr 1fr 1fr 1.2fr; }
+.mega__grid--industries { grid-template-columns: repeat(4, 1fr); gap: 20px; }
+
+.mega .eyebrow { margin-bottom: 0; }
+.mega__stack { display: grid; gap: 4px; margin-top: 12px; }
+.mega__stack--tight { gap: 2px; }
+
+.mega__item {
+  display: block;
+  padding: 9px 12px;
+  border-radius: 10px;
+  color: var(--ink);
+  font-weight: 600;
+  font-size: .94rem;
+  transition: background var(--dur-fast) ease;
+}
+.mega__item:hover { background: var(--teal-wash); }
+.mega__item--rich { padding: 10px 12px; }
+.mega__item--rich b { display: block; font-weight: var(--fw-semibold); font-size: .95rem; }
+.mega__item--rich span { display: block; font-size: .84rem; font-weight: 400; color: var(--muted); }
+
+.mega__promo {
+  position: relative;
+  display: block;
+  min-height: 200px;
+  border-radius: var(--radius);
+  overflow: hidden;
+  color: #fff;
+}
+.mega__promo img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.mega__promo-veil {
+  position: absolute; inset: 0;
+  background: linear-gradient(180deg, rgba(15, 23, 42, 0) 30%, rgba(15, 23, 42, .85));
+}
+.mega__promo-copy { position: absolute; left: 18px; right: 18px; bottom: 16px; }
+.mega__promo-eyebrow {
+  display: block;
+  font-size: .7rem; font-weight: var(--fw-bold);
+  letter-spacing: .14em; text-transform: uppercase;
+  color: var(--teal-bright);
+}
+.mega__promo-copy b {
+  display: block; margin-top: 4px;
+  font-family: var(--font-display); font-size: 1.05rem; letter-spacing: -.02em;
+}
+
+.mega__sector { display: block; color: var(--ink); }
+.mega__sector-shot {
+  display: block; aspect-ratio: 16 / 9;
+  border-radius: 14px; overflow: hidden;
+}
+.mega__sector-shot img { width: 100%; height: 100%; object-fit: cover; }
+.mega__sector b {
+  display: block; margin-top: 12px;
+  font-family: var(--font-display); font-size: 1rem; letter-spacing: -.02em;
+}
+.mega__sector-note { display: block; margin-top: 3px; font-size: .84rem; color: var(--muted); }
+.mega__sector:hover b { color: var(--teal-deep); }
+
+/* The design hides the mega-nav entirely below 1040px; the existing hamburger
+   already owns navigation from 940px down. The JS guard uses the same cutoff. */
+@media (max-width: 1040px) {
+  .mega { display: none; }
+  .nav__chev { display: none; }
+}

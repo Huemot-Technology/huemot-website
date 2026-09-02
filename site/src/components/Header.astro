@@ -1,9 +1,19 @@
 ---
 import { nav } from '../data/site.js';
+import HomeMegaNav from './HomeMegaNav.astro';
+
+// `megaNav` is opt-in and defaults off: with it unset this component renders
+// exactly the markup it always has, so every route that does not ask for the
+// mega-nav is unchanged. Only the homepage opts in today.
+const { megaNav = false } = Astro.props;
 const path = Astro.url.pathname.replace(/\/$/, '') || '/';
+
+// Which nav entries grow a dropdown. Keyed by the href already in site.js so the
+// nav list itself stays the single source of truth.
+const MEGA_PANELS = { '/services': 'services', '/industries': 'industries' };
 ---
 
-<header class="hdr">
+<header class="hdr" data-mega-root={megaNav ? '' : undefined}>
   <div class="container hdr__inner">
     <a href="/" class="brand" aria-label="Huemot Technology home">
       <img src="/brand/huemot-logo-trim.png" alt="Huemot Technology" width="60" height="60" class="brand__logo" />
@@ -21,29 +31,34 @@ const path = Astro.url.pathname.replace(/\/$/, '') || '/';
 
     <nav class="nav" id="site-nav" data-nav-menu aria-label="Primary">
       <ul class="nav__list">
-        {nav.map((item) => (
-          <li>
-            <a
-              href={item.href}
-              class:list={['nav__link', { 'is-active': !item.external && path === item.href }]}
-              target={item.external ? '_blank' : undefined}
-              rel={item.external ? 'noopener noreferrer' : undefined}
-            >
-              {item.label}
-              {item.external && (
-                <svg class="ext" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                  <path d="M7 17 17 7"/><path d="M9 7h8v8"/>
-                </svg>
-              )}
-            </a>
-          </li>
-        ))}
+        {nav.map((item) => {
+          const panel = megaNav ? MEGA_PANELS[item.href] : undefined;
+          return (
+            <li>
+              <a
+                href={item.href}
+                class:list={['nav__link', { 'is-active': !item.external && path === item.href }]}
+                target={item.external ? '_blank' : undefined}
+                rel={item.external ? 'noopener noreferrer' : undefined}
+                data-mega-trigger={panel}
+                aria-expanded={panel ? 'false' : undefined}
+              >
+                {item.label}{panel && <svg class="nav__chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>}
+                {item.external && (
+                  <svg class="ext" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M7 17 17 7"/><path d="M9 7h8v8"/>
+                  </svg>
+                )}
+              </a>
+            </li>
+          );
+        })}
         <li class="nav__cta">
           <a href="/contact" class="btn btn--primary">Contact</a>
         </li>
       </ul>
     </nav>
-  </div>
+  </div>{megaNav && <HomeMegaNav />}
 </header>
 
 <style>
