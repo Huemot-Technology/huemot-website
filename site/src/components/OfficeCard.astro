@@ -1,0 +1,37 @@
+---
+// Office address card. Extracted from the pattern contact.astro already used so
+// About and Contact render offices identically from the same site.js data.
+//
+// `headingLevel` lets the caller keep a page's heading outline valid — About
+// nests these under a section h2, Contact uses them the same way.
+const { country, flag, city, address, phone, headingLevel = 'h3' } = Astro.props;
+const Heading = headingLevel;
+const telHref = `tel:${phone.replace(/[^+\d]/g, '')}`;
+---
+
+<div class="office">
+  <div class="office__top">
+    <span class="office__flag" aria-hidden="true">{flag}</span>
+    <div>
+      <Heading class="office__country">{country}</Heading>
+      <p class="office__city">{city}</p>
+    </div>
+  </div>
+  <p class="office__addr">{address}</p>
+  <a class="office__phone" href={telHref}>{phone}</a>
+</div>
+
+<style>
+  .office {
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius);
+    padding: 22px 24px;
+  }
+  .office__top { display: flex; gap: 14px; align-items: center; margin-bottom: 12px; }
+  .office__flag { font-size: 1.7rem; line-height: 1; }
+  .office__country { font-size: 1.08rem; }
+  .office__city { color: var(--muted); font-size: 0.88rem; margin-top: 2px; }
+  .office__addr { color: var(--body); line-height: 1.5; font-size: 0.95rem; }
+  .office__phone { display: inline-block; margin-top: 12px; font-weight: 650; color: var(--teal-deep); }
+</style>

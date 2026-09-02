@@ -1,27 +1,45 @@
 ---
+// About — per design_handoff_huemot_site/About.dc.html.
+// Stat values, offices, credentials and leadership all come from the existing
+// data; nothing here is a new claim.
 import BaseLayout from '../layouts/BaseLayout.astro';
-import PageHero from '../components/PageHero.astro';
-import StatCounter from '../components/StatCounter.astro';
 import PillButton from '../components/PillButton.astro';
-import { seo, offices, contact, BOOKING_URL, BOOKING_EXTERNAL } from '../data/site.js';
+import SectionHead from '../components/SectionHead.astro';
+import DarkBand from '../components/DarkBand.astro';
+import StatCounter from '../components/StatCounter.astro';
+import LeaderCard from '../components/LeaderCard.astro';
+import OfficeCard from '../components/OfficeCard.astro';
+import CTABand from '../components/CTABand.astro';
+import { seo, offices, credentials, contact, BOOKING_URL, BOOKING_EXTERNAL } from '../data/site.js';
 
-const overview = [
-  { value: 500, suffix: '+', label: 'Engineers', tone: 'teal' },
-  { value: 3, suffix: '', label: 'Global Offices', tone: 'blue' },
-  { value: 2, suffix: '', label: 'Dev Centers', tone: 'purple' },
-  { value: 25, suffix: 'K', label: 'Sq.Ft Space', tone: 'pink' },
-];
-const clientele = [
-  { value: 150, suffix: '+', label: 'Clients', tone: 'teal' },
-  { value: 15, suffix: '+', label: 'Countries', tone: 'blue' },
-  { value: 18, suffix: '+', label: 'Industry Verticals', tone: 'purple' },
-  { value: 90, suffix: '%', label: 'Client Retention', tone: 'pink' },
-];
-const track = [
-  { value: 500, suffix: '+', label: 'Projects Delivered', tone: 'teal' },
-  { value: 100, suffix: '+', label: 'Apps Published', tone: 'blue' },
-  { value: 2, suffix: 'M+', label: 'Dev Hours', tone: 'purple' },
-  { value: 50, suffix: '+', label: 'Tech Stacks', tone: 'pink' },
+const bands = [
+  {
+    label: 'Overview',
+    stats: [
+      { value: 500, suffix: '+', label: 'Engineers', tone: 'teal' },
+      { value: 3, suffix: '', label: 'Global Offices', tone: 'blue' },
+      { value: 2, suffix: '', label: 'Dev Centers', tone: 'purple' },
+      { value: 25, suffix: 'K', label: 'Sq.Ft Space', tone: 'pink' },
+    ],
+  },
+  {
+    label: 'Clientele',
+    stats: [
+      { value: 150, suffix: '+', label: 'Clients', tone: 'teal' },
+      { value: 15, suffix: '+', label: 'Countries', tone: 'blue' },
+      { value: 18, suffix: '+', label: 'Industry Verticals', tone: 'purple' },
+      { value: 90, suffix: '%', label: 'Client Retention', tone: 'pink' },
+    ],
+  },
+  {
+    label: 'Track Record',
+    stats: [
+      { value: 500, suffix: '+', label: 'Projects Delivered', tone: 'teal' },
+      { value: 100, suffix: '+', label: 'Apps Published', tone: 'blue' },
+      { value: 2, suffix: 'M+', label: 'Dev Hours', tone: 'purple' },
+      { value: 50, suffix: '+', label: 'Tech Stacks', tone: 'pink' },
+    ],
+  },
 ];
 
 const leaders = [
@@ -30,118 +48,204 @@ const leaders = [
   { name: 'Prateek Maheshwari', role: 'Director of Sales', photo: '/team/prateek.png' },
   { name: 'Niharika Sahu', role: 'Co-Founder', photo: '/team/niharika.png' },
 ];
-
-const bands = [
-  { label: 'Overview', stats: overview },
-  { label: 'Clientele', stats: clientele },
-  { label: 'Track Record', stats: track },
-];
 ---
 
 <BaseLayout title={seo.about.title} description={seo.about.description}>
-  <PageHero
-    eyebrow="About Us"
-    title="Leading by Passion. Driven by Innovation."
-    sub="Huemot Technology is a global IT consulting and software development company headquartered in Bhopal, India, with offices in the USA and Canada. We specialize in AI-led digital transformation, staff augmentation, and end-to-end product engineering across 50+ technology stacks — serving 150+ enterprises in 15+ countries."
+  <link
+    slot="head"
+    rel="preload"
+    as="image"
+    type="image/webp"
+    href="/images/home/pod-laptop-800.webp"
+    imagesrcset="/images/home/pod-laptop-800.webp 800w, /images/home/pod-laptop-1600.webp 1600w"
+    imagesizes="(max-width: 900px) 46vw, 300px"
+    fetchpriority="high"
   />
 
-  <!-- Stat bands -->
-  <section class="section">
-    <div class="container stat-bands stagger">
+  <!-- ===== HERO ===== -->
+  <section class="ahero">
+    <div class="container ahero__grid">
+      <div>
+        <span class="eyebrow rise rise-1">About Us</span>
+        <h1 class="h1 ahero__title rise rise-2">Leading by Passion. Driven by <span class="teal">Innovation.</span></h1>
+        <p class="lead ahero__lead rise rise-3">
+          Huemot Technology is a global IT consulting and software development company headquartered
+          in Bhopal, India, with offices in the USA and Canada. We specialize in AI-led digital
+          transformation, staff augmentation, and end-to-end product engineering across 50+
+          technology stacks — serving 150+ enterprises in 15+ countries.
+        </p>
+        <div class="ahero__cta rise rise-4">
+          <PillButton href={BOOKING_URL} external={BOOKING_EXTERNAL} variant="primary" size="lg">Book a Discovery Call</PillButton>
+        </div>
+      </div>
+
+      <div class="atrio rise rise-3">
+        <div class="atrio__tall">
+          <img
+            src="/images/home/pod-laptop-800.webp"
+            srcset="/images/home/pod-laptop-800.webp 800w, /images/home/pod-laptop-1600.webp 1600w"
+            sizes="(max-width: 900px) 46vw, 300px"
+            alt="Engineering team around a laptop"
+            width="800" height="534"
+            loading="eager" fetchpriority="high" decoding="async"
+          />
+        </div>
+        <div class="atrio__cell atrio__cell--top">
+          <img
+            src="/images/site/office-open-plan-800.webp"
+            srcset="/images/site/office-open-plan-800.webp 800w, /images/site/office-open-plan-1600.webp 1600w"
+            sizes="(max-width: 900px) 46vw, 280px"
+            alt="Modern open-plan office"
+            width="800" height="534"
+            loading="lazy" decoding="async"
+          />
+        </div>
+        <div class="atrio__cell atrio__cell--bottom">
+          <img
+            src="/images/site/whiteboard-800.webp"
+            srcset="/images/site/whiteboard-800.webp 800w, /images/site/whiteboard-1600.webp 1600w"
+            sizes="(max-width: 900px) 46vw, 280px"
+            alt="Planning session at a whiteboard"
+            width="800" height="533"
+            loading="lazy" decoding="async"
+          />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== STAT BANDS ===== -->
+  <DarkBand>
+    <div class="container abands">
       {bands.map((b) => (
-        <div class="stat-band reveal">
-          <span class="eyebrow">{b.label}</span>
-          <div class="grid grid-4 stat-band__grid">
-            {b.stats.map((s) => (
-              <div class="card stat-cell"><StatCounter {...s} /></div>
-            ))}
+        <div class="reveal">
+          <h2 class="eyebrow aband__label">{b.label}</h2>
+          <div class="aband__grid">
+            {b.stats.map((s) => <StatCounter {...s} />)}
           </div>
         </div>
       ))}
     </div>
-  </section>
+  </DarkBand>
 
-  <!-- Leadership -->
-  <section class="section section--band">
+  <!-- ===== LEADERSHIP ===== -->
+  <section class="section aleaders">
     <div class="container">
-      <div class="section-head reveal">
-        <span class="eyebrow">Leadership</span>
-        <h2 class="h2">The Team Behind Huemot.</h2>
-      </div>
-      <div class="grid grid-4 stagger">
+      <SectionHead eyebrow="Leadership" title="The Team Behind Huemot." />
+      <div class="aleaders__grid stagger">
         {leaders.map((l) => (
-          <article class="card card--hover leader reveal">
-            <img class="leader__photo" src={l.photo} alt={`${l.name}, ${l.role}`} width="112" height="112" loading="lazy" decoding="async" />
-            <h3 class="leader__name">{l.name}</h3>
-            <p class="leader__role">{l.role}</p>
-          </article>
+          <div class="reveal"><LeaderCard {...l} /></div>
         ))}
       </div>
     </div>
   </section>
 
-  <!-- Global presence -->
-  <section class="section">
-    <div class="container">
-      <div class="section-head reveal">
-        <span class="eyebrow">Global Presence</span>
-        <h2 class="h2">Offices Across 3 Countries.</h2>
+  <!-- ===== OFFICES ===== -->
+  <section class="section section--band">
+    <div class="container aoffices__grid">
+      <div class="aoffices__shot reveal">
+        <img
+          src="/images/site/office-towers-800.webp"
+          srcset="/images/site/office-towers-800.webp 800w, /images/site/office-towers-1600.webp 1600w"
+          sizes="(max-width: 900px) 92vw, 500px"
+          alt="Glass office towers"
+          width="800" height="533"
+          loading="lazy" decoding="async"
+        />
       </div>
-      <div class="grid grid-3 stagger">
-        {offices.map((o) => (
-          <article class="card office reveal">
-            <div class="office__top">
-              <span class="office__flag">{o.flag}</span>
-              <div>
-                <h3 class="office__country">{o.country}</h3>
-                <p class="office__city">{o.city}</p>
-              </div>
-            </div>
-            <p class="office__addr">{o.address}</p>
-            <a class="office__phone" href={`tel:${o.phone.replace(/[^+\d]/g, '')}`}>{o.phone}</a>
-          </article>
-        ))}
+      <div class="reveal">
+        <SectionHead
+          eyebrow="Global Presence"
+          title="Offices Across 3 Countries."
+          lead="25,000 sq.ft across two development centers. ISO 27001:2013 and ISO 9001:2015 certified."
+        />
+        <div class="aoffices__list">
+          {offices.map((o) => <OfficeCard {...o} />)}
+        </div>
+        <p class="aoffices__mails">
+          <a href={`mailto:${contact.email}`}>{contact.email}</a>
+          <span aria-hidden="true">|</span>
+          <a href={`mailto:${contact.careersEmail}`}>{contact.careersEmail}</a>
+        </p>
       </div>
-      <p class="about-emails">
-        <a href={`mailto:${contact.email}`}>{contact.email}</a>
-        <span aria-hidden="true">|</span>
-        <a href={`mailto:${contact.careersEmail}`}>{contact.careersEmail}</a>
-      </p>
     </div>
   </section>
 
-  <section class="section section--band text-center">
-    <div class="container">
-      <h2 class="h2">Let's build something enduring.</h2>
-      <div style="margin-top:28px;display:flex;justify-content:center">
-        <PillButton href={BOOKING_URL} external={BOOKING_EXTERNAL} variant="primary" size="lg">Book a Discovery Call</PillButton>
+  <!-- ===== CREDENTIALS ===== -->
+  <section class="section acreds">
+    <div class="container acreds__inner">
+      <h2 class="eyebrow">Credentials &amp; Partners</h2>
+      <div class="acreds__chips reveal">
+        {credentials.map((c) => <span class="chip">{c}</span>)}
       </div>
     </div>
   </section>
+
+  <CTABand
+    title="Let's Build Something Enduring."
+    lead="Book a 30-minute discovery call. We'll map your goals to a pod and a plan."
+  />
 </BaseLayout>
 
 <style>
-  .stat-bands { display: grid; gap: clamp(28px, 4vw, 44px); }
-  .stat-band__grid { margin-top: 18px; }
-  .stat-cell { padding: clamp(22px, 3vw, 32px) 16px; text-align: center; }
+  /* ---------- Hero ---------- */
+  .ahero { background: #fff; padding-block: clamp(56px, 7vw, 104px) clamp(48px, 6vw, 88px); }
+  .ahero__grid { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(32px, 5vw, 64px); align-items: center; }
+  .ahero__title { margin-top: 16px; font-size: clamp(2.4rem, 4.4vw, 4rem); letter-spacing: -.03em; line-height: 1.02; }
+  .ahero__lead { margin-top: 24px; max-width: 50ch; }
+  .ahero__cta { margin-top: 30px; }
 
-  .leader { text-align: center; }
-  .leader__photo {
-    width: 112px; height: 112px; margin: 0 auto 18px;
-    border-radius: 50%; object-fit: cover;
-    filter: drop-shadow(0 8px 18px rgba(15, 23, 42, 0.14));
+  .atrio {
+    display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr;
+    gap: 16px; height: clamp(420px, 40vw, 560px);
   }
-  .leader__name { font-size: 1.15rem; margin-bottom: 4px; }
-  .leader__role { color: var(--muted); font-size: 0.95rem; }
+  .atrio > div { overflow: hidden; box-shadow: var(--shadow-lg); }
+  .atrio img { width: 100%; height: 100%; object-fit: cover; }
+  .atrio__tall { grid-row: 1 / 3; border-radius: 24px 24px 24px 120px; }
+  .atrio__cell--top { border-radius: var(--radius-lg); }
+  .atrio__cell--bottom { border-radius: 24px 24px 120px 24px; }
 
-  .office__top { display: flex; gap: 14px; align-items: center; margin-bottom: 16px; }
-  .office__flag { font-size: 1.9rem; line-height: 1; }
-  .office__country { font-size: 1.15rem; }
-  .office__city { color: var(--muted); font-size: 0.9rem; margin-top: 2px; }
-  .office__addr { color: var(--body); line-height: 1.55; }
-  .office__phone { display: inline-block; margin-top: 14px; font-weight: 650; color: var(--teal-deep); }
+  /* ---------- Stat bands ---------- */
+  .abands { display: grid; gap: clamp(32px, 4vw, 48px); }
+  /* Real heading for the outline; .eyebrow supplies the label styling, and the
+     two properties it does not set are pinned so the h2 does not pick up the
+     display face. */
+  .aband__label { font-family: var(--font-sans); line-height: 1.65; margin-bottom: 0; }
+  .aband__grid {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px;
+    margin-top: 16px; padding-top: 18px; border-top: 1px solid var(--dark-border);
+  }
 
-  .about-emails { text-align: center; margin-top: 40px; color: var(--muted); }
-  .about-emails a { color: var(--teal-deep); font-weight: 600; }
-  .about-emails span { margin-inline: 12px; }
+  /* ---------- Leadership ---------- */
+  .aleaders { background: #fff; }
+  .aleaders__grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: clamp(16px, 2vw, 24px); margin-top: 34px; }
+
+  /* ---------- Offices ---------- */
+  .aoffices__grid { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(32px, 5vw, 72px); align-items: center; }
+  .aoffices__shot {
+    border-radius: 24px 120px 24px 24px; overflow: hidden;
+    aspect-ratio: 5 / 4; box-shadow: var(--shadow-lg);
+  }
+  .aoffices__shot img { width: 100%; height: 100%; object-fit: cover; }
+  .aoffices__list { display: grid; gap: 12px; margin-top: 28px; }
+  .aoffices__mails { margin-top: 22px; color: var(--muted); font-size: .95rem; }
+  .aoffices__mails a { font-weight: 600; }
+  .aoffices__mails span { margin-inline: 12px; }
+
+  /* ---------- Credentials ---------- */
+  .acreds { background: #fff; }
+  .acreds__inner { text-align: center; }
+  .acreds__inner .eyebrow { font-family: var(--font-sans); line-height: 1.65; margin-bottom: 0; }
+  .acreds__chips { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 18px; }
+
+  /* ---------- Breakpoints ---------- */
+  @media (max-width: 900px) {
+    .ahero__grid, .aoffices__grid { grid-template-columns: 1fr; }
+    .aband__grid { grid-template-columns: 1fr 1fr; }
+    .atrio { height: clamp(320px, 60vw, 480px); }
+  }
+  @media (max-width: 560px) {
+    .aband__grid { grid-template-columns: 1fr 1fr; }
+    .aleaders__grid { grid-template-columns: 1fr 1fr; }
+  }
 </style>

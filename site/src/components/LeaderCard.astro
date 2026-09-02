@@ -1,0 +1,28 @@
+---
+// Leadership portrait card. Extracted verbatim from the pattern about.astro
+// already used, so the redesign and any future page share one implementation.
+const { name, role, photo } = Astro.props;
+---
+
+<article class="leader">
+  <img
+    class="leader__photo"
+    src={photo}
+    alt={`${name}, ${role}`}
+    width="112" height="112"
+    loading="lazy" decoding="async"
+  />
+  <h3 class="leader__name">{name}</h3>
+  <p class="leader__role">{role}</p>
+</article>
+
+<style>
+  .leader { text-align: center; }
+  .leader__photo {
+    width: 112px; height: 112px; margin: 0 auto 18px;
+    border-radius: 50%; object-fit: cover;
+    filter: drop-shadow(0 8px 18px rgba(15, 23, 42, 0.14));
+  }
+  .leader__name { font-size: 1.15rem; margin-bottom: 4px; }
+  .leader__role { color: var(--muted); font-size: 0.95rem; }
+</style>
