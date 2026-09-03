@@ -1,12 +1,15 @@
 ---
-// Homepage — photo-led redesign per design_handoff_homepage_redesign/README.md.
+// Homepage — photo-led redesign per design_handoff_huemot_site/MarketingPage.dc.html.
 //
-// Route note: the design file links to /hire, /insights, /insights/ai-native-pods
-// and /case-studies/shipflow. None of those routes exist, and the README's own
-// constraint is to keep the hrefs already in src/data/site.js — /insights is
-// deliberately withheld under LAUNCH_SCOPE='reduced'. They are mapped to the
-// real routes here; the "All insights" link is dropped rather than pointed at a
-// 404.
+// Route notes:
+//  - Tiles and cards deep-link into /services and /case-studies, which carry the
+//    matching ids; the industries grid links to /industries#<sector>.
+//  - The design's second Featured card points at an Insights article that does
+//    not exist (/insights is withheld under LAUNCH_SCOPE='reduced'), so it goes
+//    to /ai-automation as the handoff suggests. Flagged as SAMPLE content.
+//  - The "Hire Developers" card keeps /hire-developers rather than the
+//    prototype's /services#team-augmentation — the route map sanctions it and it
+//    is the fuller page for that intent.
 import BaseLayout from '../layouts/BaseLayout.astro';
 import PillButton from '../components/PillButton.astro';
 import StatCounter from '../components/StatCounter.astro';
@@ -27,7 +30,7 @@ const featured = [
     kind: 'Case Study',
     title: '25M+ Shipments. 99.99% Uptime.',
     body: "How a 25-member pod re-architected ShipFlow's monolith into microservices on Kubernetes — without a single missed peak season.",
-    href: '/case-studies',
+    href: '/case-studies#shipflow',
     img: 'port',
     alt: 'Container port at dusk',
   },
@@ -49,18 +52,19 @@ const featured = [
   },
 ];
 
+// Each tile deep-links to its offering on /services, which carries matching ids.
 const engageTiles = [
-  { t: 'Team Augmentation', d: 'Battle-tested engineers across 50+ stacks. Agile and on demand — zero operational overhead.' },
-  { t: 'Product Engineering', d: 'Full-cycle product development from ideation to launch, run by Agile Pods.' },
-  { t: 'Digital Transformation', d: 'Consulting, optimization and automation powered by AI and Gen-AI.' },
-  { t: 'Managed Services', d: 'SLA-driven 24x7 support and governance that runs business-as-usual.' },
+  { t: 'Team Augmentation', d: 'Battle-tested engineers across 50+ stacks. Agile and on demand — zero operational overhead.', href: '/services#team-augmentation' },
+  { t: 'Product Engineering', d: 'Full-cycle product development from ideation to launch, run by Agile Pods.', href: '/services#product-engineering' },
+  { t: 'Digital Transformation', d: 'Consulting, optimization and automation powered by AI and Gen-AI.', href: '/services#digital-transformation' },
+  { t: 'Managed Services', d: 'SLA-driven 24x7 support and governance that runs business-as-usual.', href: '/services#managed-services' },
 ];
 
 const sectors = [
-  { eyebrow: 'Healthcare', title: 'HIPAA-Ready Patient Platforms.', img: 'healthcare', alt: 'Clinician reviewing records on a tablet' },
-  { eyebrow: 'Fintech & Banking', title: 'Payments and Lending at Scale.', img: 'fintech', alt: 'Trading charts on screens' },
-  { eyebrow: 'Retail & E-Commerce', title: 'Storefronts, OMS and Personalization.', img: 'retail', alt: 'Contactless payment at a retail checkout' },
-  { eyebrow: 'SaaS & Platforms', title: 'Multi-Tenant, Multi-Region, Always On.', img: 'saas', alt: 'Global network lit up over the earth at night' },
+  { eyebrow: 'Healthcare', title: 'HIPAA-Ready Patient Platforms.', img: 'healthcare', alt: 'Clinician reviewing records on a tablet', href: '/industries#healthcare' },
+  { eyebrow: 'Fintech & Banking', title: 'Payments and Lending at Scale.', img: 'fintech', alt: 'Trading charts on screens', href: '/industries#fintech' },
+  { eyebrow: 'Retail & E-Commerce', title: 'Storefronts, OMS and Personalization.', img: 'retail', alt: 'Contactless payment at a retail checkout', href: '/industries#retail' },
+  { eyebrow: 'SaaS & Platforms', title: 'Multi-Tenant, Multi-Region, Always On.', img: 'saas', alt: 'Global network lit up over the earth at night', href: '/industries#saas' },
 ];
 
 const caseMetrics = [
@@ -91,7 +95,7 @@ const allocation = [
 ];
 ---
 
-<BaseLayout title={seo.home.title} description={seo.home.description} megaNav>
+<BaseLayout title={seo.home.title} description={seo.home.description}>
   <!-- LCP is the first hero tile; preload it so it is not discovered late. -->
   <link
     slot="head"
@@ -246,7 +250,7 @@ const allocation = [
         </p>
         <div class="hwwd__tiles">
           {engageTiles.map((x) => (
-            <a href="/services" class="etile">
+            <a href={x.href} class="etile">
               <b class="etile__t">{x.t}</b>
               <span class="etile__d">{x.d}</span>
             </a>
@@ -274,7 +278,7 @@ const allocation = [
       </div>
 
       <div class="indgrid stagger">
-        <a href="/industries" class="indtile indtile--lead reveal">
+        <a href="/industries#logistics" class="indtile indtile--lead reveal">
           <img
             src="/images/home/logistics-800.webp"
             srcset="/images/home/logistics-800.webp 800w, /images/home/logistics-1600.webp 1600w"
@@ -292,7 +296,7 @@ const allocation = [
         </a>
 
         {sectors.map((s) => (
-          <a href="/industries" class="indtile reveal">
+          <a href={s.href} class="indtile reveal">
             <img
               src={`/images/home/${s.img}-800.webp`}
               srcset={`/images/home/${s.img}-800.webp 800w, /images/home/${s.img}-1600.webp 1600w`}
@@ -331,7 +335,7 @@ const allocation = [
           {caseMetrics.map((m) => <StatCounter {...m} />)}
         </div>
         <div class="hcase__btn">
-          <PillButton href="/case-studies" variant="primary">Read the Case Study</PillButton>
+          <PillButton href="/case-studies#shipflow" variant="primary">Read the Case Study</PillButton>
         </div>
       </div>
 
@@ -567,8 +571,22 @@ const allocation = [
   .indtile--lead { grid-row: 1 / 3; }
   .indtile img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform .7s var(--ease-out-expo); }
   .indtile:hover img { transform: scale(1.04); }
-  .indtile__veil { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(15, 23, 42, 0) 35%, rgba(15, 23, 42, .88)); }
-  .indtile--lead .indtile__veil { background: linear-gradient(180deg, rgba(15, 23, 42, 0) 40%, rgba(15, 23, 42, .88)); }
+  /* Three stops rather than the handoff's two. Measured over the real photos,
+     the teal eyebrow sat at 2.72:1 on the brightest tiles (retail, logistics);
+     the extra mid stop darkens the copy area without hiding more of the image. */
+  .indtile__veil {
+    position: absolute; inset: 0;
+    background: linear-gradient(180deg,
+      rgba(15, 23, 42, 0) 28%,
+      rgba(15, 23, 42, .72) 62%,
+      rgba(15, 23, 42, .96) 100%);
+  }
+  .indtile--lead .indtile__veil {
+    background: linear-gradient(180deg,
+      rgba(15, 23, 42, 0) 34%,
+      rgba(15, 23, 42, .70) 66%,
+      rgba(15, 23, 42, .96) 100%);
+  }
   .indtile__copy { position: absolute; left: 22px; right: 22px; bottom: 20px; }
   .indtile--lead .indtile__copy { left: 28px; right: 28px; bottom: 26px; }
   .indtile__eyebrow { display: block; font-size: .68rem; font-weight: var(--fw-bold); letter-spacing: .14em; text-transform: uppercase; color: var(--teal-bright); }

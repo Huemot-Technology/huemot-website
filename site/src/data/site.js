@@ -22,8 +22,33 @@ const CALENDAR_URL = import.meta.env.PUBLIC_HUEMOT_CALENDAR_URL || '';
 export const BOOKING_URL = CALENDAR_URL || '/contact';
 export const BOOKING_EXTERNAL = Boolean(CALENDAR_URL);
 
-// Primary header nav — deliberately held to seven items.
+// Primary header nav.
+//
+// `mega` is optional: an item carrying it grows a dropdown panel in the header
+// (see components/SiteMegaNav.astro). The value names the panel; items without
+// it render exactly as before, so the nav list stays the single source of truth
+// and nothing about the mega-nav is hard-coded into the header markup.
+//
+// Careers is deliberately NOT in this list — the header renders it as a
+// separate external link beside the Contact button. It is still carried in
+// footerLinks below.
 export const nav = [
+  { label: 'Services', href: '/services', mega: 'services' },
+  { label: 'Industries', href: '/industries', mega: 'industries' },
+  { label: 'Hire Developers', href: '/hire-developers' },
+  { label: 'How We Engage', href: '/engage' },
+  { label: 'Case Studies', href: '/case-studies' },
+  { label: 'About', href: '/about' },
+];
+
+// Footer carries everything in the header plus the routes held out of it.
+//
+// Listed explicitly rather than spread from `nav`. The header nav is now
+// ordered for the redesign (and drops Our Process and Careers), but the footer
+// is a sitemap — reshuffling it on every page as a side effect of a nav tweak
+// is not wanted, so its order is pinned here and stays independent.
+// /insights is deliberately absent — withheld under the reduced launch scope.
+export const footerLinks = [
   { label: 'About', href: '/about' },
   { label: 'Services', href: '/services' },
   { label: 'Industries', href: '/industries' },
@@ -31,12 +56,6 @@ export const nav = [
   { label: 'Our Process', href: '/process' },
   { label: 'Case Studies', href: '/case-studies' },
   { label: 'Careers', href: CAREERS_URL, external: true },
-];
-
-// Footer carries everything in the header plus the routes held out of it.
-// /insights is deliberately absent — withheld under the reduced launch scope.
-export const footerLinks = [
-  ...nav,
   { label: 'Salesforce', href: '/salesforce' },
   { label: 'AI & Automation', href: '/ai-automation' },
   { label: 'How We Engage', href: '/engage' },

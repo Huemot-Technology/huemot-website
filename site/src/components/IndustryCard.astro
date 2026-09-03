@@ -1,7 +1,9 @@
 ---
-const { name, description, stats = [], href = '#' } = Astro.props;
+// `id` is optional and omitted when unset, so existing callers render exactly as
+// before. /industries uses it to expose anchor targets for the homepage links.
+const { name, description, stats = [], href = '#', id } = Astro.props;
 ---
-<a class="ind reveal" href={href}>
+<a class="ind reveal" href={href} id={id}>
   <span class="ind__glow"></span>
   <span class="ind__t">{name}</span>
   <span class="ind__d" style="display:block">{description}</span>

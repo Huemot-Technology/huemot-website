@@ -1,14 +1,41 @@
 ---
+// Services — per design_handoff_huemot_site/Services.dc.html.
+//
+// Absorbs the "how we engage" story into the #engage band while /engage stays
+// live as its own route (footer + SEO), so both entry points work.
 import BaseLayout from '../layouts/BaseLayout.astro';
-import PageHero from '../components/PageHero.astro';
 import PillButton from '../components/PillButton.astro';
-import { seo } from '../data/site.js';
+import SectionHead from '../components/SectionHead.astro';
+import DarkBand from '../components/DarkBand.astro';
+import LinkArrow from '../components/LinkArrow.astro';
+import CTABand from '../components/CTABand.astro';
+import { seo, BOOKING_URL, BOOKING_EXTERNAL } from '../data/site.js';
 
 const core = [
-  { id: 'team-augmentation', t: 'Team Augmentation', d: 'Dedicated, battle-tested teams across 50+ stacks to supercharge your development. Agile and on demand — zero operational overhead.' },
-  { id: 'product-engineering', t: 'Product Engineering', d: 'End-to-end, full-cycle product development from ideation to launch. Unique Agile Pods that ship robust, scalable, intuitive products.' },
-  { id: 'digital-transformation', t: 'Digital Transformation', d: 'Unlock value with consulting, optimization, and automation powered by AI and Gen-AI. Helping enterprises thrive in modern ecosystems.' },
-  { id: 'managed-services', t: 'Managed Services', d: 'SLA-driven IMS to run business-as-usual. 24x7 support, governance, and deep technology expertise that optimizes processes and cuts cost.' },
+  {
+    id: 'team-augmentation', kind: 'Hire Developers', t: 'Team Augmentation',
+    d: 'Dedicated, battle-tested teams across 50+ stacks to supercharge your development. Agile and on demand — zero operational overhead.',
+    img: 'working-session', alt: 'Team in a working session around a table',
+    link: { href: '/contact', label: 'Request profiles' },
+  },
+  {
+    id: 'product-engineering', kind: 'Build', t: 'Product Engineering',
+    d: 'End-to-end, full-cycle product development from ideation to launch. Unique Agile Pods that ship robust, scalable, intuitive products.',
+    img: 'code-screen', alt: 'Code on a laptop screen',
+    link: { href: '/case-studies', label: 'See the work' },
+  },
+  {
+    id: 'digital-transformation', kind: 'Transform', t: 'Digital Transformation',
+    d: 'Unlock value with consulting, optimization, and automation powered by AI and Gen-AI. Helping enterprises thrive in modern ecosystems.',
+    img: 'circuit', alt: 'Close-up of a circuit board',
+    link: { href: '#practices', label: 'Our practices' },
+  },
+  {
+    id: 'managed-services', kind: 'Run', t: 'Managed Services',
+    d: 'SLA-driven IMS to run business-as-usual. 24x7 support, governance, and deep technology expertise that optimizes processes and cuts cost.',
+    img: 'datacenter', alt: 'Data center corridor',
+    link: { href: '/contact', label: 'Talk to us' },
+  },
 ];
 
 const practices = [
@@ -36,32 +63,84 @@ const tech = [
   { cat: 'E-commerce', items: 'Magento, Shopify, WooCommerce, BigCommerce, Custom' },
   { cat: 'DevOps', items: 'Jenkins, GitLab CI, Ansible, Terraform, Puppet, Chef' },
 ];
+
+const models = [
+  { t: 'Dedicated Pod', d: 'A ring-fenced team that works as an extension of yours. Best for long-running products and roadmaps.' },
+  { t: 'Managed Project', d: 'Fixed-scope, fixed-outcome delivery with milestone billing. Best for well-defined builds.' },
+  { t: 'Staff Augmentation', d: 'Plug specific skills into your existing team on demand. Best for capacity and niche expertise.' },
+];
+
+const timeline = [
+  { n: 1, when: 'Day 0–2', what: 'Discovery & scoping' },
+  { n: 2, when: 'Day 3–5', what: 'Team match & SOW' },
+  { n: 3, when: 'Day 6–10', what: 'Onboarding & access' },
+  { n: 4, when: 'Day 14', what: 'Sprint zero — building' },
+];
 ---
 
 <BaseLayout title={seo.services.title} description={seo.services.description}>
-  <PageHero
-    eyebrow="Our Services"
-    title="Full-Spectrum Engineering."
-    sub="Four ways to engage. Eight practices. Fifty-plus technologies."
+  <link
+    slot="head"
+    rel="preload"
+    as="image"
+    type="image/webp"
+    href="/images/home/engineer-code-1600.webp"
+    imagesrcset="/images/home/engineer-code-800.webp 800w, /images/home/engineer-code-1600.webp 1600w"
+    imagesizes="100vw"
+    fetchpriority="high"
   />
 
-  <!-- Core offerings -->
-  <section class="section">
+  <!-- ===== DARK PHOTO HERO ===== -->
+  <section class="shero">
+    <img
+      class="shero__bg"
+      src="/images/home/engineer-code-1600.webp"
+      srcset="/images/home/engineer-code-800.webp 800w, /images/home/engineer-code-1600.webp 1600w"
+      sizes="100vw"
+      alt="Engineer reviewing code on two screens"
+      width="1600" height="1068"
+      loading="eager" fetchpriority="high" decoding="async"
+    />
+    <span class="shero__veil"></span>
+    <div class="container shero__inner">
+      <span class="eyebrow shero__eyebrow">Our Services</span>
+      <h1 class="h1 shero__title">Full-Spectrum <span class="shero__accent">Engineering.</span></h1>
+      <p class="lead shero__lead">
+        Four ways to engage. Eight practices. Fifty-plus technologies. One accountable pod.
+      </p>
+      <div class="shero__cta">
+        <PillButton href={BOOKING_URL} external={BOOKING_EXTERNAL} variant="primary" size="lg">Book a Discovery Call</PillButton>
+        <a href="#engage" class="shero__ghost">How We Engage</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CORE OFFERINGS ===== -->
+  <section class="section svc-core" id="core">
     <div class="container">
-      {/* Every other section on this page is introduced by an h2; this one is
-          deliberately untitled in the design, which left the card h3s following
-          the hero h1 directly and skipping a level. A visually hidden h2 gives
-          the group a name for screen readers without changing the layout. */}
-      <h2 class="sr-only">Ways to engage</h2>
-      <div class="grid grid-2 stagger">
+      <SectionHead
+        eyebrow="What We Do"
+        title="Built to Out-Execute, Not Just Out-Staff."
+        lead="You get a cohesive, accountable team — not a stack of resumes."
+      />
+      <div class="svc-grid stagger">
         {core.map((c) => (
-          <article class="card card--hover do-card reveal" id={c.id}>
-            <div class="do-card__icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="m5 13 4 4L19 7"/></svg>
-            </div>
-            <div>
-              <h3 class="h3">{c.t}</h3>
-              <p>{c.d}</p>
+          <article class="svc-card reveal" id={c.id}>
+            <span class="svc-card__shot">
+              <img
+                src={`/images/home/${c.img}-800.webp`}
+                srcset={`/images/home/${c.img}-800.webp 800w, /images/home/${c.img}-1600.webp 1600w`}
+                sizes="(max-width: 560px) 92vw, (max-width: 900px) 92vw, 560px"
+                alt={c.alt}
+                width="800" height="343"
+                loading="lazy" decoding="async"
+              />
+            </span>
+            <div class="svc-card__body">
+              <span class="svc-card__kind">{c.kind}</span>
+              <h3 class="h3 svc-card__t">{c.t}</h3>
+              <p class="svc-card__d">{c.d}</p>
+              <div class="svc-card__link"><LinkArrow href={c.link.href}>{c.link.label}</LinkArrow></div>
             </div>
           </article>
         ))}
@@ -69,18 +148,15 @@ const tech = [
     </div>
   </section>
 
-  <!-- Engineering practices -->
-  <section class="section section--band">
+  <!-- ===== PRACTICES ===== -->
+  <section class="section section--band svc-practices" id="practices">
     <div class="container">
-      <div class="section-head reveal">
-        <span class="eyebrow">Engineering Practices</span>
-        <h2 class="h2">Ten Practices Accelerating Digital Outcomes.</h2>
-      </div>
-      <div class="grid grid-4 practices stagger">
+      <SectionHead eyebrow="Engineering Practices" title="Eight Practices Accelerating Digital Outcomes." />
+      <div class="prac-grid stagger">
         {practices.map((p) => (
-          <article class="card card--hover practice reveal">
-            <h3 class="practice__t">{p.t}</h3>
-            <ul>
+          <article class="prac reveal">
+            <h3 class="prac__t">{p.t}</h3>
+            <ul class="prac__list">
               {p.items.map((i) => <li>{i}</li>)}
             </ul>
           </article>
@@ -89,121 +165,141 @@ const tech = [
     </div>
   </section>
 
-  <!-- Technology expertise — interactive tabs -->
-  <section class="section">
-    <div class="container">
-      <div class="section-head reveal">
-        <span class="eyebrow">Our Expertise</span>
-        <h2 class="h2">Experts Across 50+ Technologies.</h2>
-        <p class="lead" style="margin-top:16px">Pick a domain to see the stacks our pods ship with every day.</p>
+  <!-- ===== TECH TABS ===== -->
+  <section class="section svc-tech">
+    <div class="container svc-tech__grid" data-techx>
+      <div class="reveal">
+        <SectionHead
+          eyebrow="Our Expertise"
+          title="Experts Across 50+ Technologies."
+          lead="Pick a domain to see the stacks our pods ship with every day."
+        />
+        <div class="svc-tech__figure">
+          <div class="svc-tech__shot">
+            <img
+              src="/images/home/pairing-800.webp"
+              srcset="/images/home/pairing-800.webp 800w, /images/home/pairing-1600.webp 1600w"
+              sizes="(max-width: 900px) 92vw, 500px"
+              alt="Two engineers pairing at a desk"
+              width="800" height="600"
+              loading="lazy" decoding="async"
+            />
+          </div>
+          <div class="svc-tech__float">
+            <span>
+              <b class="svc-tech__big">50+</b>
+              <span class="svc-tech__small">technology stacks</span>
+            </span>
+          </div>
+        </div>
       </div>
 
-      <div class="techx reveal" data-techx>
+      <div class="reveal">
         <div class="techx__tabs" role="tablist" aria-label="Technology domains">
           {tech.map((t, i) => (
             <button
-              class:list={['techx__tab', { 'is-active': i === 0 }]}
-              role="tab"
               type="button"
+              role="tab"
               id={`techtab-${i}`}
               aria-selected={i === 0 ? 'true' : 'false'}
               aria-controls={`techpanel-${i}`}
+              tabindex={i === 0 ? 0 : -1}
+              class:list={['techx__tab', { 'is-active': i === 0 }]}
               data-techx-tab={i}
             >{t.cat}</button>
           ))}
         </div>
-
-        <div class="techx__panels card">
-          {tech.map((t, i) => (
-            <div
-              class:list={['techx__panel', { 'is-active': i === 0 }]}
-              role="tabpanel"
-              id={`techpanel-${i}`}
-              aria-labelledby={`techtab-${i}`}
-              data-techx-panel={i}
-              hidden={i !== 0}
-            >
-              <div class="techx__panel-head">
-                <h3 class="techx__cat">{t.cat}</h3>
-                <span class="techx__count">{t.items.split(', ').length} technologies</span>
+        <div class="techx__panels">
+          {tech.map((t, i) => {
+            const items = t.items.split(', ');
+            return (
+              <div
+                id={`techpanel-${i}`}
+                role="tabpanel"
+                aria-labelledby={`techtab-${i}`}
+                class:list={['techx__panel', { 'is-active': i === 0 }]}
+                data-techx-panel={i}
+                hidden={i !== 0}
+              >
+                <div class="techx__head">
+                  <h3 class="techx__cat">{t.cat}</h3>
+                  <span class="techx__count">{items.length} technologies</span>
+                </div>
+                <div class="techx__chips">
+                  {items.map((k) => <span class="chip">{k}</span>)}
+                </div>
               </div>
-              <div class="techx__chips">
-                {t.items.split(', ').map((k) => <span class="chip">{k}</span>)}
-              </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
     </div>
   </section>
 
-  <!-- CTA -->
-  <section class="section section--band text-center">
+  <!-- ===== HOW WE ENGAGE =====
+       DarkBand forwards only class/style, so the anchor lives on a wrapper
+       rather than changing a component five other pages render. -->
+  <div id="engage" class="svc-engage-anchor">
+  <DarkBand>
     <div class="container">
-      <h2 class="h2">Not sure where to start?</h2>
-      <div style="margin-top:28px;display:flex;justify-content:center">
-        <PillButton href="/contact" variant="primary" size="lg">Book a discovery call</PillButton>
+      <div class="svc-engage__grid">
+        <div class="reveal">
+          <span class="eyebrow">How We Engage</span>
+          <h2 class="h2 svc-engage__h2">From Conversation to Code in 2 Weeks.</h2>
+          <p class="lead svc-engage__lead">
+            Flexible commercial models and a fast, low-risk onboarding path. Scale up or down within
+            two weeks.
+          </p>
+          <div class="models">
+            {models.map((m) => (
+              <div class="model">
+                <span class="model__icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+                </span>
+                <span>
+                  <b class="model__t">{m.t}</b>
+                  <span class="model__d">{m.d}</span>
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
+        <div class="svc-engage__shot reveal">
+          <img
+            src="/images/home/standup-800.webp"
+            srcset="/images/home/standup-800.webp 800w, /images/home/standup-1600.webp 1600w"
+            sizes="(max-width: 900px) 92vw, 500px"
+            alt="Team in a standing meeting"
+            width="800" height="840"
+            loading="lazy" decoding="async"
+          />
+        </div>
       </div>
+
+      <ol class="stepline reveal">
+        {timeline.map((t) => (
+          <li class="stepline__item">
+            <span class="stepline__n">{t.n}</span>
+            <span>
+              <b class="stepline__when">{t.when}</b>
+              <span class="stepline__what">{t.what}</span>
+            </span>
+          </li>
+        ))}
+      </ol>
     </div>
-  </section>
+  </DarkBand>
+  </div>
+
+  <CTABand
+    eyebrow="Let's Build Together"
+    title="Not Sure Where to Start?"
+    lead="Thirty minutes. We'll map your goals to a pod and a plan."
+  />
 </BaseLayout>
 
-<style>
-  .do-card { display: flex; gap: 18px; align-items: flex-start; scroll-margin-top: 96px; }
-  .do-card__icon {
-    flex: none; width: 46px; height: 46px; border-radius: 12px;
-    display: grid; place-items: center; color: var(--teal-deep);
-    background: var(--teal-wash); border: 1px solid var(--teal-wash-2);
-  }
-  .do-card__icon svg { width: 24px; height: 24px; }
-  .do-card h3 { margin-bottom: 8px; }
-
-  .practice__t { font-size: 1.08rem; margin-bottom: 14px; }
-  .practice ul { list-style: none; margin: 0; padding: 0; }
-  .practice li {
-    position: relative; padding-left: 18px; margin-bottom: 9px;
-    font-size: 0.92rem; color: var(--body); line-height: 1.45;
-  }
-  .practice li::before {
-    content: ''; position: absolute; left: 0; top: 0.55em;
-    width: 6px; height: 6px; border-radius: 50%; background: var(--teal);
-  }
-
-  /* Interactive tech tabs */
-  .techx__tabs {
-    display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 22px;
-  }
-  .techx__tab {
-    font: inherit; font-size: 0.92rem; font-weight: 600; cursor: pointer;
-    padding: 0.55em 1.1em; border-radius: var(--radius-pill);
-    background: #fff; color: var(--ink-soft);
-    border: 1px solid var(--card-border);
-    transition: background 0.18s ease, color 0.18s ease, border-color 0.18s ease, transform 0.18s ease;
-  }
-  .techx__tab:hover { border-color: var(--teal); color: var(--teal-deep); transform: translateY(-1px); }
-  .techx__tab.is-active {
-    background: var(--teal-solid); color: #fff; border-color: var(--teal-solid);
-    box-shadow: var(--shadow-teal);
-  }
-  .techx__panels { padding: clamp(24px, 3vw, 36px); min-height: 180px; }
-  .techx__panel { animation: techfade 0.35s cubic-bezier(0.22,1,0.36,1); }
-  .techx__panel[hidden] { display: none; }
-  .techx__panel-head {
-    display: flex; align-items: baseline; justify-content: space-between; gap: 12px;
-    margin-bottom: 20px; padding-bottom: 16px; border-bottom: 1px solid var(--card-border);
-  }
-  .techx__cat { font-size: 1.3rem; }
-  .techx__count {
-    font-size: 0.78rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
-    color: var(--teal-ink); background: var(--teal-wash); padding: 5px 11px; border-radius: 999px;
-  }
-  .techx__chips { display: flex; flex-wrap: wrap; gap: 10px; }
-  .techx__chips .chip { font-size: 0.95rem; }
-  @keyframes techfade { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
-  @media (prefers-reduced-motion: reduce) { .techx__panel { animation: none; } }
-</style>
-
 <script>
+  // Roving tablist — unchanged behaviour, carried over from the previous page.
   document.querySelectorAll('[data-techx]').forEach((root) => {
     const tabs = root.querySelectorAll('[data-techx-tab]');
     const panels = root.querySelectorAll('[data-techx-panel]');
@@ -212,6 +308,7 @@ const tech = [
         const on = t.dataset.techxTab === String(idx);
         t.classList.toggle('is-active', on);
         t.setAttribute('aria-selected', on ? 'true' : 'false');
+        t.tabIndex = on ? 0 : -1;
       });
       panels.forEach((p) => {
         const on = p.dataset.techxPanel === String(idx);
@@ -232,3 +329,163 @@ const tech = [
     });
   });
 </script>
+
+<style>
+  /* ---------- Dark photo hero ---------- */
+  .shero { position: relative; overflow: hidden; background: var(--dark-bg); color: #fff; }
+  .shero__bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.55; }
+  .shero__veil {
+    position: absolute; inset: 0;
+    background: linear-gradient(90deg, rgba(15,23,42,.96) 0%, rgba(15,23,42,.8) 50%, rgba(15,23,42,.35) 100%);
+  }
+  .shero__inner { position: relative; padding-block: clamp(72px, 9vw, 128px) clamp(56px, 7vw, 96px); }
+  .shero__eyebrow { color: var(--teal-bright); }
+  .shero__title {
+    margin-top: 16px; max-width: 14ch; color: #fff;
+    font-size: clamp(2.4rem, 4.6vw, 4.2rem); letter-spacing: -.03em; line-height: 1.02;
+  }
+  .shero__accent { color: var(--teal-bright); }
+  .shero__lead { margin-top: 22px; max-width: 46ch; color: rgba(255,255,255,.82); }
+  .shero__cta { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 32px; }
+  .shero__ghost {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 14px 22px; border-radius: var(--radius-pill);
+    border: 1px solid rgba(255,255,255,.35); color: #fff; font-weight: var(--fw-semibold);
+    transition: background var(--dur-base) ease;
+  }
+  .shero__ghost:hover { background: rgba(255,255,255,.1); }
+
+  /* ---------- Core offerings ---------- */
+  .svc-core { background: #fff; }
+  .svc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(16px, 2vw, 24px); margin-top: 36px; }
+  .svc-card {
+    display: flex; flex-direction: column;
+    background: var(--card); border: 1px solid var(--card-border);
+    border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow);
+    scroll-margin-top: 96px;
+    transition: transform var(--dur-card) var(--ease-out-expo), box-shadow var(--dur-card) ease;
+  }
+  .svc-card:hover { transform: translateY(var(--lift-card)); box-shadow: var(--shadow-lg); }
+  .svc-card__shot { display: block; aspect-ratio: 21 / 9; overflow: hidden; }
+  .svc-card__shot img { width: 100%; height: 100%; object-fit: cover; }
+  .svc-card__body { padding: 26px 28px 30px; }
+  .svc-card__kind {
+    font-size: .68rem; font-weight: var(--fw-black); letter-spacing: var(--ls-label);
+    text-transform: uppercase; color: var(--teal-deep);
+  }
+  .svc-card__t { margin-top: 8px; }
+  .svc-card__d { margin-top: 10px; color: var(--body); }
+  .svc-card__link { margin-top: 18px; }
+
+  /* ---------- Practices ---------- */
+  .prac-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: clamp(14px, 1.6vw, 20px); margin-top: 34px; }
+  .prac {
+    background: var(--card); border: 1px solid var(--card-border);
+    border-radius: var(--radius-lg); padding: 24px 24px 26px; box-shadow: var(--shadow);
+  }
+  .prac__t { font-family: var(--font-display); font-size: 1.08rem; letter-spacing: -.02em; color: var(--ink); }
+  .prac__list { list-style: none; margin: 14px 0 0; padding: 0; display: grid; gap: 9px; }
+  .prac__list li {
+    position: relative; padding-left: 18px;
+    font-size: .92rem; color: var(--body); line-height: 1.45;
+  }
+  .prac__list li::before {
+    content: ''; position: absolute; left: 0; top: .5em;
+    width: 6px; height: 6px; border-radius: 50%; background: var(--teal);
+  }
+
+  /* ---------- Tech tabs ---------- */
+  .svc-tech { background: #fff; }
+  .svc-tech__grid { display: grid; grid-template-columns: 1fr 1.1fr; gap: clamp(32px, 5vw, 72px); align-items: start; }
+  .svc-tech__figure { position: relative; margin-top: 30px; }
+  .svc-tech__shot {
+    border-radius: 24px 24px 96px 24px; overflow: hidden;
+    aspect-ratio: 4 / 3; box-shadow: var(--shadow-lg);
+  }
+  .svc-tech__shot img { width: 100%; height: 100%; object-fit: cover; }
+  .svc-tech__float {
+    position: absolute; right: -16px; bottom: 32px;
+    display: flex; align-items: center; gap: 14px;
+    background: #fff; border: 1px solid var(--card-border);
+    border-radius: var(--radius); box-shadow: var(--shadow-lg); padding: 16px 20px;
+  }
+  .svc-tech__big {
+    display: block; font-family: var(--font-display); font-size: 1.4rem;
+    font-weight: var(--fw-black); letter-spacing: -.03em; color: var(--ink);
+  }
+  .svc-tech__small {
+    display: block; font-size: .72rem; font-weight: 600;
+    letter-spacing: .06em; text-transform: uppercase; color: var(--muted);
+  }
+  .techx__panels {
+    margin-top: 22px; background: var(--card); border: 1px solid var(--card-border);
+    border-radius: var(--radius-lg); box-shadow: var(--shadow);
+    padding: clamp(24px, 3vw, 36px); min-height: 220px;
+  }
+  .techx__head {
+    display: flex; align-items: baseline; justify-content: space-between; gap: 12px;
+    padding-bottom: 16px; border-bottom: 1px solid var(--card-border);
+  }
+  .techx__cat { font-family: var(--font-display); font-size: 1.3rem; letter-spacing: -.02em; color: var(--ink); }
+  .techx__count {
+    flex: none; font-size: .78rem; font-weight: var(--fw-bold);
+    letter-spacing: .06em; text-transform: uppercase;
+    color: var(--teal-ink); background: var(--teal-wash);
+    padding: 5px 11px; border-radius: var(--radius-pill);
+  }
+  .techx__chips { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px; }
+
+  /* ---------- How we engage ---------- */
+  .svc-engage-anchor { scroll-margin-top: 80px; }
+  .svc-engage__grid { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(32px, 5vw, 72px); align-items: center; }
+  .svc-engage__h2 { margin-top: 14px; }
+  .svc-engage__lead { margin-top: 18px; max-width: 50ch; }
+  .svc-engage__shot {
+    border-radius: 96px 24px 24px 24px; overflow: hidden;
+    aspect-ratio: 4 / 4.2; box-shadow: 0 40px 80px -30px rgba(0,0,0,.7);
+  }
+  .svc-engage__shot img { width: 100%; height: 100%; object-fit: cover; }
+
+  .models { display: grid; gap: 12px; margin-top: 30px; }
+  .model {
+    display: grid; grid-template-columns: auto 1fr; gap: 16px;
+    padding: 18px 20px; border: 1px solid var(--dark-border);
+    border-radius: var(--radius); background: rgba(255,255,255,.04);
+  }
+  .model__icon {
+    width: 40px; height: 40px; border-radius: 12px; display: grid; place-items: center;
+    background: rgba(20,184,166,.15); color: var(--teal-bright);
+  }
+  .model__icon svg { width: 20px; height: 20px; }
+  .model__t { display: block; font-family: var(--font-display); font-size: 1.05rem; letter-spacing: -.02em; }
+  .model__d { display: block; margin-top: 4px; font-size: .93rem; opacity: .8; }
+
+  .stepline {
+    list-style: none; margin: clamp(40px, 5vw, 64px) 0 0;
+    padding: clamp(24px, 3vw, 36px) 0 0; border-top: 1px solid var(--dark-border);
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px;
+  }
+  .stepline__item { display: grid; grid-template-columns: 44px 1fr; gap: 14px; align-items: start; }
+  .stepline__n {
+    width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center;
+    font-family: var(--font-display); font-weight: var(--fw-black); color: #fff;
+    background: var(--teal-fill);
+  }
+  .stepline__when { display: block; color: var(--teal-bright); font-size: .95rem; }
+  .stepline__what { display: block; margin-top: 4px; font-weight: var(--fw-medium); }
+
+  /* ---------- Breakpoints ---------- */
+  @media (max-width: 900px) {
+    .svc-tech__grid, .svc-engage__grid { grid-template-columns: 1fr; }
+    .prac-grid { grid-template-columns: 1fr 1fr; }
+    .stepline { grid-template-columns: 1fr 1fr; }
+    .svc-tech__float { position: static; margin-top: 14px; display: inline-flex; }
+    .svc-tech__figure { display: flex; flex-direction: column; align-items: flex-start; }
+    .svc-tech__shot { width: 100%; }
+  }
+  @media (max-width: 560px) {
+    .svc-grid { grid-template-columns: 1fr; }
+    .prac-grid { grid-template-columns: 1fr; }
+    .stepline { grid-template-columns: 1fr; }
+  }
+</style>

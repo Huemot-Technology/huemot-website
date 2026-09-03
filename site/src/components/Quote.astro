@@ -1,0 +1,26 @@
+---
+// Pull quote. Extracted from the markup index.astro and case-studies.astro
+// already carried inline so both render from one implementation.
+const { author, role } = Astro.props;
+---
+
+<figure class="quote reveal">
+  <svg class="quote__mark" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+    <path d="M9.5 6C6.5 7.5 5 10 5 13v5h5v-6H7.5c0-1.8.9-3.2 3-4.2L9.5 6Zm9 0c-3 1.5-4.5 4-4.5 7v5h5v-6h-2.5c0-1.8.9-3.2 3-4.2L18.5 6Z"/>
+  </svg>
+  <blockquote><slot /></blockquote>
+  <figcaption><strong>{author}</strong>{role && <> — {role}</>}</figcaption>
+</figure>
+
+<style>
+  .quote { max-width: 860px; margin-inline: auto; text-align: center; }
+  .quote__mark { width: 44px; height: 44px; color: var(--teal); margin-inline: auto; }
+  .quote blockquote {
+    margin: 18px 0 22px;
+    font-size: clamp(1.3rem, 2.6vw, 1.9rem);
+    font-weight: 600; line-height: 1.4;
+    color: var(--ink); letter-spacing: -.01em;
+  }
+  .quote figcaption { color: var(--body); font-size: 1.02rem; }
+  .quote figcaption strong { color: var(--ink); }
+</style>

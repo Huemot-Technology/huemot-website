@@ -531,6 +531,7 @@ p { margin: 0; }
 /* ---- Industry card ---- */
 .ind {
   position: relative; overflow: hidden; display: block; padding: 26px;
+  scroll-margin-top: 96px;
   border: 1px solid var(--card-border); border-radius: var(--radius); background: var(--card);
   transition: transform var(--dur-card) ease, border-color var(--dur-card) ease, box-shadow var(--dur-card) ease;
 }
@@ -790,13 +791,12 @@ image-slot { min-width: 0; max-width: 100%; }
 .cta-band__links span { margin-inline: 10px; }
 
 /* =========================================================================
-   ADDITIVE — header mega-nav (HomeMegaNav.astro).
+   Header mega-nav (SiteMegaNav.astro).
 
-   Purely additive: every selector below needs markup that only renders under
-   <Header megaNav />. Routes that do not opt in match none of it and render
-   exactly as before. This lives in global.css rather than in the component
-   because HomeMegaNav is reached through the shared Header — a scoped <style>
-   there would be pulled into every page's CSS bundle anyway.
+   The header is shared, so these panels now render on every route and are
+   hidden below 1040px where the mobile panel takes over. They live here rather
+   than in a scoped <style> because SiteMegaNav is reached through the shared
+   Header and its styles would land in every page bundle either way.
    ========================================================================= */
 
 .nav__chev { width: 14px; height: 14px; opacity: .75; }
@@ -840,9 +840,14 @@ image-slot { min-width: 0; max-width: 100%; }
   color: #fff;
 }
 .mega__promo img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+/* Three stops for the same reason as the industries tiles: the teal eyebrow sits
+   on a photo, and a plain transparent -> .85 ramp does not reliably clear 4.5:1. */
 .mega__promo-veil {
   position: absolute; inset: 0;
-  background: linear-gradient(180deg, rgba(15, 23, 42, 0) 30%, rgba(15, 23, 42, .85));
+  background: linear-gradient(180deg,
+    rgba(15, 23, 42, 0) 26%,
+    rgba(15, 23, 42, .72) 60%,
+    rgba(15, 23, 42, .96) 100%);
 }
 .mega__promo-copy { position: absolute; left: 18px; right: 18px; bottom: 16px; }
 .mega__promo-eyebrow {
