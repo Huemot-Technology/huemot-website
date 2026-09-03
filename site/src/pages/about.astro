@@ -231,6 +231,10 @@ const leaders = [
   .aoffices__mails { margin-top: 22px; color: var(--muted); font-size: .95rem; }
   .aoffices__mails a { font-weight: 600; }
   .aoffices__mails span { margin-inline: 12px; }
+  @media (max-width: 900px) {
+    .aoffices__mails { display: flex; flex-wrap: wrap; align-items: center; }
+    .aoffices__mails a { display: inline-flex; align-items: center; min-height: 44px; }
+  }
 
   /* ---------- Credentials ---------- */
   .acreds { background: #fff; }

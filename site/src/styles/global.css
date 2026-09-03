@@ -573,6 +573,10 @@ p { margin: 0; }
 .pod__row { display: flex; flex-wrap: wrap; gap: 8px; }
 .pod__opt { font: inherit; cursor: pointer; font-size: .9rem; font-weight: 600; padding: .5em 1em; border-radius: var(--radius-pill); border: 1px solid var(--card-border); background: var(--card); color: var(--ink-soft); transition: all var(--dur-base) ease; }
 .pod__opt:hover { border-color: var(--teal); color: var(--teal-deep); }
+/* These pills sit a few pixels under a comfortable touch target. */
+@media (max-width: 900px) {
+  .pod__opt, .techx__tab, .radar__navbtn { min-height: 44px; }
+}
 .pod__opt.is-on { background: var(--teal-solid); border-color: var(--teal-solid); color: #fff; box-shadow: var(--shadow-teal); }
 .pod__out { border: 1px solid var(--card-border); border-radius: var(--radius); background: var(--card); padding: 24px; }
 .band-dark .pod__out { background: rgba(255,255,255,.05); }
@@ -718,7 +722,13 @@ image-slot { min-width: 0; max-width: 100%; }
 .stickycta__copy { display: flex; align-items: center; gap: 16px; min-width: 0; }
 .stickycta__t { color: #e2e8f0; font-size: .95rem; font-weight: 550; margin: 0; }
 .stickycta__actions { display: flex; align-items: center; gap: 10px; flex: none; }
-.stickycta__x { background: none; border: 0; color: #7f8ea6; font-size: 1.5rem; line-height: 1; cursor: pointer; padding: 4px 8px; border-radius: 8px; }
+.stickycta__x {
+  display: grid; place-items: center;
+  /* was padding-only, which made a 30x32 target — too small to hit reliably */
+  width: 44px; height: 44px;
+  background: none; border: 0; color: #7f8ea6;
+  font-size: 1.5rem; line-height: 1; cursor: pointer; border-radius: 8px;
+}
 .stickycta__x:hover { color: #fff; background: rgba(255,255,255,.08); }
 @media (max-width: 720px) {
   .stickycta__copy .badge { display: none; }
@@ -741,6 +751,8 @@ image-slot { min-width: 0; max-width: 100%; }
 .link-arrow { display: inline-flex; align-items: center; gap: 8px; font-weight: var(--fw-semibold); color: var(--teal-deep); }
 .link-arrow svg { width: 18px; height: 18px; transition: transform var(--dur-base) ease; }
 .link-arrow:hover svg { transform: translateX(4px); }
+/* 28-34px tall from text alone; give it a touch-sized box on small screens. */
+@media (max-width: 900px) { .link-arrow { min-height: 44px; } }
 
 /* ---- Service / benefit card (components.css) — index, services, process, trust ---- */
 .do-card { display: flex; gap: 18px; align-items: flex-start; }
@@ -789,6 +801,12 @@ image-slot { min-width: 0; max-width: 100%; }
 .cta-band__links { margin-top: 22px; color: var(--muted); font-size: 0.95rem; }
 .cta-band__links a { color: var(--teal-deep); font-weight: 600; }
 .cta-band__links span { margin-inline: 10px; }
+@media (max-width: 900px) {
+  /* the email and phone here are the page's last call to action — make them
+     tappable rather than 21px of text */
+  .cta-band__links { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; }
+  .cta-band__links a { display: inline-flex; align-items: center; min-height: 44px; padding-inline: 4px; }
+}
 
 /* =========================================================================
    Header mega-nav (SiteMegaNav.astro).

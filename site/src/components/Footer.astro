@@ -96,6 +96,16 @@ const badges = ['ISO 27001:2013', 'ISO 9001:2015', 'Salesforce Certified Partner
   .ft__links a { color: var(--body); font-size: 0.95rem; }
   .ft__links a:hover { color: var(--teal-deep); }
 
+  /* The link box was the text box — about 21px tall, well under any touch
+     guidance. Give it a 44px target on touch widths; the li margin folds into
+     the padding so the footer keeps its rhythm. Desktop is left alone. */
+  @media (max-width: 900px) {
+    .ft__links li,
+    .ft__contact li { margin-bottom: 0; }
+    .ft__links a,
+    .ft__contact ul a { display: flex; align-items: center; min-height: 44px; }
+  }
+
   .ft__offices li { display: flex; gap: 10px; margin-bottom: 16px; font-size: 0.88rem; color: var(--body); line-height: 1.45; }
   .ft__flag { font-size: 1.1rem; line-height: 1.2; }
   .ft__offices strong { color: var(--ink-soft); }

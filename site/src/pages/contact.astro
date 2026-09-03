@@ -102,6 +102,9 @@ import { seo, offices, contact } from '../data/site.js';
 
   .ct__mails { display: flex; flex-direction: column; gap: 6px; margin-top: 4px; }
   .ct__mails a { font-weight: var(--fw-semibold); }
+  @media (max-width: 900px) {
+    .ct__mails a { display: inline-flex; align-items: center; min-height: 44px; }
+  }
 
   @media (max-width: 900px) {
     .ct__grid { grid-template-columns: 1fr; }
