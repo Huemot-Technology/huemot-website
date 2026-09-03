@@ -6,6 +6,21 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import ContactForm from '../components/ContactForm.astro';
 import OfficeCard from '../components/OfficeCard.astro';
 import { seo, offices, contact } from '../data/site.js';
+
+// Kept short on purpose — this is a conversion page, not an article. These two
+// lists exist because they remove hesitation: what to write, and what happens
+// after you press send.
+const brief = [
+  'The outcome you are trying to reach, and by when',
+  'The stack, or the constraint that decides it',
+  'Whether you need a whole pod, a project delivered, or one skill',
+  'Anything that rules people out — data residency, on-site days, timezone overlap',
+];
+const next = [
+  { t: 'Within one business day', d: 'A reply from a person, not an autoresponder — with either a slot or a question.' },
+  { t: 'A 30-minute call', d: 'Goals, constraints, and the systems already in play. We will tell you on the call if we are the wrong firm for it.' },
+  { t: 'A shape and a number', d: 'Pod composition, named engineers and commercials in a written SOW — not a range that moves later.' },
+];
 ---
 
 <BaseLayout title={seo.contact.title} description={seo.contact.description}>
@@ -54,9 +69,49 @@ import { seo, offices, contact } from '../data/site.js';
       </aside>
     </div>
   </section>
+
+<!-- ===== BEFORE YOU SEND ===== -->
+<section class="section ctextra">
+  <div class="container ctextra__grid">
+    <div class="reveal">
+      <span class="eyebrow">Useful in your message</span>
+      <h2 class="h2 ctextra__h2">Four lines that save a call.</h2>
+      <p class="ctextra__p">You do not need a specification. These four things let us come back with something specific instead of a discovery questionnaire.</p>
+      <ul class="ctlist">{brief.map((b) => <li>{b}</li>)}</ul>
+    </div>
+    <div class="reveal">
+      <span class="eyebrow">What happens next</span>
+      <h2 class="h2 ctextra__h2">Three steps, no funnel.</h2>
+      <ol class="ctsteps">
+        {next.map((n, i) => (
+          <li class="ctstep">
+            <span class="ctstep__n">{i + 1}</span>
+            <div><b class="ctstep__t">{n.t}</b><span class="ctstep__d">{n.d}</span></div>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </div>
+</section>
 </BaseLayout>
 
 <style>
+  .ctextra { background: #fff; }
+  .ctextra__grid { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(32px, 5vw, 72px); align-items: start; }
+  .ctextra__h2 { margin-top: 14px; font-size: clamp(1.4rem, 2.2vw, 1.8rem); }
+  .ctextra__p { margin-top: 14px; color: var(--body); max-width: 52ch; }
+  .ctlist { list-style: none; margin: 20px 0 0; padding: 0; display: grid; gap: 12px; }
+  .ctlist li { position: relative; padding-left: 28px; color: var(--body); line-height: 1.5; }
+  .ctlist li::before { content: ''; position: absolute; left: 0; top: .42em; width: 15px; height: 15px;
+    border-radius: 50%; background: var(--teal-wash); box-shadow: inset 0 0 0 2px var(--teal); }
+  .ctsteps { list-style: none; margin: 20px 0 0; padding: 0; display: grid; gap: 12px; }
+  .ctstep { display: grid; grid-template-columns: 40px 1fr; gap: 16px; align-items: start; }
+  .ctstep__n { width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center;
+    font-family: var(--font-display); font-weight: var(--fw-black); font-size: .9rem; color: #fff; background: var(--teal-fill); }
+  .ctstep__t { display: block; font-family: var(--font-display); font-size: 1rem; letter-spacing: -.02em; color: var(--ink); }
+  .ctstep__d { display: block; margin-top: 4px; color: var(--body); font-size: .93rem; line-height: 1.5; }
+  @media (max-width: 900px) { .ctextra__grid { grid-template-columns: 1fr; } }
+
   .ct { background: var(--bg); border-bottom: 1px solid var(--card-border); }
   .ct__grid {
     display: grid; grid-template-columns: 1.25fr 1fr;
