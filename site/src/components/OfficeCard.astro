@@ -34,4 +34,8 @@ const telHref = `tel:${phone.replace(/[^+\d]/g, '')}`;
   .office__city { color: var(--muted); font-size: 0.88rem; margin-top: 2px; }
   .office__addr { color: var(--body); line-height: 1.5; font-size: 0.95rem; }
   .office__phone { display: inline-block; margin-top: 12px; font-weight: 650; color: var(--teal-deep); }
+  /* a phone number is the one thing people tap on a phone — give it a real box */
+  @media (max-width: 900px) {
+    .office__phone { display: inline-flex; align-items: center; min-height: 44px; margin-top: 4px; }
+  }
 </style>

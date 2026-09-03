@@ -103,6 +103,8 @@ const hasMega = nav.some((item) => item.mega);
     height: 78px;
   }
   .brand { display: inline-flex; align-items: center; }
+  /* The mark stays 40px on small screens; the link gets a 44px box around it. */
+  @media (max-width: 560px) { .brand { min-height: 44px; padding-inline: 2px; } }
   .brand__logo { width: auto; height: 52px; }
 
   .nav__list {
