@@ -1,0 +1,366 @@
+---
+// Industry detail pages — /industries/<slug>.
+//
+// These are the destinations the industry cards, the header mega-nav and the
+// homepage grid point at. Every claim on them is sourced from data already
+// published elsewhere on the site (see the header of data/industryPages.js).
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PillButton from '../../components/PillButton.astro';
+import StatCounter from '../../components/StatCounter.astro';
+import LinkArrow from '../../components/LinkArrow.astro';
+import CTABand from '../../components/CTABand.astro';
+import { industryPages } from '../../data/industryPages.js';
+import { caseStudyById } from '../../data/caseStudies.js';
+import { industries } from '../../data/content.js';
+import { BOOKING_URL, BOOKING_EXTERNAL } from '../../data/site.js';
+
+export function getStaticPaths() {
+  return industryPages.map((industry) => ({ params: { slug: industry.slug }, props: { industry } }));
+}
+
+const { industry } = Astro.props;
+
+// Headline stats come from content.js, joined on name. A rename there would
+// otherwise silently drop the stat row, so fail the build instead.
+const base = industries.find((i) => i.name === industry.name);
+if (!base) {
+  throw new Error(
+    `industryPages: no entry named "${industry.name}" in content.js industries. ` +
+    `Update data/industryPages.js so the two stay joined.`
+  );
+}
+const stats = base.stats || [];
+const study = industry.caseStudy ? caseStudyById[industry.caseStudy] : null;
+
+const others = industryPages.filter((i) => i.slug !== industry.slug);
+
+const title = `${industry.name} Software Development | Huemot`;
+const description = industry.lead.length > 160 ? `${industry.lead.slice(0, 157)}…` : industry.lead;
+
+// Tone the metric colours the same way the rest of the site does.
+const TONES = ['teal', 'blue', 'purple', 'pink'];
+---
+
+<BaseLayout title={title} description={description}>
+  <link
+    slot="head"
+    rel="preload"
+    as="image"
+    type="image/webp"
+    href={`${industry.img}-1600.webp`}
+    imagesrcset={`${industry.img}-800.webp 800w, ${industry.img}-1600.webp 1600w`}
+    imagesizes="100vw"
+    fetchpriority="high"
+  />
+
+  <!-- ===== HERO ===== -->
+  <section class="ihero">
+    <img
+      class="ihero__bg"
+      src={`${industry.img}-1600.webp`}
+      srcset={`${industry.img}-800.webp 800w, ${industry.img}-1600.webp 1600w`}
+      sizes="100vw"
+      alt={industry.alt}
+      width="1600" height="1067"
+      loading="eager" fetchpriority="high" decoding="async"
+    />
+    <span class="ihero__veil"></span>
+    <div class="container ihero__inner">
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="/industries">Industries</a>
+        <span aria-hidden="true">/</span>
+        <span>{industry.eyebrow}</span>
+      </nav>
+      <h1 class="h1 ihero__title">{industry.title}</h1>
+      <p class="lead ihero__lead">{industry.lead}</p>
+      <div class="ihero__cta">
+        <PillButton href={BOOKING_URL} external={BOOKING_EXTERNAL} variant="primary" size="lg">Book a Discovery Call</PillButton>
+        <a href="#capabilities" class="ihero__ghost">What we build</a>
+      </div>
+
+      {stats.length > 0 && (
+        <div class="ihero__stats">
+          {stats.map((s, i) => (
+            <div class="istat">
+              <b class="istat__v">{s.value}</b>
+              <span class="istat__l">{s.label}</span>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  </section>
+
+  <!-- ===== CHALLENGE / APPROACH ===== -->
+  <section class="section ipair">
+    <div class="container ipair__grid">
+      <div class="reveal">
+        <span class="eyebrow">What we hear</span>
+        <h2 class="h2 ipair__h2">The problems that bring people here.</h2>
+        <ul class="ilist ilist--problem">
+          {industry.challenges.map((c) => <li>{c}</li>)}
+        </ul>
+      </div>
+      <div class="reveal">
+        <span class="eyebrow">How we approach it</span>
+        <h2 class="h2 ipair__h2">What the pod actually does.</h2>
+        <ul class="ilist ilist--solve">
+          {industry.approach.map((a) => <li>{a}</li>)}
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CAPABILITIES ===== -->
+  <section class="section section--band" id="capabilities">
+    <div class="container">
+      <span class="eyebrow">Capabilities</span>
+      <h2 class="h2 icaps__h2">What we build in {industry.eyebrow}.</h2>
+      <div class="icaps stagger">
+        {industry.capabilities.map((c) => (
+          <div class="icap reveal">
+            <span class="icap__tick" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+            </span>
+            <span>{c}</span>
+          </div>
+        ))}
+      </div>
+
+      <div class="istack">
+        <span class="eyebrow">Typical stack</span>
+        <div class="istack__chips">
+          {industry.stack.map((t) => <span class="chip">{t}</span>)}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== RELATED CASE STUDY (only where one is published) ===== -->
+  {study && (
+    <section class="section icase">
+      <div class="container">
+        <span class="eyebrow">Proof</span>
+        <h2 class="h2 icase__h2">We have shipped this before.</h2>
+        <a href={`/case-studies#${study.id}`} class="icase__card reveal">
+          <span class="icase__media">
+            <img
+              src={`${study.img}-800.webp`}
+              srcset={`${study.img}-800.webp 800w, ${study.img}-1600.webp 1600w`}
+              sizes="(max-width: 900px) 100vw, 460px"
+              alt={study.alt}
+              width="800" height="533"
+              loading="lazy" decoding="async"
+            />
+            <span class="icase__sector">{study.sector}</span>
+          </span>
+          <span class="icase__body">
+            <b class="icase__t">{study.title}</b>
+            <span class="icase__client">{study.client}</span>
+            <span class="icase__d">{study.challenge}</span>
+            <span class="icase__metrics">
+              {study.metrics.map((m) => (
+                <span class="icase__m">
+                  <b>{m.prefix || ''}{m.value}{m.suffix || ''}</b>
+                  <span>{m.label}</span>
+                </span>
+              ))}
+            </span>
+            <span class="icase__more">Read the case study
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            </span>
+          </span>
+        </a>
+      </div>
+    </section>
+  )}
+
+  <!-- ===== OTHER INDUSTRIES ===== -->
+  <section class="section section--band">
+    <div class="container">
+      <div class="iother__head">
+        <div>
+          <span class="eyebrow">Other industries</span>
+          <h2 class="h2 iother__h2">Domain depth, not just headcount.</h2>
+        </div>
+        <LinkArrow href="/industries" class="iother__all">All industries</LinkArrow>
+      </div>
+      <div class="iother stagger">
+        {others.map((o) => (
+          <a href={`/industries/${o.slug}`} class="iothercard reveal">
+            <span class="iothercard__shot">
+              <img
+                src={`${o.img}-800.webp`}
+                srcset={`${o.img}-800.webp 800w, ${o.img}-1600.webp 1600w`}
+                sizes="(max-width: 560px) 92vw, (max-width: 900px) 46vw, 220px"
+                alt={o.alt}
+                width="800" height="533"
+                loading="lazy" decoding="async"
+              />
+            </span>
+            <b class="iothercard__t">{o.eyebrow}</b>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <CTABand
+    title={`Building in ${industry.eyebrow}?`}
+    lead="Book a 30-minute discovery call. We'll map your goals to a pod and a plan — and have a team building within two weeks."
+  />
+</BaseLayout>
+
+<style>
+  /* ---------- Hero ---------- */
+  .ihero { position: relative; overflow: hidden; background: var(--dark-bg); color: #fff; }
+  .ihero__bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: .5; }
+  .ihero__veil {
+    position: absolute; inset: 0;
+    background: linear-gradient(90deg, rgba(15,23,42,.96) 0%, rgba(15,23,42,.82) 52%, rgba(15,23,42,.4) 100%);
+  }
+  .ihero__inner { position: relative; padding-block: clamp(56px, 7vw, 104px) clamp(48px, 6vw, 84px); }
+
+  .crumbs { display: flex; align-items: center; gap: 10px; font-size: .84rem; font-weight: 600; color: rgba(255,255,255,.62); margin-bottom: 18px; }
+  .crumbs a { color: var(--teal-bright); }
+  .crumbs a:hover { color: #fff; }
+
+  .ihero__title {
+    max-width: 17ch; color: #fff;
+    font-size: clamp(2.2rem, 4.2vw, 3.8rem); letter-spacing: -.03em; line-height: 1.04;
+  }
+  .ihero__lead { margin-top: 20px; max-width: 54ch; color: rgba(255,255,255,.84); }
+  .ihero__cta { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 30px; }
+  .ihero__ghost {
+    display: inline-flex; align-items: center; padding: 14px 22px;
+    border-radius: var(--radius-pill); border: 1px solid rgba(255,255,255,.35);
+    color: #fff; font-weight: var(--fw-semibold);
+    transition: background var(--dur-base) ease;
+  }
+  .ihero__ghost:hover { background: rgba(255,255,255,.1); }
+
+  .ihero__stats {
+    display: flex; flex-wrap: wrap; gap: clamp(24px, 5vw, 64px);
+    margin-top: clamp(32px, 4vw, 48px); padding-top: 26px;
+    border-top: 1px solid rgba(255,255,255,.16);
+  }
+  .istat__v {
+    display: block; font-family: var(--font-display); font-size: clamp(1.8rem, 3vw, 2.4rem);
+    font-weight: var(--fw-black); letter-spacing: -.03em; color: var(--teal-bright); line-height: 1;
+  }
+  .istat__l {
+    display: block; margin-top: 8px; font-size: .74rem; font-weight: var(--fw-bold);
+    letter-spacing: .1em; text-transform: uppercase; color: rgba(255,255,255,.62);
+  }
+
+  /* ---------- Challenge / approach ---------- */
+  .ipair { background: #fff; }
+  .ipair__grid { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(32px, 5vw, 72px); align-items: start; }
+  .ipair__h2 { margin-top: 14px; font-size: clamp(1.5rem, 2.4vw, 2rem); }
+  .ilist { list-style: none; margin: 24px 0 0; padding: 0; display: grid; gap: 14px; }
+  .ilist li {
+    position: relative; padding-left: 30px;
+    color: var(--body); line-height: 1.55;
+  }
+  .ilist li::before {
+    content: ''; position: absolute; left: 0; top: .42em;
+    width: 16px; height: 16px; border-radius: 50%;
+  }
+  .ilist--problem li::before { background: #fee2e2; box-shadow: inset 0 0 0 2px #fca5a5; }
+  .ilist--solve li::before { background: var(--teal-wash); box-shadow: inset 0 0 0 2px var(--teal); }
+
+  /* ---------- Capabilities ---------- */
+  .icaps__h2 { margin-top: 14px; }
+  .icaps {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: clamp(12px, 1.6vw, 16px); margin-top: 30px;
+  }
+  .icap {
+    display: flex; align-items: center; gap: 14px;
+    background: var(--card); border: 1px solid var(--card-border);
+    border-radius: var(--radius); padding: 18px 20px;
+    font-weight: var(--fw-medium); color: var(--ink);
+    transition: border-color var(--dur-card) ease, transform var(--dur-card) var(--ease-out-expo);
+  }
+  .icap:hover { border-color: var(--teal); transform: translateY(-3px); }
+  .icap__tick {
+    flex: none; width: 30px; height: 30px; border-radius: 9px; display: grid; place-items: center;
+    background: var(--teal-wash); border: 1px solid var(--teal-wash-2); color: var(--teal-deep);
+  }
+  .icap__tick svg { width: 16px; height: 16px; }
+
+  .istack { margin-top: clamp(36px, 4vw, 52px); padding-top: 28px; border-top: 1px solid var(--card-border); }
+  .istack__chips { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 4px; }
+
+  /* ---------- Related case study ---------- */
+  .icase { background: #fff; }
+  .icase__h2 { margin-top: 14px; }
+  .icase__card {
+    display: grid; grid-template-columns: .8fr 1.2fr; margin-top: 30px;
+    background: var(--card); border: 1px solid var(--card-border);
+    border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow);
+    color: var(--ink);
+    transition: transform var(--dur-card) var(--ease-out-expo), box-shadow var(--dur-card) ease;
+  }
+  .icase__card:hover { transform: translateY(var(--lift-card)); box-shadow: var(--shadow-lg); }
+  .icase__media { position: relative; display: block; min-height: 300px; }
+  .icase__media img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .icase__sector {
+    position: absolute; left: 18px; top: 18px;
+    font-size: .68rem; font-weight: var(--fw-bold); letter-spacing: var(--ls-label);
+    text-transform: uppercase; color: var(--teal-ink);
+    background: #fff; padding: 6px 12px; border-radius: var(--radius-pill); box-shadow: var(--shadow);
+  }
+  .icase__body { display: block; padding: clamp(26px, 3vw, 38px); }
+  .icase__t { display: block; font-family: var(--font-display); font-size: clamp(1.2rem, 1.9vw, 1.5rem); letter-spacing: -.02em; }
+  .icase__client { display: block; margin-top: 8px; color: var(--teal-deep); font-weight: var(--fw-semibold); font-size: .95rem; }
+  .icase__d { display: block; margin-top: 12px; color: var(--body); font-size: .95rem; line-height: 1.6; }
+  .icase__metrics {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px 12px;
+    margin-top: 22px; padding-top: 20px; border-top: 1px solid var(--card-border);
+  }
+  .icase__m b {
+    display: block; font-family: var(--font-display); font-size: 1.35rem;
+    font-weight: var(--fw-black); letter-spacing: -.03em; color: var(--teal-deep);
+  }
+  .icase__m span { display: block; margin-top: 4px; font-size: .68rem; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+  .icase__more {
+    display: inline-flex; align-items: center; gap: 8px; margin-top: 22px;
+    font-weight: var(--fw-semibold); color: var(--teal-deep);
+  }
+  .icase__more svg { width: 18px; height: 18px; transition: transform var(--dur-base) ease; }
+  .icase__card:hover .icase__more svg { transform: translateX(4px); }
+
+  /* ---------- Other industries ---------- */
+  .iother__head { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; margin-bottom: 28px; }
+  .iother__h2 { margin-top: 14px; font-size: clamp(1.5rem, 2.4vw, 2rem); }
+  .iother__all { white-space: nowrap; padding-bottom: 6px; }
+  .iother { display: grid; grid-template-columns: repeat(5, 1fr); gap: clamp(12px, 1.6vw, 18px); }
+  .iothercard {
+    display: block; border-radius: var(--radius); overflow: hidden;
+    background: var(--card); border: 1px solid var(--card-border);
+    color: var(--ink);
+    transition: transform var(--dur-card) var(--ease-out-expo), border-color var(--dur-card) ease;
+  }
+  .iothercard:hover { transform: translateY(-3px); border-color: var(--teal); }
+  .iothercard__shot { display: block; aspect-ratio: 16 / 10; overflow: hidden; }
+  .iothercard__shot img { width: 100%; height: 100%; object-fit: cover; }
+  .iothercard__t { display: block; padding: 14px 16px 16px; font-family: var(--font-display); font-size: .95rem; letter-spacing: -.02em; }
+
+  /* ---------- Breakpoints ---------- */
+  @media (max-width: 900px) {
+    .ipair__grid { grid-template-columns: 1fr; }
+    .icaps { grid-template-columns: 1fr 1fr; }
+    .icase__card { grid-template-columns: 1fr; }
+    .icase__media { min-height: 0; aspect-ratio: 16 / 9; }
+    .icase__metrics { grid-template-columns: 1fr 1fr; }
+    .iother { grid-template-columns: repeat(3, 1fr); }
+    .iother__head { display: block; }
+    .iother__all { margin-top: 12px; }
+  }
+  @media (max-width: 560px) {
+    .icaps { grid-template-columns: 1fr; }
+    .iother { grid-template-columns: 1fr 1fr; }
+    .ihero__stats { gap: 24px 36px; }
+  }
+</style>
