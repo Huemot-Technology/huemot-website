@@ -9,15 +9,9 @@ import StatCounter from '../components/StatCounter.astro';
 import PillButton from '../components/PillButton.astro';
 import { industries } from '../data/content.js';
 
-// Anchor slugs so the homepage industries grid can deep-link into this page.
-// Adding ids does not change how the page renders.
-const ANCHORS = {
-  'Fintech & Financial Services': 'fintech',
-  'Healthtech': 'healthcare',
-  'Retail & E-commerce': 'retail',
-  'SaaS & Productivity': 'saas',
-  'Supply Chain & Manufacturing': 'logistics',
-};
+// Each card links to its detail page. byName joins content.js `industries` to
+// the per-industry page data on the name field.
+import { byName } from '../data/industryPages.js';
 ---
 
 <BaseLayout
@@ -34,7 +28,10 @@ const ANCHORS = {
   <section class="section">
     <div class="container">
       <div class="grid grid-3 stagger">
-        {industries.map((i) => <IndustryCard {...i} id={ANCHORS[i.name]} />)}
+        {industries.map((i) => {
+          const page = byName[i.name];
+          return <IndustryCard {...i} id={page?.slug} href={page ? `/industries/${page.slug}` : '/contact'} />;
+        })}
       </div>
     </div>
   </section>
