@@ -26,7 +26,20 @@ const benefits = [
 ---
 
 <BaseLayout title={seo.engage.title} description={seo.engage.description}>
+  <link
+    slot="head"
+    rel="preload"
+    as="image"
+    type="image/webp"
+    href="/images/home/standup-1600.webp"
+    imagesrcset="/images/home/standup-800.webp 800w, /images/home/standup-1600.webp 1600w"
+    imagesizes="100vw"
+    fetchpriority="high"
+  />
+
   <PageHero
+    img="/images/home/standup"
+    alt="Team in a standing meeting"
     eyebrow="How We Engage"
     title="From Conversation to Code in 2 Weeks."
     sub="Flexible commercial models and a fast, low-risk onboarding path."

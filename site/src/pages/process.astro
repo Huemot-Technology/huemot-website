@@ -29,7 +29,20 @@ const guarantees = [
   title="Our Process | From Conversation to Code in 2 Weeks | Huemot"
   description="Six steps from first call to first merged pull request. Engagement models, onboarding timeline, and what every engagement includes."
 >
+  <link
+    slot="head"
+    rel="preload"
+    as="image"
+    type="image/webp"
+    href="/images/home/pairing-1600.webp"
+    imagesrcset="/images/home/pairing-800.webp 800w, /images/home/pairing-1600.webp 1600w"
+    imagesizes="100vw"
+    fetchpriority="high"
+  />
+
   <PageHero
+    img="/images/home/pairing"
+    alt="Two engineers pairing at a desk"
     eyebrow="Our Process"
     title="From conversation to code in"
     highlight="2 weeks."
