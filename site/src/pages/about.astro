@@ -42,6 +42,26 @@ const bands = [
   },
 ];
 
+// How the company is actually organised and how an engagement feels week to
+// week. Drawn from what the site already commits to elsewhere — named account
+// owner under SLA, two-week sprints, sprint demos, a delivery dashboard,
+// monthly business review, bench cover, two weeks notice — rather than new
+// claims about the company.
+const operating = [
+  { t: 'You get a pod, not a queue', d: 'A ring-fenced team with named engineers who stay on your work. No shared resource pool, no silent reassignment to whoever shouted loudest this week.' },
+  { t: 'One person is accountable', d: 'A named account owner, under SLA, who runs the onboarding checklist, chairs the monthly business review and is the person you escalate to.' },
+  { t: 'A fixed rhythm', d: 'Two-week sprints, a demo at the end of every one, and a dashboard showing velocity, defects and SLA compliance. You should never have to ask how it is going.' },
+  { t: 'Attrition is our problem', d: 'Bench cover sits inside the pod. When someone leaves, the pod absorbs it — that is what the 90% retention figure is actually protecting.' },
+  { t: 'Leaving is not punished', d: 'Hand back seats on two weeks notice, with no renegotiation and no penalty. A partner you cannot leave is not a partner.' },
+];
+
+// Three offices, and what the spread is for.
+const reach = [
+  { t: 'Bhopal, India — HQ', d: 'Two development centres across 25,000 sq.ft, and where the majority of delivery sits.' },
+  { t: 'Dover, Delaware — USA', d: 'US contracting entity and the overlap hours for North American clients.' },
+  { t: 'Vancouver, BC — Canada', d: 'Canadian presence for clients who need work contracted and delivered in-region.' },
+];
+
 const leaders = [
   { name: 'Raju Sahu', role: 'Chairman', photo: '/team/raju.png' },
   { name: 'Sangeeta Sahu', role: 'Managing Director', photo: '/team/sangeeta.png' },
@@ -171,6 +191,41 @@ const leaders = [
     </div>
   </section>
 
+
+  <!-- ===== HOW WE OPERATE ===== -->
+  <section class="section abops">
+    <div class="container">
+      <span class="eyebrow">How we operate</span>
+      <h2 class="h2 abops__h2">What it is actually like to work with us.</h2>
+      <p class="lead abops__lead">The delivery model matters more than the headcount. This is what you are buying when you buy a pod.</p>
+      <div class="abops__grid stagger">
+        {operating.map((o) => (
+          <div class="abop reveal">
+            <b class="abop__t">{o.t}</b>
+            <span class="abop__d">{o.d}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== REACH ===== -->
+  <section class="section section--band abreach">
+    <div class="container">
+      <span class="eyebrow">Why three countries</span>
+      <h2 class="h2 abops__h2">Where the work happens.</h2>
+      <p class="lead abops__lead">The spread is about contracting and overlap hours, not flags on a map. Delivery is concentrated in India; the other two entities exist so clients can contract locally and hold working hours that overlap their own.</p>
+      <div class="abreach__grid stagger">
+        {reach.map((r) => (
+          <div class="abreach__item reveal">
+            <b class="abreach__t">{r.t}</b>
+            <span class="abreach__d">{r.d}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
   <!-- ===== CREDENTIALS ===== -->
   <section class="section acreds">
     <div class="container acreds__inner">
@@ -235,6 +290,23 @@ const leaders = [
     .aoffices__mails { display: flex; flex-wrap: wrap; align-items: center; }
     .aoffices__mails a { display: inline-flex; align-items: center; min-height: 44px; }
   }
+
+  /* ---------- Operating model ---------- */
+  .abops { background: #fff; }
+  .abops__h2 { margin-top: 14px; }
+  .abops__lead { margin-top: 16px; max-width: 62ch; }
+  .abops__grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: clamp(12px, 1.6vw, 18px); margin-top: 30px; }
+  .abop { background: var(--card); border: 1px solid var(--card-border); border-radius: var(--radius); padding: 22px 24px;
+    transition: border-color var(--dur-card) ease, transform var(--dur-card) var(--ease-out-expo); }
+  .abop:hover { border-color: var(--teal); transform: translateY(-3px); }
+  .abop__t { display: block; font-family: var(--font-display); font-size: 1.05rem; letter-spacing: -.02em; color: var(--ink); }
+  .abop__d { display: block; margin-top: 8px; color: var(--body); font-size: .94rem; line-height: 1.55; }
+
+  .abreach__grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(12px, 1.6vw, 18px); margin-top: 30px; }
+  .abreach__item { background: var(--card); border: 1px solid var(--card-border); border-radius: var(--radius); padding: 20px 22px; }
+  .abreach__t { display: block; font-family: var(--font-display); font-size: 1rem; letter-spacing: -.02em; color: var(--ink); }
+  .abreach__d { display: block; margin-top: 7px; color: var(--body); font-size: .92rem; line-height: 1.5; }
+  @media (max-width: 900px) { .abops__grid, .abreach__grid { grid-template-columns: 1fr; } }
 
   /* ---------- Credentials ---------- */
   .acreds { background: #fff; }

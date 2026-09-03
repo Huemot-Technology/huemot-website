@@ -12,6 +12,16 @@ import { industries } from '../data/content.js';
 // Each card links to its detail page. byName joins content.js `industries` to
 // the per-industry page data on the name field.
 import { byName } from '../data/industryPages.js';
+
+// What "domain-fluent" means in practice, so the claim is falsifiable rather
+// than an adjective. Each line describes something a pod does differently, not
+// something we assert about ourselves.
+const fluency = [
+  { t: 'The regulator is a design input', d: 'RBI, HIPAA, PCI — these decide the data model and the audit trail. Retrofitting them after a build is the expensive way to learn that.' },
+  { t: 'We know when your year peaks', d: 'A retail platform is judged on one week in November. Load testing and change freezes get scheduled around your calendar, not ours.' },
+  { t: 'The integrations already have names', d: 'Core banking, WMS, HL7 FHIR, claims administration. A pod that has met these before stops asking beginner questions in week one.' },
+  { t: 'Failure modes are known in advance', d: 'Every sector has its recurring outage. Knowing yours changes what gets built first, and what gets alerted on.' },
+];
 ---
 
 <BaseLayout
@@ -45,6 +55,24 @@ import { byName } from '../data/industryPages.js';
           const page = byName[i.name];
           return <IndustryCard {...i} id={page?.slug} href={page ? `/industries/${page.slug}` : '/contact'} />;
         })}
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ===== WHAT DOMAIN FLUENCY MEANS ===== -->
+  <section class="section indfl">
+    <div class="container">
+      <span class="eyebrow">What that means in practice</span>
+      <h2 class="h2 indfl__h2">Four things a domain-fluent pod does differently.</h2>
+      <p class="lead indfl__lead">"Domain expertise" is the easiest claim in this industry to make and the hardest to check. Here is what it should buy you — hold us to these on the call.</p>
+      <div class="indfl__grid stagger">
+        {fluency.map((f) => (
+          <div class="indfl__item reveal">
+            <b class="indfl__t">{f.t}</b>
+            <span class="indfl__d">{f.d}</span>
+          </div>
+        ))}
       </div>
     </div>
   </section>
@@ -86,3 +114,14 @@ import { byName } from '../data/industryPages.js';
     </div>
   </section>
 </BaseLayout>
+
+<style>
+  .indfl { background: #fff; }
+  .indfl__h2 { margin-top: 14px; }
+  .indfl__lead { margin-top: 16px; max-width: 62ch; }
+  .indfl__grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: clamp(12px, 1.6vw, 18px); margin-top: 30px; }
+  .indfl__item { background: var(--card); border: 1px solid var(--card-border); border-radius: var(--radius); padding: 22px 24px; }
+  .indfl__t { display: block; font-family: var(--font-display); font-size: 1.04rem; letter-spacing: -.02em; color: var(--ink); }
+  .indfl__d { display: block; margin-top: 8px; color: var(--body); font-size: .94rem; line-height: 1.55; }
+  @media (max-width: 900px) { .indfl__grid { grid-template-columns: 1fr; } }
+</style>
