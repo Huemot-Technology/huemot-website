@@ -15,7 +15,20 @@ import { roles, comparison, radar } from '../data/content.js';
   title="Hire Developers | Named Engineers in 2 Weeks | Huemot"
   description="Hire pre-vetted React, Node, Java, .NET, mobile, AI/ML, DevOps and Salesforce engineers. Named engineers from a pool of 500+, building in two weeks."
 >
+  <link
+    slot="head"
+    rel="preload"
+    as="image"
+    type="image/webp"
+    href="/images/home/working-session-1600.webp"
+    imagesrcset="/images/home/working-session-800.webp 800w, /images/home/working-session-1600.webp 1600w"
+    imagesizes="100vw"
+    fetchpriority="high"
+  />
+
   <PageHero
+    img="/images/home/working-session"
+    alt="Team in a working session around a table"
     eyebrow="Hire Developers"
     title="Named engineers, not CVs,"
     highlight="in two weeks."

@@ -18,7 +18,20 @@ import { byName } from '../data/industryPages.js';
   title="Industries | Fintech, Healthtech, Retail, Insurance | Huemot"
   description="Eighteen verticals, 150+ clients. Domain-fluent pods for fintech, healthtech, retail, insurance, SaaS and supply chain."
 >
+  <link
+    slot="head"
+    rel="preload"
+    as="image"
+    type="image/webp"
+    href="/images/home/saas-1600.webp"
+    imagesrcset="/images/home/saas-800.webp 800w, /images/home/saas-1600.webp 1600w"
+    imagesizes="100vw"
+    fetchpriority="high"
+  />
+
   <PageHero
+    img="/images/home/saas"
+    alt="Global network lit up over the earth at night"
     eyebrow="Industries"
     title="We have shipped in your market"
     highlight="before."
