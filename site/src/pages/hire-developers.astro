@@ -40,7 +40,7 @@ import { roles, comparison, radar } from '../data/content.js';
         ))}
       </div>
       {roles.map((g, i) => (
-        <div style="display:grid;gap:10px" data-rolepanel={i} hidden={i !== 0}>
+        <div class="rolepanel" data-rolepanel={i} hidden={i !== 0}>
           {g.items.map((r) => <RoleCard {...r} />)}
         </div>
       ))}
@@ -96,3 +96,12 @@ import { roles, comparison, radar } from '../data/content.js';
     panels.forEach((p) => { p.hidden = p.dataset.rolepanel !== idx; });
   }));
 </script>
+
+<style>
+  /* The panel needs display:grid, but any display value defeats the user-agent
+     [hidden] { display: none } rule — which is why these tabs used to switch
+     their active pill while all three panels stayed on screen at once.
+     Re-assert it explicitly. */
+  .rolepanel { display: grid; gap: 10px; }
+  .rolepanel[hidden] { display: none; }
+</style>
