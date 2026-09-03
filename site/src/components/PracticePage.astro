@@ -1,0 +1,271 @@
+---
+// Shared body for the two practice pages (/salesforce, /ai-automation).
+//
+// Deliberately the same visual system as the industry detail pages — dark photo
+// hero, problems/approach pair, a numbered engagement sequence, capability
+// grid, proof and FAQ — because the split between photo-led and plain pages was
+// the thing that made the site read as two different sites.
+import PillButton from './PillButton.astro';
+import CTABand from './CTABand.astro';
+import { caseStudyById } from '../data/caseStudies.js';
+import { BOOKING_URL, BOOKING_EXTERNAL } from '../data/site.js';
+
+const { practice, listTitle, listItems, secondary } = Astro.props;
+const study = practice.caseStudy ? caseStudyById[practice.caseStudy] : null;
+---
+
+<!-- ===== HERO ===== -->
+<section class="phero">
+  <img
+    class="phero__bg"
+    src={`${practice.img}-1600.webp`}
+    srcset={`${practice.img}-800.webp 800w, ${practice.img}-1600.webp 1600w`}
+    sizes="100vw"
+    alt={practice.alt}
+    width="1600" height="1067"
+    loading="eager" fetchpriority="high" decoding="async"
+  />
+  <span class="phero__veil"></span>
+  <div class="container phero__inner">
+    <span class="eyebrow phero__eyebrow">{practice.eyebrow}</span>
+    <h1 class="h1 phero__title">{practice.title}</h1>
+    <p class="lead phero__lead">{practice.lead}</p>
+    <div class="phero__cta">
+      <PillButton href={BOOKING_URL} external={BOOKING_EXTERNAL} variant="primary" size="lg">Book a Discovery Call</PillButton>
+      <a href="#engagement" class="phero__ghost">How an engagement runs</a>
+    </div>
+    <div class="phero__stats">
+      {practice.stats.map((s) => (
+        <div class="pstat">
+          <b class="pstat__v">{s.prefix || ''}{s.value}{s.suffix || ''}</b>
+          <span class="pstat__l">{s.label}</span>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<!-- ===== PROBLEMS / APPROACH ===== -->
+<section class="section ppair">
+  <div class="container ppair__grid">
+    <div class="reveal">
+      <span class="eyebrow">What we walk into</span>
+      <h2 class="h2 ppair__h2">The state of play when we arrive.</h2>
+      <ul class="plist plist--problem">{practice.challenges.map((c) => <li>{c}</li>)}</ul>
+    </div>
+    <div class="reveal">
+      <span class="eyebrow">How we work</span>
+      <h2 class="h2 ppair__h2">What we do about it.</h2>
+      <ul class="plist plist--solve">{practice.approach.map((a) => <li>{a}</li>)}</ul>
+    </div>
+  </div>
+</section>
+
+<!-- ===== ENGAGEMENT SEQUENCE ===== -->
+<section class="section section--band" id="engagement">
+  <div class="container">
+    <span class="eyebrow">Engagement</span>
+    <h2 class="h2 pseq__h2">Five phases, and what each one leaves behind.</h2>
+    <ol class="pseq stagger">
+      {practice.phases.map((p) => (
+        <li class="pphase reveal">
+          <span class="pphase__n">{p.n}</span>
+          <div>
+            <b class="pphase__t">{p.t}</b>
+            <span class="pphase__d">{p.d}</span>
+          </div>
+        </li>
+      ))}
+    </ol>
+  </div>
+</section>
+
+<!-- ===== CAPABILITY LIST (clouds or capabilities) ===== -->
+<section class="section pcaps">
+  <div class="container">
+    <span class="eyebrow">{listTitle}</span>
+    <h2 class="h2 pcaps__h2">Where the work lands.</h2>
+    <div class="pcaps__grid stagger">
+      {listItems.map((c) => (
+        <div class="pcap reveal">
+          <b class="pcap__t">{c.t}</b>
+          <span class="pcap__d">{c.d}</span>
+        </div>
+      ))}
+    </div>
+    {secondary && (
+      <div class="psecondary">
+        <span class="eyebrow">{secondary.title}</span>
+        <div class="psecondary__row">
+          {secondary.items.map((v) => (
+            typeof v === 'string'
+              ? <span class="chip">{v}</span>
+              : <div class="phl">
+                  <span class="phl__sector">{v.sector}</span>
+                  <b class="phl__t">{v.t}</b>
+                  <span class="phl__d">{v.d}</span>
+                </div>
+          ))}
+        </div>
+      </div>
+    )}
+  </div>
+</section>
+
+<!-- ===== PROOF ===== -->
+{study && (
+  <section class="section section--band">
+    <div class="container">
+      <span class="eyebrow">Proof</span>
+      <h2 class="h2 pcase__h2">We have shipped this before.</h2>
+      <a href={`/case-studies#${study.id}`} class="pcase reveal">
+        <span class="pcase__media">
+          <img
+            src={`${study.img}-800.webp`}
+            srcset={`${study.img}-800.webp 800w, ${study.img}-1600.webp 1600w`}
+            sizes="(max-width: 900px) 100vw, 420px"
+            alt={study.alt}
+            width="800" height="533"
+            loading="lazy" decoding="async"
+          />
+        </span>
+        <span class="pcase__body">
+          <b class="pcase__t">{study.title}</b>
+          <span class="pcase__client">{study.client}</span>
+          <span class="pcase__d">{study.solution}</span>
+          <span class="pcase__metrics">
+            {study.metrics.map((m) => (
+              <span class="pcase__m"><b>{m.prefix || ''}{m.value}{m.suffix || ''}</b><span>{m.label}</span></span>
+            ))}
+          </span>
+          <span class="pcase__more">Read the case study
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </span>
+        </span>
+      </a>
+    </div>
+  </section>
+)}
+
+<!-- ===== FAQ ===== -->
+<section class="section pfaq">
+  <div class="container">
+    <span class="eyebrow">Questions we get asked</span>
+    <h2 class="h2 pfaq__h2">Before you book the call.</h2>
+    <div class="faq__list">
+      {practice.faq.map((f, i) => (
+        <details class="faq__item" open={i === 0}>
+          <summary class="faq__q">
+            {f.q}
+            <svg class="faq__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+          </summary>
+          <div class="faq__a"><p>{f.a}</p></div>
+        </details>
+      ))}
+    </div>
+  </div>
+</section>
+
+<CTABand
+  title="Want this looked at properly?"
+  lead="Book a 30-minute discovery call. We'll tell you what we would do first — and whether we are the right people to do it."
+/>
+
+<style>
+  /* hero */
+  .phero { position: relative; overflow: hidden; background: var(--dark-bg); color: #fff; }
+  .phero__bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: .5; }
+  .phero__veil { position: absolute; inset: 0;
+    background: linear-gradient(90deg, rgba(15,23,42,.96) 0%, rgba(15,23,42,.82) 52%, rgba(15,23,42,.4) 100%); }
+  .phero__inner { position: relative; padding-block: clamp(60px, 8vw, 112px) clamp(48px, 6vw, 84px); }
+  .phero__eyebrow { color: var(--teal-bright); }
+  .phero__title { margin-top: 14px; max-width: 18ch; color: #fff;
+    font-size: clamp(2.2rem, 4.2vw, 3.8rem); letter-spacing: -.03em; line-height: 1.04; }
+  .phero__lead { margin-top: 20px; max-width: 58ch; color: rgba(255,255,255,.84); }
+  .phero__cta { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 30px; }
+  .phero__ghost { display: inline-flex; align-items: center; padding: 14px 22px;
+    border-radius: var(--radius-pill); border: 1px solid rgba(255,255,255,.35);
+    color: #fff; font-weight: var(--fw-semibold); transition: background var(--dur-base) ease; }
+  .phero__ghost:hover { background: rgba(255,255,255,.1); }
+  .phero__stats { display: flex; flex-wrap: wrap; gap: clamp(24px, 5vw, 64px);
+    margin-top: clamp(32px, 4vw, 48px); padding-top: 26px; border-top: 1px solid rgba(255,255,255,.16); }
+  .pstat__v { display: block; font-family: var(--font-display); font-size: clamp(1.7rem, 2.8vw, 2.3rem);
+    font-weight: var(--fw-black); letter-spacing: -.03em; color: var(--teal-bright); line-height: 1; }
+  .pstat__l { display: block; margin-top: 8px; font-size: .72rem; font-weight: var(--fw-bold);
+    letter-spacing: .1em; text-transform: uppercase; color: rgba(255,255,255,.62); }
+
+  /* problems / approach */
+  .ppair { background: #fff; }
+  .ppair__grid { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(32px, 5vw, 72px); align-items: start; }
+  .ppair__h2 { margin-top: 14px; font-size: clamp(1.5rem, 2.4vw, 2rem); }
+  .plist { list-style: none; margin: 24px 0 0; padding: 0; display: grid; gap: 14px; }
+  .plist li { position: relative; padding-left: 30px; color: var(--body); line-height: 1.55; }
+  .plist li::before { content: ''; position: absolute; left: 0; top: .42em; width: 16px; height: 16px; border-radius: 50%; }
+  .plist--problem li::before { background: #fee2e2; box-shadow: inset 0 0 0 2px #fca5a5; }
+  .plist--solve li::before { background: var(--teal-wash); box-shadow: inset 0 0 0 2px var(--teal); }
+
+  /* sequence */
+  .pseq__h2 { margin-top: 14px; }
+  .pseq { list-style: none; margin: 30px 0 0; padding: 0; display: grid; gap: 12px; }
+  .pphase { display: grid; grid-template-columns: 48px 1fr; gap: 18px; align-items: start;
+    background: var(--card); border: 1px solid var(--card-border); border-radius: var(--radius);
+    padding: 20px 22px; }
+  .pphase__n { width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center;
+    font-family: var(--font-display); font-weight: var(--fw-black); color: #fff; background: var(--teal-fill); }
+  .pphase__t { display: block; font-family: var(--font-display); font-size: 1.05rem; letter-spacing: -.02em; color: var(--ink); }
+  .pphase__d { display: block; margin-top: 5px; color: var(--body); font-size: .95rem; line-height: 1.55; }
+
+  /* capabilities */
+  .pcaps { background: #fff; }
+  .pcaps__h2 { margin-top: 14px; }
+  .pcaps__grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: clamp(12px, 1.6vw, 18px); margin-top: 30px; }
+  .pcap { background: var(--card); border: 1px solid var(--card-border); border-radius: var(--radius);
+    padding: 20px 22px; transition: border-color var(--dur-card) ease, transform var(--dur-card) var(--ease-out-expo); }
+  .pcap:hover { border-color: var(--teal); transform: translateY(-3px); }
+  .pcap__t { display: block; font-family: var(--font-display); font-size: 1.02rem; letter-spacing: -.02em; color: var(--ink); }
+  .pcap__d { display: block; margin-top: 6px; color: var(--body); font-size: .93rem; line-height: 1.5; }
+
+  .psecondary { margin-top: clamp(36px, 4vw, 52px); padding-top: 28px; border-top: 1px solid var(--card-border); }
+  .psecondary__row { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 6px; }
+  .phl { flex: 1 1 210px; background: var(--card); border: 1px solid var(--card-border);
+    border-radius: var(--radius-sm); padding: 16px 18px; }
+  .phl__sector { display: block; font-size: .68rem; font-weight: var(--fw-black); letter-spacing: var(--ls-label);
+    text-transform: uppercase; color: var(--teal-deep); }
+  .phl__t { display: block; margin-top: 7px; font-family: var(--font-display); font-size: 1rem; letter-spacing: -.02em; color: var(--ink); }
+  .phl__d { display: block; margin-top: 4px; font-size: .88rem; color: var(--body); }
+
+  /* proof */
+  .pcase__h2 { margin-top: 14px; }
+  .pcase { display: grid; grid-template-columns: .75fr 1.25fr; margin-top: 28px;
+    background: var(--card); border: 1px solid var(--card-border); border-radius: var(--radius-lg);
+    overflow: hidden; box-shadow: var(--shadow); color: var(--ink);
+    transition: transform var(--dur-card) var(--ease-out-expo), box-shadow var(--dur-card) ease; }
+  .pcase:hover { transform: translateY(var(--lift-card)); box-shadow: var(--shadow-lg); }
+  .pcase__media { position: relative; display: block; min-height: 260px; }
+  .pcase__media img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .pcase__body { display: block; padding: clamp(24px, 3vw, 36px); }
+  .pcase__t { display: block; font-family: var(--font-display); font-size: clamp(1.15rem, 1.8vw, 1.45rem); letter-spacing: -.02em; }
+  .pcase__client { display: block; margin-top: 8px; color: var(--teal-deep); font-weight: var(--fw-semibold); font-size: .95rem; }
+  .pcase__d { display: block; margin-top: 12px; color: var(--body); font-size: .95rem; line-height: 1.6; }
+  .pcase__metrics { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px 12px;
+    margin-top: 20px; padding-top: 18px; border-top: 1px solid var(--card-border); }
+  .pcase__m b { display: block; font-family: var(--font-display); font-size: 1.3rem;
+    font-weight: var(--fw-black); letter-spacing: -.03em; color: var(--teal-deep); }
+  .pcase__m span { display: block; margin-top: 4px; font-size: .66rem; letter-spacing: .08em;
+    text-transform: uppercase; color: var(--muted); }
+  .pcase__more { display: inline-flex; align-items: center; gap: 8px; margin-top: 20px;
+    font-weight: var(--fw-semibold); color: var(--teal-deep); }
+  .pcase__more svg { width: 18px; height: 18px; transition: transform var(--dur-base) ease; }
+  .pcase:hover .pcase__more svg { transform: translateX(4px); }
+
+  /* faq */
+  .pfaq { background: #fff; }
+  .pfaq__h2 { margin-top: 14px; margin-bottom: 28px; }
+
+  @media (max-width: 900px) {
+    .ppair__grid, .pcaps__grid { grid-template-columns: 1fr; }
+    .pcase { grid-template-columns: 1fr; }
+    .pcase__media { min-height: 0; aspect-ratio: 16 / 9; }
+    .pcase__metrics { grid-template-columns: 1fr 1fr; }
+  }
+</style>
