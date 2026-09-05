@@ -15,7 +15,10 @@ export function getStaticPaths() {
 const { service } = Astro.props;
 const siblings = servicePages.filter((s) => s.slug !== service.slug);
 
-const title = `${service.eyebrow} Services | Huemot`;
+// "Managed Services" already ends in the word, so don't append it twice.
+const title = /services$/i.test(service.eyebrow)
+  ? `${service.eyebrow} | Huemot`
+  : `${service.eyebrow} Services | Huemot`;
 const description = service.lead.length > 160 ? `${service.lead.slice(0, 157)}…` : service.lead;
 ---
 
