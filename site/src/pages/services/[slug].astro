@@ -1,0 +1,41 @@
+---
+// Service sub-pages — /services/<slug>.
+//
+// Built because six Services mega-nav items had no destination of their own:
+// three pointed at an anchor on a card, and Cloud & DevOps, QA & Automation
+// and Cybersecurity all resolved to the same generic #practices anchor.
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PracticePage from '../../components/PracticePage.astro';
+import { servicePages } from '../../data/servicePages.js';
+
+export function getStaticPaths() {
+  return servicePages.map((service) => ({ params: { slug: service.slug }, props: { service } }));
+}
+
+const { service } = Astro.props;
+const siblings = servicePages.filter((s) => s.slug !== service.slug);
+
+const title = `${service.eyebrow} Services | Huemot`;
+const description = service.lead.length > 160 ? `${service.lead.slice(0, 157)}…` : service.lead;
+---
+
+<BaseLayout title={title} description={description}>
+  <link
+    slot="head"
+    rel="preload"
+    as="image"
+    type="image/webp"
+    href={`${service.img}-1600.webp`}
+    imagesrcset={`${service.img}-800.webp 800w, ${service.img}-1600.webp 1600w`}
+    imagesizes="100vw"
+    fetchpriority="high"
+  />
+  <PracticePage
+    practice={service}
+    listTitle="Capabilities"
+    listItems={service.capabilities}
+    secondary={{ title: 'Typical stack', items: service.stack }}
+    crumb={{ label: 'Services', href: '/services' }}
+    siblings={siblings}
+  />
+</BaseLayout>

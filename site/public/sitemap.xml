@@ -12,4 +12,16 @@
   <url><loc>https://huemot.com/engage</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://huemot.com/case-studies</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
   <url><loc>https://huemot.com/contact</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://huemot.com/services/cloud-devops</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://huemot.com/services/cybersecurity</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://huemot.com/services/digital-transformation</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://huemot.com/services/managed-services</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://huemot.com/services/product-engineering</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://huemot.com/services/qa-automation</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://huemot.com/industries/fintech</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://huemot.com/industries/healthcare</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://huemot.com/industries/insurance</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://huemot.com/industries/logistics</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://huemot.com/industries/retail</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://huemot.com/industries/saas</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
 </urlset>
