@@ -10,7 +10,10 @@ import CTABand from './CTABand.astro';
 import { caseStudyById } from '../data/caseStudies.js';
 import { BOOKING_URL, BOOKING_EXTERNAL } from '../data/site.js';
 
-const { practice, listTitle, listItems, secondary } = Astro.props;
+// `crumb` and `siblings` are optional: the top-level practice pages
+// (/salesforce, /ai-automation) pass neither and render exactly as before.
+// The /services/<slug> sub-pages pass both.
+const { practice, listTitle, listItems, secondary, crumb, siblings = [] } = Astro.props;
 const study = practice.caseStudy ? caseStudyById[practice.caseStudy] : null;
 ---
 
@@ -27,6 +30,13 @@ const study = practice.caseStudy ? caseStudyById[practice.caseStudy] : null;
   />
   <span class="phero__veil"></span>
   <div class="container phero__inner">
+    {crumb && (
+      <nav class="pcrumbs" aria-label="Breadcrumb">
+        <a href={crumb.href}>{crumb.label}</a>
+        <span aria-hidden="true">/</span>
+        <span>{practice.eyebrow}</span>
+      </nav>
+    )}
     <span class="eyebrow phero__eyebrow">{practice.eyebrow}</span>
     <h1 class="h1 phero__title">{practice.title}</h1>
     <p class="lead phero__lead">{practice.lead}</p>
@@ -166,12 +176,57 @@ const study = practice.caseStudy ? caseStudyById[practice.caseStudy] : null;
   </div>
 </section>
 
+{siblings.length > 0 && (
+  <section class="section section--band">
+    <div class="container">
+      <span class="eyebrow">More services</span>
+      <h2 class="h2 psib__h2">The rest of what we do.</h2>
+      <div class="psib stagger">
+        {siblings.map((o) => (
+          <a href={`/services/${o.slug}`} class="psibcard reveal">
+            <span class="psibcard__shot">
+              <img
+                src={`${o.img}-800.webp`}
+                srcset={`${o.img}-800.webp 800w, ${o.img}-1600.webp 1600w`}
+                sizes="(max-width: 560px) 92vw, (max-width: 900px) 46vw, 220px"
+                alt={o.alt}
+                width="800" height="533"
+                loading="lazy" decoding="async"
+              />
+            </span>
+            <b class="psibcard__t">{o.eyebrow}</b>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+)}
+
 <CTABand
   title="Want this looked at properly?"
   lead="Book a 30-minute discovery call. We'll tell you what we would do first — and whether we are the right people to do it."
 />
 
 <style>
+  .pcrumbs { display: flex; align-items: center; gap: 10px; font-size: .84rem; font-weight: 600;
+    color: rgba(255,255,255,.62); margin-bottom: 16px; }
+  .pcrumbs a { color: var(--teal-bright); }
+  .pcrumbs a:hover { color: #fff; }
+  @media (max-width: 900px) { .pcrumbs a { display: inline-flex; align-items: center; min-height: 44px; } }
+
+  .psib__h2 { margin-top: 14px; }
+  .psib { display: grid; grid-template-columns: repeat(5, 1fr); gap: clamp(12px, 1.6vw, 18px); margin-top: 28px; }
+  .psibcard { display: block; border-radius: var(--radius); overflow: hidden;
+    background: var(--card); border: 1px solid var(--card-border); color: var(--ink);
+    transition: transform var(--dur-card) var(--ease-out-expo), border-color var(--dur-card) ease; }
+  .psibcard:hover { transform: translateY(-3px); border-color: var(--teal); }
+  .psibcard__shot { display: block; aspect-ratio: 16 / 10; overflow: hidden; }
+  .psibcard__shot img { width: 100%; height: 100%; object-fit: cover; }
+  .psibcard__t { display: block; padding: 14px 16px 16px; font-family: var(--font-display);
+    font-size: .95rem; letter-spacing: -.02em; }
+  @media (max-width: 900px) { .psib { grid-template-columns: repeat(3, 1fr); } }
+  @media (max-width: 560px) { .psib { grid-template-columns: 1fr 1fr; } }
+
   /* hero */
   .phero { position: relative; overflow: hidden; background: var(--dark-bg); color: #fff; }
   .phero__bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: .5; }
